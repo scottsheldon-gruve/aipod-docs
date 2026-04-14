@@ -677,6 +677,52 @@ EOF
   </div>
 
   <div class="step">
+    <div class="step-header"><span class="step-num">2.0.1</span><span class="step-title">Understand the AI Defense dashboard</span><span class="step-badge sb-info">Reference</span></div>
+    <div class="step-body">
+      <p class="sd">When you first land in AI Defense, the dashboard gives a real-time summary of your AI security posture. The central counter shows total events detected — blocked vs. monitored. The surrounding tiles each correspond to a capability area.</p>
+      <table class="data-table">
+        <thead><tr><th>Dashboard Tile</th><th>What it shows</th><th>Capability</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Applications</strong></td>
+            <td>Count of AI applications registered in AI Defense, with connection health status</td>
+            <td>AI Runtime Protection — applications secured with AI Runtime</td>
+          </tr>
+          <tr>
+            <td><strong>User-accessed apps</strong></td>
+            <td>AI app and chat usage discovered across the enterprise (including shadow AI)</td>
+            <td>AI Access — discovered via Secure Access integration</td>
+          </tr>
+          <tr>
+            <td><strong>Total events detected</strong> (center)</td>
+            <td>Aggregate of all AI traffic events: blocked vs. monitored, with link to full event log</td>
+            <td>AI Runtime — events handled by AI Runtime in real time</td>
+          </tr>
+          <tr>
+            <td><strong>Agents &amp; Assistants</strong></td>
+            <td>Count of AI models, agents, and applications that have been tested</td>
+            <td>AI Validation — models and applications tested with AI Validation</td>
+          </tr>
+          <tr>
+            <td><strong>Models &amp; Deployments</strong></td>
+            <td>Breakdown of fine-tuned models, foundation models, and deployments, with latest validation report scores</td>
+            <td>AI Validation + AI Cloud Visibility</td>
+          </tr>
+          <tr>
+            <td><strong>Data and training sets</strong></td>
+            <td>Count of data and training set assets monitored across your AI environment</td>
+            <td>AI Cloud Visibility — AI assets monitored</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Dashboard populates as you deploy</div>Tiles will show low or zero counts until each capability is configured. After completing this guide, the Applications, Agents &amp; Assistants, and Models &amp; Deployments tiles will begin reflecting your AI POD deployment.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
     <div class="step-header"><span class="step-num">2.1</span><span class="step-title">Generate an API key in AI Defense</span><span class="step-badge sb-ui">SCC UI</span></div>
     <div class="step-body">
       <p class="sd">The API key authenticates the on-prem connector to your SCC tenant. It is embedded in the Helm install command. Store it securely — treat it like a password.</p>
