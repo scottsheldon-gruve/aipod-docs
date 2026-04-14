@@ -726,6 +726,25 @@ EOF
   </div>
 
   <div class="step">
+    <div class="step-header"><span class="step-num">2.0.2</span><span class="step-title">Discover Assets</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <p class="sd">AI Defense can connect to your cloud service providers to automatically discover AI assets.</p>
+      <div class="ui-steps">
+        <h4>Procedure</h4>
+        <ol class="ui-step-list">
+          <li>Click the arrow symbol next to <strong>Models</strong> to navigate to the Assets page.</li>
+          <li>Navigate to the <strong>Assets: AI Inventory</strong> page. If the page displays AI assets, your integration with your cloud service provider (CSP) has been set up. Click on an asset to inspect it, and proceed to set up AI Validation.
+            <br><br>If no assets appear in the list, navigate to the <strong>Administration: Integrations</strong> page to set up an integration with your CSP.</li>
+        </ol>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Alternative: Multicloud Defense integration</div>As an alternative to AI Defense asset discovery, you can connect to Multicloud Defense to discover AI assets. This topology may be suitable if you are already using Multicloud Defense. See the AI Defense Multicloud Defense Integration documentation for details.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
     <div class="step-header"><span class="step-num">2.1</span><span class="step-title">Generate an API key in AI Defense</span><span class="step-badge sb-ui">SCC UI</span></div>
     <div class="step-body">
       <p class="sd">The API key authenticates the on-prem connector to your SCC tenant. It is embedded in the Helm install command. Store it securely — treat it like a password.</p>
