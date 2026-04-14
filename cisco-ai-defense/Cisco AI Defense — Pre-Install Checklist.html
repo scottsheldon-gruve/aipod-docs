@@ -749,14 +749,23 @@ devicePlugin:
 <span class="c"># Install Helm 3:</span>
 <span class="p">$</span> curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-<span class="c"># Log in to the OCP cluster:</span>
-<span class="p">$</span> oc login https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443 --username=kubeadmin
+<span class="c"># Verify cluster reachability — DNS, TCP, HTTPS:</span>
+<span class="p">$</span> nslookup api.&lt;cluster-name&gt;.&lt;domain&gt;
+<span class="g"># Must resolve to an IP address</span>
 
-<span class="c"># Verify all three tools and cluster-admin access:</span>
-<span class="p">$</span> oc whoami
+<span class="p">$</span> nc -zv api.&lt;cluster-name&gt;.&lt;domain&gt; 6443
+<span class="g"># Connection succeeded!</span>
+
+<span class="p">$</span> curl -sk https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443 -o /dev/null -w "%{http_code}\n"
+<span class="g"># 403 = reachable (expected)</span>
+
+<span class="c"># Log in and verify cluster-admin:</span>
+<span class="p">$</span> oc login https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443 --username=kubeadmin
+<span class="p">$</span> oc cluster-info
 <span class="p">$</span> oc auth can-i '*' '*' --all-namespaces
 <span class="g"># yes</span>
-<span class="p">$</span> kubectl version --client
+<span class="p">$</span> oc get nodes
+<span class="g"># All nodes Ready</span>
 <span class="p">$</span> helm version --short
 <span class="g"># v3.x.x</span></div>
     </div>

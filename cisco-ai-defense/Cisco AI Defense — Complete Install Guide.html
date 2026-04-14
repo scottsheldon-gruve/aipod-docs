@@ -293,7 +293,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
   <div class="step">
     <div class="step-header"><span class="step-num">0.3</span><span class="step-title">Set up the Jump Server / Bastion Host</span><span class="step-badge sb-cmd">Setup</span></div>
     <div class="step-body">
-      <p class="sd">All install commands in this guide are run from a dedicated jump server (bastion host) that has network access to the OCP cluster API and outbound internet access. The jump server must have the OpenShift CLI (<span class="ic">oc</span>), Kubernetes CLI (<span class="ic">kubectl</span>), and Helm 3 installed before proceeding.</p>
+      <p class="sd">All install commands in this guide are run from a dedicated jump server (bastion host) that has network access to the OCP cluster API and outbound internet access. The jump server must have the OpenShift CLI (<span class="ic">oc</span>), Kubernetes CLI (<span class="ic">kubectl</span>), and Helm 3 installed before proceeding. <strong>Complete this step before running steps 0.1 and 0.2.</strong></p>
 
       <div class="callout info">
         <span class="callout-icon">ℹ</span>
@@ -347,17 +347,38 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
 <span class="p">$</span> oc get nodes
 <span class="g"># All nodes must show STATUS=Ready</span>
 
-<span class="c">## ── Step 5: Verify network connectivity from jump server ────────────</span>
-<span class="c"># OCP API reachable:</span>
+<span class="c">## ── Step 5: Verify cluster reachability from jump server ─────────────</span>
+<span class="c"># 5a — DNS: confirm the cluster API hostname resolves:</span>
+<span class="p">$</span> nslookup api.&lt;cluster-name&gt;.&lt;domain&gt;
+<span class="g"># Must return an IP address — if NXDOMAIN, fix DNS before proceeding</span>
+
+<span class="c"># 5b — TCP: confirm port 6443 is open (OCP API server):</span>
+<span class="p">$</span> nc -zv api.&lt;cluster-name&gt;.&lt;domain&gt; 6443
+<span class="g"># Connection to api.&lt;cluster-name&gt;.&lt;domain&gt; 6443 port [tcp] succeeded!</span>
+<span class="r"># "Connection refused" or timeout = firewall/routing issue — fix before proceeding</span>
+
+<span class="c"># 5c — HTTPS: confirm the API server responds on port 6443:</span>
 <span class="p">$</span> curl -sk https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443 -o /dev/null -w "%{http_code}\n"
-<span class="g"># 403 = reachable (auth required, expected)</span>
+<span class="g"># 403 = reachable (auth required — expected and correct)</span>
+<span class="r"># 000 = not reachable — check routing, firewall, and ACI contracts</span>
 
-<span class="c"># Cisco SCC reachable (required for AI Defense cloud connectivity):</span>
-<span class="p">$</span> curl -sk https://security.cisco.com -o /dev/null -w "%{http_code}\n"
+<span class="c"># 5d — Post-login: confirm oc can query the cluster after login:</span>
+<span class="p">$</span> oc cluster-info
+<span class="g"># Kubernetes control plane is running at https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443</span>
+
+<span class="p">$</span> oc get nodes
+<span class="g"># NAME                    STATUS   ROLES           AGE   VERSION</span>
+<span class="g"># master-0.&lt;domain&gt;      Ready    control-plane   ...   v1.31.x</span>
+<span class="g"># worker-0.&lt;domain&gt;      Ready    worker          ...   v1.31.x</span>
+<span class="r"># NotReady = cluster issue — do not proceed until all nodes are Ready</span>
+
+<span class="c"># 5e — Cisco SCC reachable (required for AI Defense cloud connectivity):</span>
+<span class="p">$</span> curl -sk https://security.cisco.com -o /dev/null -w "SCC: %{http_code}\n"
+<span class="p">$</span> curl -sk https://us.aidefense.security.cisco.com -o /dev/null -w "AI Defense PoP: %{http_code}\n"
 <span class="g"># Any 2xx/3xx/4xx = port 443 is open</span>
-<span class="r"># 000 = blocked — fix before proceeding</span>
+<span class="r"># 000 = blocked — fix ACI/firewall before proceeding</span>
 
-<span class="c">## ── Step 6: Verify all tools are ready ──────────────────────────────</span>
+<span class="c">## ── Step 6: Final tool verification ─────────────────────────────────</span>
 <span class="p">$</span> oc version --client &amp;&amp; kubectl version --client &amp;&amp; helm version --short &amp;&amp; \
   curl --version | head -1 &amp;&amp; openssl version
 <span class="g"># All must return version strings with no errors</span></div>
