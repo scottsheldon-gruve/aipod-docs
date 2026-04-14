@@ -325,7 +325,26 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
   </div>
 
   <div class="step">
-    <div class="step-header"><span class="step-num">1.1</span><span class="step-title">Install the NVIDIA GPU Operator</span><span class="step-badge sb-ui">OCP Console</span></div>
+    <div class="step-header"><span class="step-num">1.1</span><span class="step-title">Install cert-manager</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">cert-manager is required by AI Defense to manage TLS certificates automatically within the cluster. Install it via Helm before deploying other components.</p>
+      <div class="cmd-block"><span class="p">$</span> helm install \
+  cert-manager oci://quay.io/jetstack/charts/cert-manager \
+  --version v1.18.2 \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true
+
+<span class="c"># Verify cert-manager pods are running:</span>
+<span class="p">$</span> oc get pods -n cert-manager
+<span class="g"># cert-manager-xxx              1/1   Running</span>
+<span class="g"># cert-manager-cainjector-xxx   1/1   Running</span>
+<span class="g"># cert-manager-webhook-xxx      1/1   Running</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.2</span><span class="step-title">Install the NVIDIA GPU Operator</span><span class="step-badge sb-ui">OCP Console</span></div>
     <div class="step-body">
       <p class="sd">AI Defense Validation and Runtime processing uses GPU resources on the AI POD worker nodes. The NVIDIA GPU Operator must be installed and all GPUs must be schedulable before the AI Defense Helm chart is deployed.</p>
       <div class="ui-steps">
@@ -355,11 +374,143 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
         <span class="callout-icon">🚫</span>
         <div class="callout-body"><div class="callout-title">Do not proceed if GPUs are not showing</div>If <span class="ic">nvidia.com/gpu</span> does not appear in node allocatable resources, AI Defense Validation pods will fail to schedule. Common cause: GPU Operator installed but Node Feature Discovery (NFD) hasn't labelled the nodes yet. Wait 5 minutes and re-check.</div>
       </div>
+      <div class="callout purple">
+        <span class="callout-icon">📋</span>
+        <div class="callout-body">
+          <div class="callout-title">Alternative: Install via Helm with AI POD-specific values</div>
+          For AI PODs, Cisco recommends installing the GPU Operator via Helm using the override values file below. This method sets the correct tolerations for GPU-dedicated nodes, disables MIG and DCGM (not needed on L40S), and configures DCGM exporter metrics.
+          <div class="cmd-block" style="margin-top:.75rem"><span class="c"># Step 1 — Create the values override file:</span>
+<span class="p">$</span> cat &gt;aid-nvidia-gpu-operator-values.yaml&lt;&lt;EOF
+daemonsets:
+  tolerations:
+    - key: nvidia.com/gpu
+      operator: Exists
+      effect: NoSchedule
+    - key: dedicated
+      operator: Equal
+      value: gpu-dedicated
+      effect: NoSchedule
+  annotations:
+    ad.datadoghq.com/nvidia-dcgm-exporter.checks: |-
+      {
+        "dcgm": {
+          "instances": [
+            {
+              "openmetrics_endpoint": "http://%%host%%:9400/metrics"
+            }
+          ]
+        }
+      }
+migManager:
+  enabled: false
+dcgm:
+  enabled: false
+dcgmExporter:
+  enabled: false
+  config:
+    name: custom-dcgm-exporter-metrics
+    create: false
+    data: |-
+      DCGM_FI_DEV_SM_CLOCK,  gauge, SM clock frequency (in MHz).
+      DCGM_FI_DEV_MEM_CLOCK, gauge, Memory clock frequency (in MHz).
+      DCGM_FI_DEV_MEMORY_TEMP, gauge, Memory temperature (in C).
+      DCGM_FI_DEV_GPU_TEMP,  gauge, GPU temperature (in C).
+      DCGM_FI_DEV_POWER_USAGE, gauge, Power draw (in W).
+      DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION, counter, Total energy consumption since boot (in mJ).
+      DCGM_FI_DEV_PCIE_REPLAY_COUNTER, counter, Total number of PCIe retries.
+      DCGM_FI_DEV_GPU_UTIL,  gauge, GPU utilization (in %).
+      DCGM_FI_DEV_MEM_COPY_UTIL, gauge, Memory utilization (in %).
+      DCGM_FI_DEV_ENC_UTIL,  gauge, Encoder utilization (in %).
+      DCGM_FI_DEV_DEC_UTIL,  gauge, Decoder utilization (in %).
+      DCGM_FI_DEV_XID_ERRORS, gauge, Value of the last XID error encountered.
+      DCGM_FI_DEV_FB_FREE,   gauge, Framebuffer memory free (in MiB).
+      DCGM_FI_DEV_FB_USED,   gauge, Framebuffer memory used (in MiB).
+      DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL, counter, Total NVLink bandwidth counters.
+      DCGM_FI_DEV_VGPU_LICENSE_STATUS, gauge, vGPU License status.
+      DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS, counter, Remapped rows for uncorrectable errors.
+      DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS, counter, Remapped rows for correctable errors.
+      DCGM_FI_DEV_ROW_REMAP_FAILURE, gauge, Whether remapping of rows has failed.
+      DCGM_FI_PROF_PCIE_TX_BYTES, counter, Active PCIe tx bytes (header + payload).
+      DCGM_FI_PROF_PCIE_RX_BYTES, counter, Active PCIe rx bytes (header + payload).
+      DCGM_FI_PROF_GR_ENGINE_ACTIVE, gauge, Ratio of time the graphics engine is active (in %).
+      DCGM_FI_PROF_SM_ACTIVE, gauge, Ratio of cycles an SM has at least 1 warp assigned (in %).
+      DCGM_FI_PROF_SM_OCCUPANCY, gauge, Ratio of warps resident on an SM (in %).
+      DCGM_FI_PROF_PIPE_TENSOR_ACTIVE, gauge, Ratio of cycles the tensor pipe is active (in %).
+      DCGM_FI_PROF_DRAM_ACTIVE, gauge, Ratio of cycles the device memory interface is active (in %).
+      DCGM_FI_PROF_PIPE_FP64_ACTIVE, gauge, Ratio of cycles the fp64 pipes are active (in %).
+      DCGM_FI_PROF_PIPE_FP32_ACTIVE, gauge, Ratio of cycles the fp32 pipes are active (in %).
+      DCGM_FI_PROF_PIPE_FP16_ACTIVE, gauge, Ratio of cycles the fp16 pipes are active (in %).
+      DCGM_FI_DEV_COUNT, counter, Number of Devices on the node.
+      DCGM_FI_DEV_FAN_SPEED, gauge, Fan speed for the device in percent 0-100.
+      DCGM_FI_DEV_SLOWDOWN_TEMP, gauge, Slowdown temperature for the device.
+      DCGM_FI_DEV_POWER_MGMT_LIMIT, gauge, Current power limit for the device.
+      DCGM_FI_DEV_PSTATE, gauge, Performance state (P-State) 0-15. 0=highest.
+      DCGM_FI_DEV_FB_TOTAL, gauge,
+      DCGM_FI_DEV_FB_RESERVED, gauge,
+      DCGM_FI_DEV_FB_USED_PERCENT, gauge,
+      DCGM_FI_DEV_CLOCK_THROTTLE_REASONS, gauge, Clock throttle reasons (bitmask).
+      DCGM_FI_PROCESS_NAME, label, The Process Name.
+      DCGM_FI_CUDA_DRIVER_VERSION, label,
+      DCGM_FI_DEV_NAME, label,
+      DCGM_FI_DEV_MINOR_NUMBER, label,
+      DCGM_FI_DRIVER_VERSION, label,
+      DCGM_FI_DEV_BRAND, label,
+      DCGM_FI_DEV_SERIAL, label,
+node-feature-discovery:
+  worker:
+    tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Equal"
+      value: ""
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/control-plane"
+      operator: "Equal"
+      value: ""
+      effect: "NoSchedule"
+    - key: "nvidia.com/gpu"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: dedicated
+      operator: Equal
+      value: gpu-dedicated
+      effect: NoSchedule
+EOF
+
+<span class="c"># Optional: add time-slicing config if using single-GPU time-slice mode:</span>
+<span class="c"># Append the following to aid-nvidia-gpu-operator-values.yaml before installing:</span>
+<span class="c">#
+# devicePlugin:
+#   config:
+#     name: time-slicing-config
+#     create: true
+#     default: default
+#     data:
+#       default: |-
+#         version: v1
+#         flags:
+#           migStrategy: none
+#         sharing:
+#           timeSlicing:
+#             renameByDefault: false
+#             resources:
+#             - name: nvidia.com/gpu
+#               replicas: 4</span>
+
+<span class="c"># Step 2 — Add the NVIDIA Helm repo and install:</span>
+<span class="p">$</span> helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+    &amp;&amp; helm repo update
+
+<span class="p">$</span> helm install --wait nvidia-gpu-operator \
+    -n gpu-operator --create-namespace \
+    nvidia/gpu-operator \
+    --version=v24.6.2 -f aid-nvidia-gpu-operator-values.yaml</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="step">
-    <div class="step-header"><span class="step-num">1.2</span><span class="step-title">Install the NGINX Ingress Operator</span><span class="step-badge sb-ui">OCP Console</span></div>
+    <div class="step-header"><span class="step-num">1.3</span><span class="step-title">Install the NGINX Ingress Operator</span><span class="step-badge sb-ui">OCP Console</span></div>
     <div class="step-body">
       <p class="sd">The NGINX Ingress Operator exposes the AI Defense proxy gateway and API endpoint to on-prem AI applications. Required for Runtime protection. If you plan to use only Validation initially, this can be deferred — but install it before any Runtime configuration.</p>
       <div class="callout danger">
@@ -414,7 +565,7 @@ EOF
   </div>
 
   <div class="step">
-    <div class="step-header"><span class="step-num">1.3</span><span class="step-title">Prepare TLS certificate for AI Defense Ingress endpoint</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-header"><span class="step-num">1.4</span><span class="step-title">Prepare TLS certificate for AI Defense Ingress endpoint</span><span class="step-badge sb-cmd">Command</span></div>
     <div class="step-body">
       <p class="sd">A TLS certificate is required for the AI Defense proxy and API endpoint. Choose your subdomain now — this value cannot be changed without redeploying the Ingress configuration. See the separate <strong>TLS Certificate Guide</strong> for all three cert options.</p>
       <div class="cmd-block"><span class="c"># Decide your AI Defense subdomain, e.g.:</span>
@@ -430,6 +581,28 @@ EOF
 
 <span class="c"># Verify cert:</span>
 <span class="p">$</span> openssl x509 -in ai-defense.crt -text -noout | grep -E "Subject:|DNS:|Not After"</div>
+    </div>
+  </div>
+</div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.5</span><span class="step-title">Configure OCP Security Context Constraints for AI Defense service accounts</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">AI Defense requires three service accounts to run as any user ID. Grant <span class="ic">anyuid</span> SCC to each service account before deploying the connector.</p>
+      <div class="cmd-block"><span class="c"># From the OCP jump server, run all three commands:</span>
+<span class="p">$</span> oc adm policy add-scc-to-user anyuid -z pii-analyzer-serviceaccount
+<span class="p">$</span> oc adm policy add-scc-to-user anyuid -z rde-operator
+<span class="p">$</span> oc adm policy add-scc-to-user anyuid -z ai-defense-orchestrator
+
+<span class="c"># Verify each service account has the anyuid SCC assigned:</span>
+<span class="p">$</span> oc get scc anyuid -o jsonpath='{.users}' | tr ',' '\n' | grep ai-defense
+<span class="g"># system:serviceaccount:ai-defense:pii-analyzer-serviceaccount</span>
+<span class="g"># system:serviceaccount:ai-defense:rde-operator</span>
+<span class="g"># system:serviceaccount:ai-defense:ai-defense-orchestrator</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">Run these before the Helm install</div>These SCC bindings must exist before Phase 3 Helm deployment. If the Helm install runs first, the AI Defense pods will start in a <span class="ic">CreateContainerConfigError</span> state due to SCC violations.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -693,6 +866,79 @@ EOF
 <span class="c"># Verify it was accepted:</span>
 <span class="p">$</span> oc get ingress -n ai-defense
 <span class="p">$</span> oc describe ingress ai-defense-ingress -n ai-defense</div>
+      <div class="callout purple">
+        <span class="callout-icon">📋</span>
+        <div class="callout-body">
+          <div class="callout-title">Alternative: Use OpenShift Routes instead of Kubernetes Ingress</div>
+          If your environment uses the OpenShift-native router instead of NGINX Ingress, apply the following two Routes. Replace <span class="ic">&lt;ai-def-onprem-ocp-namespace&gt;</span> and <span class="ic">&lt;ai-defense-proxy-service-url&gt;</span> with your values. Embed your TLS certificate and key inline.
+          <div class="cmd-block" style="margin-top:.75rem"><span class="c"># Route 1: /api/v1/inspect → ai-defense-apigateway:8080</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: api-gateway-inspect
+  namespace: &lt;ai-def-onprem-ocp-namespace&gt;
+spec:
+  host: &lt;ai-defense-proxy-service-url&gt;
+  path: /api/v1/inspect
+  to:
+    kind: Service
+    name: ai-defense-apigateway
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    certificate: |
+      -----BEGIN CERTIFICATE-----
+      &lt;your cert contents&gt;
+      -----END CERTIFICATE-----
+    key: |
+      -----BEGIN PRIVATE KEY-----
+      &lt;your key contents&gt;
+      -----END PRIVATE KEY-----
+EOF
+
+<span class="c"># Route 2: / → ai-defense-proxy-service:8080</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: proxy-root
+  namespace: &lt;ai-def-onprem-ocp-namespace&gt;
+spec:
+  host: &lt;ai-defense-proxy-service-url&gt;
+  path: /
+  to:
+    kind: Service
+    name: ai-defense-proxy-service
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    certificate: |
+      -----BEGIN CERTIFICATE-----
+      &lt;your cert contents&gt;
+      -----END CERTIFICATE-----
+    key: |
+      -----BEGIN PRIVATE KEY-----
+      &lt;your key contents&gt;
+      -----END PRIVATE KEY-----
+EOF
+
+<span class="c"># Verify routes are admitted:</span>
+<span class="p">$</span> oc get routes -n &lt;ai-def-onprem-ocp-namespace&gt;
+<span class="g"># api-gateway-inspect   &lt;host&gt;   ...   edge   Redirect</span>
+<span class="g"># proxy-root            &lt;host&gt;   ...   edge   Redirect</span></div>
+          <div class="callout info" style="margin-top:.5rem">
+            <span class="callout-icon">ℹ</span>
+            <div class="callout-body"><div class="callout-title">DNS for OCP Routes</div>After the Routes are admitted, add a DNS A record in your on-prem DNS pointing <span class="ic">&lt;ai-defense-proxy-service-url&gt;</span> to the IP address of the OpenShift cluster ingress controller.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
