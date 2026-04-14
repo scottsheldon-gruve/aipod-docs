@@ -1,0 +1,5793 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)https://securitydocs.cisco.com/docs/ai-def/user/140162.dita -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hybrid Deployment Setup</title>
+
+    <!--<base href="https://securitydocs.cisco.com/">--><base href=".">
+    <link rel="canonical" href="https://securitydocs.cisco.com/docs/ai-def/user/140162.dita">
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://securitydocs.cisco.com/Content/img/favicon.png">
+    <link rel="stylesheet" href="./Hybrid Deployment Setup_files/output.css">
+
+    <script src="./Hybrid Deployment Setup_files/htmx.1.9.10.min.js"></script>
+    <script src="./Hybrid Deployment Setup_files/scripts.js"></script>
+
+    <script>
+        htmx.config.refreshOnHistoryMiss = true;
+    </script>
+
+    
+
+        <link rel="stylesheet" type="text/css" href="./Hybrid Deployment Setup_files/style-override.css">
+<style>                      .htmx-indicator{opacity:0}                      .htmx-request .htmx-indicator{opacity:1; transition: opacity 200ms ease-in;}                      .htmx-request.htmx-indicator{opacity:1; transition: opacity 200ms ease-in;}                    </style></head>
+<body>
+<div class="flex h-full flex-col">
+
+
+
+
+<header class=" bg-gradient-to-r from-ship-grey to-cinder p-4 text-sm">
+    <div class="container-fluid mx-auto">
+        <div class="flex items-center">
+
+            <div class="flex items-center gap-4">
+                <a href="https://www.cisco.com/" target="_blank" title="LogoLink">
+<img alt="Cisco" class="max-h-6" src="./Hybrid Deployment Setup_files/Temp_Cisco-logo.png">
+</a>
+
+                <a href="https://securitydocs.cisco.com/" title="Security Help Center">
+<img alt="" class="max-h-6" src="https://securitydocs.cisco.com/">
+</a>
+
+            </div>
+
+            <div class="ml-auto flex items-center gap-4">
+
+                    <a class="group relative text-white" href="https://securitydocs.cisco.com/#" title="Do you need help?">
+
+            <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 18C12.8284 18 13.5 17.3284 13.5 16.5C13.5 15.6716 12.8284 15 12 15C11.1716 15 10.5 15.6716 10.5 16.5C10.5 17.3284 11.1716 18 12 18Z" fill="#F7F7F7"></path>
+<path d="M12.7316 6.44706C12.0042 6.30236 11.2502 6.37662 10.5649 6.66045C9.87971 6.94428 9.29404 7.42493 8.88199 8.04161C8.46993 8.6583 8.25 9.38332 8.25 10.125C8.25 10.7463 8.75368 11.25 9.375 11.25C9.99632 11.25 10.5 10.7463 10.5 10.125C10.5 9.82833 10.588 9.53832 10.7528 9.29165C10.9176 9.04497 11.1519 8.85271 11.426 8.73918C11.7001 8.62565 12.0017 8.59595 12.2926 8.65382C12.5836 8.7117 12.8509 8.85456 13.0607 9.06434C13.2704 9.27412 13.4133 9.54139 13.4712 9.83237C13.5291 10.1233 13.4994 10.4249 13.3858 10.699C13.2723 10.9731 13.08 11.2074 12.8334 11.3722C12.5867 11.537 12.2967 11.625 12 11.625C11.3787 11.625 10.875 12.1287 10.875 12.75C10.875 13.3713 11.3787 13.875 12 13.875C12.7417 13.875 13.4667 13.6551 14.0834 13.243C14.7001 12.831 15.1807 12.2453 15.4645 11.5601C15.7484 10.8748 15.8226 10.1208 15.6779 9.39341C15.5333 8.66598 15.1761 7.9978 14.6517 7.47335C14.1272 6.9489 13.459 6.59175 12.7316 6.44706Z" fill="#F7F7F7"></path>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.875 12C1.875 6.40812 6.40812 1.875 12 1.875C17.5919 1.875 22.125 6.40812 22.125 12C22.125 17.5919 17.5919 22.125 12 22.125C6.40812 22.125 1.875 17.5919 1.875 12ZM12 4.125C7.65076 4.125 4.125 7.65076 4.125 12C4.125 16.3492 7.65076 19.875 12 19.875C16.3492 19.875 19.875 16.3492 19.875 12C19.875 7.65076 16.3492 4.125 12 4.125Z" fill="#F7F7F7"></path>
+</svg>
+
+            </i>
+
+
+                        <div class="absolute right-0 top-full hidden w-60 pt-1 group-hover:block">
+                            <div class="rounded border border-mercury bg-white p-3 text-xs font-normal text-black">
+                                <p class="zDocsSearchBoxTipTitle css-cinqea">How search works in the Security Help Center:</p>
+<ul>
+<li class="css-cinqea">The most relevant topics (based on weighting and matching to search terms) are listed first in the search results by default</li>
+<li class="css-cinqea">Common Boolean operations are supported</li>
+<li class="css-cinqea">Use double quotes to find a phrase (“specific phrase”)</li>
+<li class="css-cinqea">Apply facets on the Search Results page to further scope search results by category</li>
+</ul>
+                            </div>
+                        </div>
+
+                    </a>
+                    <span class="inline-block h-5 w-px bg-white"></span>
+
+                <div class="flex items-center ml-auto gap-4">
+                        <a class="text-white" href="https://securitydocs.cisco.com/#" data-collapse="user-dropdown">Login</a>
+                        <div class="hidden absolute border-1 top-10 mt-4 mb-5 ml-5 mr-0 right-0 min-w-72 pt-4 pl-4 pr-3 group z-30" data-parent="user-dropdown" style="opacity: 0;">
+                            <div class="top-[-1px] right-5 absolute text-apple text-xl">
+
+
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-solid"></use>
+    </svg>
+</i>
+
+                            </div>
+                            <div class="card pt-3 pr-4 pl-4 rounded-md border-apple border-4 shadow-2xl " data-dropdown="user-dropdown">
+                                <p class="mb-5 [overflow-wrap:anywhere]"><strong>Log In to the Cisco Security
+                                        Documentation Portal</strong></p>
+                                <form action="https://securitydocs.cisco.com/saml/SingleSignOn" id="login-form" name="Login" method="post">
+                                    <div class="flex flex-row mb-6 justify-between align-middle items-center">
+                                        <label for="account" class="text-jet-grey w-1/3">I am a Cisco...</label>
+                                        <select name="account" id="account" class="bg-white focus:ring-cornflower ring-2 w-2/3 text-ship-grey text-lg">
+                                            <option value="customer">Customer</option>
+                                            <option value="employee">Employee</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-row justify-end gap-2 mb-2">
+
+                                        <button type="button" class="button w-full sm:w-auto border-0 hover:bg-white hover:text-ship-grey transition-all" data-cancel="user-dropdown-cancel">
+                                            Cancel
+
+                                        </button>
+
+
+                                        <button type="button" id="login-form-submit" class="button w-full sm:w-auto bg-primary border-primary text-white hover:bg-white hover:text-primary transition-all">
+                                            Proceed to SSO Login
+
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+    <main class="flex grow flex-col">
+
+
+
+            <section class="px-4 py-10 h-full">
+        <div class="lg:container lg:mx-auto lg:max-w-screen-xl h-full">
+
+
+
+
+<div class="-mt-4 mb-6 flex flex-wrap items-center">
+    <div class="flex-1 text-sm">
+        <a class="whitespace-nowrap font-semibold text-jet-grey" href="https://securitydocs.cisco.com/doc-portal-search-page" title="Search"><span class="mr-1"><i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-left"></use>
+    </svg>
+</i></span>Search</a>
+    </div>
+    <div class="ml-auto flex items-center gap-5">
+        <a class="text-primary" title="Email" href="mailto:?body=http://securitydocs.cisco.com/docs/ai-def/user/140162.dita">
+            <i>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.5625 4.375C1.5625 3.85723 1.98223 3.4375 2.5 3.4375H17.5C18.0178 3.4375 18.4375 3.85723 18.4375 4.375V15C18.4375 15.4144 18.2729 15.8118 17.9799 16.1049C17.6868 16.3979 17.2894 16.5625 16.875 16.5625H3.125C2.7106 16.5625 2.31317 16.3979 2.02015 16.1049C1.72712 15.8118 1.5625 15.4144 1.5625 15V4.375ZM3.4375 5.3125V14.6875H16.5625V5.3125H3.4375Z" fill="#1D69CC"></path>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.80892 3.74151C2.15879 3.35984 2.75182 3.33406 3.1335 3.68392L10 9.97822L16.8665 3.68392C17.2482 3.33406 17.8412 3.35984 18.1911 3.74151C18.541 4.12319 18.5152 4.71622 18.1335 5.06609L10.6335 11.9411C10.2751 12.2696 9.72494 12.2696 9.36651 11.9411L1.86651 5.06609C1.48484 4.71622 1.45906 4.12319 1.80892 3.74151Z" fill="#1D69CC"></path>
+</svg>
+
+            </i>
+        </a>
+
+    </div>
+</div>
+
+            <div class="mb-2 rounded-md bg-white px-8 py-6 shadow-lg h-full">
+                <div class="grid-cols-[80px_auto] lg:grid lg:grid-cols-[300px_auto] h-full">
+                    <div class="lg:mr-8 lg:border-r-2 lg:border-mercury">
+
+
+
+<div class="absolute mt-1 lg:relative lg:flex lg:h-full lg:flex-col">
+    <div class="mb-4 flex lg:hidden">
+        <button type="button" title="Collapse" data-collapse="doc-side">
+
+                        <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.625 6C2.625 5.37868 3.12868 4.875 3.75 4.875H20.25C20.8713 4.875 21.375 5.37868 21.375 6C21.375 6.62132 20.8713 7.125 20.25 7.125H3.75C3.12868 7.125 2.625 6.62132 2.625 6Z" fill="#7E868F"></path>
+<path d="M2.625 12C2.625 11.3787 3.12868 10.875 3.75 10.875H20.25C20.8713 10.875 21.375 11.3787 21.375 12C21.375 12.6213 20.8713 13.125 20.25 13.125H3.75C3.12868 13.125 2.625 12.6213 2.625 12Z" fill="#7E868F"></path>
+<path d="M3.75 16.875C3.12868 16.875 2.625 17.3787 2.625 18C2.625 18.6213 3.12868 19.125 3.75 19.125H20.25C20.8713 19.125 21.375 18.6213 21.375 18C21.375 17.3787 20.8713 16.875 20.25 16.875H3.75Z" fill="#7E868F"></path>
+</svg>
+
+            </i>
+
+
+            <a class="mx-1 hidden text-sm font-normal text-ship-grey lg:inline-block">Collapse</a>
+        </button>
+    </div>
+    <div class="border-1 absolute -left-4 z-10 hidden min-w-72 rounded-md border-mercury bg-white p-4 shadow-md lg:static lg:block lg:min-w-0 lg:rounded-none lg:border-0 lg:p-0 lg:shadow-none" data-type="doc-side">
+
+            <p>
+                    <strong><a href="https://securitydocs.cisco.com/docs/ai-def/user/97360.ditamap" class="text-ship-grey">AI Defense User Guide</a></strong>
+            </p>
+
+            <div class="overflow-y-auto">
+                <ul class="m-0 list-none border-t border-mercury text-xs" id="toc-scrollable" style="height: 1283px;">
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97384.dita">
+                                    AI Defense Overview
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="717435224" href="https://securitydocs.cisco.com/docs/ai-def/user/97382.dita">
+                Key Capabilities
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97383.dita">
+                                    Getting Started with AI Defense
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="758099507" href="https://securitydocs.cisco.com/docs/ai-def/user/97381.dita">
+                Activate AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1978677740" href="https://securitydocs.cisco.com/docs/ai-def/user/158878.dita">
+                Connect to AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2137502537" href="https://securitydocs.cisco.com/docs/ai-def/user/158880.dita">
+                Understand the AI Defense dashboard
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="749592591" href="https://securitydocs.cisco.com/docs/ai-def/user/158907.dita">
+                Discover Assets
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="749583320" href="https://securitydocs.cisco.com/docs/ai-def/user/158908.dita">
+                Set up AI Validation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="749582361" href="https://securitydocs.cisco.com/docs/ai-def/user/158909.dita">
+                View AI Validation results
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1848584139" href="https://securitydocs.cisco.com/docs/ai-def/user/158910.dita">
+                Set up AI Runtime protection
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1848585098" href="https://securitydocs.cisco.com/docs/ai-def/user/158911.dita">
+                Monitor AI prompts and responses with AI Runtime
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1848577737" href="https://securitydocs.cisco.com/docs/ai-def/user/158912.dita">
+                Learn more
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97362.dita">
+                                    Administration
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="758118721" href="https://securitydocs.cisco.com/docs/ai-def/user/97361.dita">
+                Users
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="612391393" href="https://securitydocs.cisco.com/docs/ai-def/user/122511.dita">
+                API Keys and URLs
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="612392224" href="https://securitydocs.cisco.com/docs/ai-def/user/122512.dita">
+                Licenses
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="667034184" href="https://securitydocs.cisco.com/docs/ai-def/user/160640.dita">
+                Regional Points of Presence
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97378.dita">
+                                    Integrations
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="1756532312" href="https://securitydocs.cisco.com/docs/ai-def/user/169320.dita">
+                AWS Integration
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1756531353" href="https://securitydocs.cisco.com/docs/ai-def/user/169321.dita">
+                Enable CloudTrail Integration
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1961792463" href="https://securitydocs.cisco.com/docs/ai-def/user/97374.dita">
+                AI Defense-Multicloud Defense Integration
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2083268650" href="https://securitydocs.cisco.com/docs/ai-def/user/97375.dita">
+                AI Defense Secure Access Integration
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="595977228" href="https://securitydocs.cisco.com/docs/ai-def/user/97373.dita">
+                LLM API Provider Integrations
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="879575694" href="https://securitydocs.cisco.com/docs/ai-def/user/97380.dita">
+                Integrate with AWS Bedrock
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1903336152" href="https://securitydocs.cisco.com/docs/ai-def/user/169298.dita">
+                Integrate with AWS Bedrock using legacy IDs
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2123932933" href="https://securitydocs.cisco.com/docs/ai-def/user/97376.dita">
+                AI Defense Splunk Integration
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="698907502" href="https://securitydocs.cisco.com/docs/ai-def/user/160404.dita">
+                AI Defense GitHub Integration
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/105468.dita">
+                                    Applications
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1814554397" href="https://securitydocs.cisco.com/docs/ai-def/user/105466.dita">
+                Manage AI Applications
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/105474.dita">
+                                    Policies
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1895636477" href="https://securitydocs.cisco.com/docs/ai-def/user/105473.dita">
+                Guardrails and Rules
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97368.dita">
+                                    Assets
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1756525910" href="https://securitydocs.cisco.com/docs/ai-def/user/169322.dita">
+                AI Inventory
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1895631034" href="https://securitydocs.cisco.com/docs/ai-def/user/105470.dita">
+                Multicloud Defense Visibility
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97395.dita">
+                                    Validation
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1895638259" href="https://securitydocs.cisco.com/docs/ai-def/user/105479.dita">
+                Configure Validation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1157016599" href="https://securitydocs.cisco.com/docs/ai-def/user/105480.dita">
+                Validate AI Models and Applications
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1157017558" href="https://securitydocs.cisco.com/docs/ai-def/user/105481.dita">
+                View Validation Results
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/105477.dita">
+                                    Runtime
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="1157021914" href="https://securitydocs.cisco.com/docs/ai-def/user/105485.dita">
+                Set up Runtime Protection
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1157015512" href="https://securitydocs.cisco.com/docs/ai-def/user/105487.dita">
+                Set up Runtime for Gateway Interception
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1157008415" href="https://securitydocs.cisco.com/docs/ai-def/user/105488.dita">
+                Set up Runtime for Protection via Multicloud Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1157023001" href="https://securitydocs.cisco.com/docs/ai-def/user/105486.dita">
+                Set up Runtime for the Inspection API
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1075951679" href="https://securitydocs.cisco.com/docs/ai-def/user/105495.dita">
+                Policies for Runtime Protection
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1895624632" href="https://securitydocs.cisco.com/docs/ai-def/user/105476.dita">
+                Monitor AI Threats and Events
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1675423131" href="https://securitydocs.cisco.com/docs/ai-def/user/169233.dita">
+                View AI Runtime Events
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/140210.dita">
+                                    Supply Chain Security
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="701056757" href="https://securitydocs.cisco.com/docs/ai-def/user/140209.dita">
+                Model Scanning
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1817646004" href="https://securitydocs.cisco.com/docs/ai-def/user/168859.dita">
+                MCP Scanning
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1898715544" href="https://securitydocs.cisco.com/docs/ai-def/user/168860.dita">
+                MCP Runtime Guardrails
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97365.dita">
+                                    Application Discovery
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1961791440" href="https://securitydocs.cisco.com/docs/ai-def/user/97364.dita">
+                Track AI Application Use
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1 rotate-90" type="button" title="Toggle" data-open="true" data-selection-within="true" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/130141.dita">
+                                    Hybrid Deployment Guide
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834530401" href="https://securitydocs.cisco.com/docs/ai-def/user/130134.dita">
+                Hybrid Deployment Overview
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834523040" href="https://securitydocs.cisco.com/docs/ai-def/user/130137.dita">
+                Beta Limitations for Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 border-r-4 border-r-primary text-primary">
+                <button class="-mt-px mr-1 rotate-90" type="button" title="Toggle" data-selection-within="true" onclick="toggleList(this)" data-open="false">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-primary" data-anchor-id="946499305" data-selected="true" href="https://securitydocs.cisco.com/docs/ai-def/user/140162.dita">
+                Hybrid Deployment Setup
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="95342182" href="https://securitydocs.cisco.com/docs/ai-def/user/137552.dita">
+                Cluster Availability Settings
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="946496995" href="https://securitydocs.cisco.com/docs/ai-def/user/140164.dita">
+                AWS Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="668175718" href="https://securitydocs.cisco.com/docs/ai-def/user/130140.dita">
+                Create the VPC
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="915603505" href="https://securitydocs.cisco.com/docs/ai-def/user/130129.dita">
+                Create Your Cluster on AWS EKS
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1002811885" href="https://securitydocs.cisco.com/docs/ai-def/user/139913.dita">
+                Prepare Your AWS EKS Cluster for AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="833554657" href="https://securitydocs.cisco.com/docs/ai-def/user/140331.dita">
+                Validation Setup for AWS Bedrock
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1123423497" href="https://securitydocs.cisco.com/docs/ai-def/user/161064.dita">
+                Deploy the Connector on AWS
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="492402467" href="https://securitydocs.cisco.com/docs/ai-def/user/161345.dita">
+                Set up the Runtime Gateway in AWS Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="915594234" href="https://securitydocs.cisco.com/docs/ai-def/user/130126.dita">
+                Sample CloudFormation Template
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="946500520" href="https://securitydocs.cisco.com/docs/ai-def/user/140163.dita">
+                AI PODs Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="921753367" href="https://securitydocs.cisco.com/docs/ai-def/user/139904.dita">
+                Create Your OCP Cluster on AI PODs
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1980276652" href="https://securitydocs.cisco.com/docs/ai-def/user/168675.dita">
+                Create Your OCP Cluster with vSphere
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1002818287" href="https://securitydocs.cisco.com/docs/ai-def/user/139911.dita">
+                Prepare Your Cluster on AI PODs for AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1123443526" href="https://securitydocs.cisco.com/docs/ai-def/user/161069.dita">
+                Deploy the Connector on AI PODs
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1912153890" href="https://securitydocs.cisco.com/docs/ai-def/user/161380.dita">
+                Monitor AI Defense Connector Health on AI PODs
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="946498210" href="https://securitydocs.cisco.com/docs/ai-def/user/140165.dita">
+                Azure Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1204498088" href="https://securitydocs.cisco.com/docs/ai-def/user/161070.dita">
+                Set up Resource Group and VNet on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1123425543" href="https://securitydocs.cisco.com/docs/ai-def/user/161066.dita">
+                Create the Cluster on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1123424584" href="https://securitydocs.cisco.com/docs/ai-def/user/161067.dita">
+                Prepare Your AKS Cluster for the AI Defense Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1123430986" href="https://securitydocs.cisco.com/docs/ai-def/user/161065.dita">
+                Deploy the Connector on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1123436037" href="https://securitydocs.cisco.com/docs/ai-def/user/161068.dita">
+                Monitor AI Defense Connector Health on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="2135857454" href="https://securitydocs.cisco.com/docs/ai-def/user/168783.dita">
+                GCP Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2135855408" href="https://securitydocs.cisco.com/docs/ai-def/user/168785.dita">
+                Create Your Cluster on GCP
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2135860851" href="https://securitydocs.cisco.com/docs/ai-def/user/168786.dita">
+                Prepare Your GCP EKS Cluster for AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2135858277" href="https://securitydocs.cisco.com/docs/ai-def/user/168788.dita">
+                Deploy the Connector on GCP
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="833553698" href="https://securitydocs.cisco.com/docs/ai-def/user/140330.dita">
+                Hybrid Connector Lifecycle
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834525086" href="https://securitydocs.cisco.com/docs/ai-def/user/130131.dita">
+                Deploy the Hybrid Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834519643" href="https://securitydocs.cisco.com/docs/ai-def/user/130132.dita">
+                Manage the Hybrid Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834518684" href="https://securitydocs.cisco.com/docs/ai-def/user/130133.dita">
+                Update the Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834526045" href="https://securitydocs.cisco.com/docs/ai-def/user/130130.dita">
+                Delete the Connector
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834523999" href="https://securitydocs.cisco.com/docs/ai-def/user/130136.dita">
+                Using Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="834529442" href="https://securitydocs.cisco.com/docs/ai-def/user/130135.dita">
+                Troubleshoot Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="946502566" href="https://securitydocs.cisco.com/docs/ai-def/user/140161.dita">
+                FAQ for Hybrid Deployment
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1" type="button" title="Toggle" data-open="false" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/97370.dita">
+                                    Resources
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="748185044" href="https://securitydocs.cisco.com/docs/ai-def/user/168305.dita">
+                Release Notes
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1724547087" href="https://securitydocs.cisco.com/docs/ai-def/user/169266.dita">
+                2026.4.1 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="1818136182" href="https://securitydocs.cisco.com/docs/ai-def/user/168655.dita">
+                2026.3.2 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2012158426" href="https://securitydocs.cisco.com/docs/ai-def/user/168431.dita">
+                2026.3.1 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="2012163869" href="https://securitydocs.cisco.com/docs/ai-def/user/168432.dita">
+                2026.2.2 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="748190487" href="https://securitydocs.cisco.com/docs/ai-def/user/168306.dita">
+                2026.2.1 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1" type="button" title="Toggle" onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey" data-anchor-id="1818137013" href="https://securitydocs.cisco.com/docs/ai-def/user/168656.dita">
+                Developer Tools
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="492389927" href="https://securitydocs.cisco.com/docs/ai-def/user/161349.dita">
+                CLI Reference
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey" data-anchor-id="717453415" href="https://securitydocs.cisco.com/docs/ai-def/user/97372.dita">
+                AI Defense FAQ
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                </ul>
+            </div>
+    </div>
+</div>
+
+                    </div>
+
+                    <div class="flex flex-col h-full" id="content-column">
+
+
+
+<form class="relative mb-4 flex ml-10 lg:ml-0" onsubmit="event.preventDefault()" action="https://securitydocs.cisco.com/doc-portal-search-page" hx-get="/api/hypermedia/in-book/suggestions" hx-swap="outerHTML" hx-target="#search-suggestions" hx-trigger="keyup delay:300ms from:#in-book-search" id="complex-article-search">
+
+    <input type="hidden" name="bookMapPath" value="/docs/ai-def/user/97360.ditamap">
+
+    <select title="search-type" name="search-type" hx-get="/api/hypermedia/complex-article/search-select" hx-trigger="change" hx-swap="outerHTML" hx-target="#complex-article-search" hx-on:htmx:config-request="configureSearchSuggestRequest(event, &#39;/docs/ai-def/user/97360.ditamap&#39;)" class="border-primary font-semibold px-0.5 rounded-r-none text-primary w-auto min-w-24 cursor-pointer hover:bg-primary hover:text-white transition-all p-1.5">
+
+            <option class="font-semibold text-black bg-white" selected="Book" value="Book">
+                Book
+            </option>
+            <option class="font-semibold text-black bg-white" value="Site">
+                Site
+            </option>
+
+    </select>
+    <label class="flex-1">
+        <span class="sr-only">Search</span>
+        <input id="in-book-search" name="term" class="rounded-l-none border-l-0" type="text" placeholder="Search this book">
+    </label>
+    <div class="hidden" id="search-suggestions"></div>
+</form>
+
+
+<div class="bg-white-smoke mb-4 pt-4">
+    <div class="flex flex-wrap gap-x-6 gap-y-2 pb-4 px-6 sm:gap-x-10 xl:gap-x-12">
+
+        
+        
+        
+        
+        
+        
+        
+
+    </div>
+</div>
+
+                        <div class="md:h-6 lg:h-12"></div>
+
+                        <div class="px-6 flex md:gap-24 md:flex-row flex-col justify-between">
+<p class="mb-6 text-sm">
+            <a class="font-normal text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/130141.dita">Hybrid Deployment Guide</a>
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>            <a class="font-normal text-ship-grey" href="https://securitydocs.cisco.com/docs/ai-def/user/140162.dita">Hybrid Deployment Setup</a>
+</p>
+                            <p class="text-xs m-0 min-w-max md:mb-0 mb-5">Last
+                                updated:  Apr 06, 2026</p>
+                        </div>
+
+                        <div class="px-6 grow" id="igx-dita-content"><template shadowrootmode="open"><style>@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700;100..700&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+
+/*!
+ * This file is part of the DITA Open Toolkit project.
+ *
+ * Copyright 2004, 2005 IBM Corporation
+ *
+ * See the accompanying LICENSE file for applicable license.
+ */
+ 
+.codeblock {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    overflow-x: auto;
+    white-space: pre;
+    margin-top: .5em;
+    margin-bottom: .5em;    
+    padding-top: .25em;
+    padding-bottom: .25em;
+    background-color: rgb(246, 248, 250);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%; /* Default to prevent overflow if no other max-width applies */    
+}
+
+.codeph {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+code {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+.kwd {
+    font-weight: bold;
+}
+
+.parmname {
+    font-weight: bold;
+}
+
+.var {
+    font-style: italic;
+}
+
+.filepath {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+div.tasklabel {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.wintitle {
+    font-weight: bold;
+}
+
+.numcharref {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.parameterentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.textentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlatt {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlelement {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlnsname {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlpi {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.frame-top {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
+.frame-bottom {
+    border-top: 0;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-topbot {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-all {
+    border: solid 1px;
+}
+
+.frame-sides {
+    border-top: 0;
+    border-left: solid 1px;
+    border-right: solid 1px;
+    border-bottom: 0;
+}
+
+.frame-none {
+    border: 0;
+}
+
+.scale-50 {
+    font-size: 50%;
+}
+
+.scale-60 {
+    font-size: 60%;
+}
+
+.scale-70 {
+    font-size: 70%;
+}
+
+.scale-80 {
+    font-size: 80%;
+}
+
+.scale-90 {
+    font-size: 90%;
+}
+
+.scale-100 {
+    font-size: 100%;
+}
+
+.scale-110 {
+    font-size: 110%;
+}
+
+.scale-120 {
+    font-size: 120%;
+}
+
+.scale-140 {
+    font-size: 140%;
+}
+
+.scale-160 {
+    font-size: 160%;
+}
+
+.scale-180 {
+    font-size: 180%;
+}
+
+.scale-200 {
+    font-size: 200%;
+}
+
+.expanse-page,
+.expanse-spread {
+    width: 100%;
+}
+
+.fig {
+    /* Default of italics to set apart figure captions */
+    /* Use @frame to create frames on figures */
+}
+
+.figcap {
+    font-style: italic;
+}
+
+.figdesc {
+    font-style: normal;
+}
+
+.figborder {
+    border-color: Silver;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figsides {
+    border-color: Silver;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figtop {
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+.figbottom {
+    border-bottom: 2px solid;
+    border-color: Silver;
+}
+
+.figtopbot {
+    border-bottom: 2px solid;
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+/* Align images based on @align on topic/image */
+div.imageleft {
+    text-align: left;
+}
+
+div.imagecenter {
+    text-align: center;
+}
+
+div.imageright {
+    text-align: right;
+}
+
+div.imagejustify {
+    text-align: justify;
+}
+
+/* Set heading sizes, getting smaller for deeper nesting */
+/*.topictitle1 {*/
+/*    font-size: 1.34em;*/
+/*    margin-bottom: 0.1em;*/
+/*    margin-top: 0;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.17em;
+    margin-bottom: 0.45em;
+    margin-top: 1pc;
+}
+
+.topictitle3 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-bottom: 0.17em;
+    margin-top: 1pc;
+}
+
+.topictitle4 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-top: 0.83em;
+}
+
+.topictitle5 {
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+.topictitle6 {
+    font-size: 1.17em;
+    font-style: italic;
+}
+
+.sectiontitle {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 1em;
+}
+
+.section {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.example {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+/* Most link groups are created with <div>. Ensure they have space before and after. */
+.ullinks {
+    list-style-type: none;
+}
+
+.ulchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.olchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.sublinklist {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.relconcepts strong {
+    line-height: 2em;
+}
+
+.relconcepts {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.reltasks strong {
+    line-height: 2em;
+}
+
+.reltasks {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relref strong {
+    line-height: 2em;
+}
+
+.relref {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relinfo {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.breadcrumb {
+    font-size: smaller;
+    margin-bottom: 1em;
+}
+
+/* Simple lists do not get a bullet */
+ul.simple {
+    list-style-type: none;
+}
+
+/* Default of bold for definition list terms */
+.dlterm {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+/* Use CSS to expand lists with @compact="no" */
+.dltermexpand {
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+*[compact="yes"] > li {
+    margin-top: 0;
+}
+
+*[compact="no"] > li {
+    margin-top: 0.53em;
+}
+
+.liexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.sliexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.dlexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.ddexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.stepexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.substepexpand {
+    margin-bottom: .25em;
+    margin-top: .25em;
+}
+
+dt.prereq {
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    margin-left: 20px;
+}
+
+/* All note formats have the same default presentation */
+.note {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.note .notetitle,
+.note .notelisttitle,
+.note .note__title {
+    font-weight: bold;
+}
+
+/* Various basic phrase styles */
+.bold {
+    font-weight: bold;
+}
+
+.bolditalic {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.uicontrol {
+    font-weight: bold;
+}
+
+.defkwd {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.shortcut {
+    text-decoration: underline;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table .desc {
+    display: block;
+    font-style: italic;
+}
+
+.cellrowborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.row-nocellborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-top: 0;
+}
+
+.cell-norowborder {
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.nocellnorowborder {
+    border: 0;
+}
+
+.firstcol {
+    font-weight: bold;
+}
+
+.table--pgwide-1 {
+    width: 100%;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-justify {
+    text-align: justify;
+}
+
+.align-char {
+    text-align: char;
+}
+
+.valign-top {
+    vertical-align: top;
+}
+
+.valign-bottom {
+    vertical-align: bottom;
+}
+
+.valign-middle {
+    vertical-align: middle;
+}
+
+.colsep-0 {
+    border-right: 0;
+}
+
+.colsep-1 {
+    border-right: 1px solid;
+}
+
+.rowsep-0 {
+    border-bottom: 0;
+}
+
+.rowsep-1 {
+    border-bottom: 1px solid;
+}
+
+.stentry {
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.stentry:last-child {
+    border-right: 0;
+}
+
+.strow:last-child .stentry {
+    border-bottom: 0;
+}
+
+/* Add space for top level topics */
+.nested0 {
+    margin-top: 1em;
+}
+
+/* div with class=p is used for paragraphs that contain blocks, to keep the XHTML valid */
+.p {
+    margin-top: 1em;
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 0.5em;
+}
+
+main {
+    display: block;
+    padding-bottom: 0.5em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+main > article {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.book-heading {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #666666;
+    font-size: 1.6em;
+    line-height: 1.6em;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    margin-right: .25em;
+    margin-top: .55em;
+}
+
+/*h1.topictitle1 {*/
+/*    padding-bottom: 0em;*/
+/*    border-bottom: solid 1pt #c6c7ca;*/
+/*}*/
+
+p,
+.p,
+td,
+th {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+td,
+th {
+    padding: 5px;
+    border: 1px solid #c6c7ca;
+}
+
+td p:first-child,
+td .p:first-child,
+th p:first-child,
+th .p:first-child {
+    margin-top: 0px;
+}
+
+td p:last-child,
+td .p:last-child,
+th p:last-child,
+th .p:last-child {
+    margin-bottom: 0px;
+}
+
+td.nocellnorowborder,
+th.nocellnorowborder {
+    border: solid 1px #c6c7ca;
+}
+
+table {
+    margin-top: 0.5em;
+    margin-bottom: calc(0.5em * 2);
+    border-color: #808080;
+    width: 90%;
+}
+
+td {
+    vertical-align: top;
+}
+
+th {
+    font-weight: bold;
+    text-align: left;
+}
+
+.stentry {
+    border: solid 1px #c6c7ca !important;
+}
+
+.olh_note td{
+    border: 0px solid #c6c7ca;
+}
+
+table.stepTable {
+    margin-bottom: 0em;
+}
+
+table.stepTable td {
+    border: 0px solid #c6c7ca;
+}
+table.stepTable td:first-child {
+    width: 5%;
+}
+
+.footnote {
+    vertical-align: top;
+}
+
+.table__footnotes {
+    font-size: .8em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.2em;
+}
+
+.steps:not(.notable) > thead > tr > th,
+.steps:not(.notable) > thead > tr > td,
+.steps:not(.notable) > tbody > tr > th,
+.steps:not(.notable) > tbody > tr > td {
+    border: solid 1px #c6c7ca;
+}
+
+.steps.notable:not(.summary_steps) {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.steps td:first-of-type {
+    width: 4em;
+    white-space: nowrap;
+}
+
+.steps th,
+.steps td {
+    text-align: left;
+    vertical-align: top;
+    padding: 3px;
+}
+
+.steps.summary_steps {
+    padding-left: 40px;
+    list-style-type: none;
+    counter-reset: summary-steps-counter;
+}
+
+.steps.summary_steps .choices {
+    padding-left: calc(40px * 2);
+}
+
+.steps.summary_steps > li:before {
+    content: counter(summary-steps-counter) ".";
+    counter-increment: summary-steps-counter;
+    float: left;
+    clear: both;
+    margin-right: 5px;
+    width: 2em;
+    font-weight: bold;
+}
+
+.choption {
+    font-weight: normal;
+}
+
+sup {
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0.55em;
+}
+
+.tabletitle {
+    font-weight: bold;
+}
+
+.cmdname {
+    font-weight: bold;
+}
+
+caption {
+    text-align: left;
+    padding-bottom: 0.5em;
+    font-weight: bold;
+}
+
+pre {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    margin-bottom: 0em;
+    margin-top: 0em;
+    line-height: 1.2em;
+}
+
+pre.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.codeblock .b {
+    background-color: yellow;
+}
+
+figure {
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+}
+
+figcaption,
+.figcap {
+    font-style: normal;
+    font-weight: bold;
+    padding-bottom: 0.5em;
+}
+
+.faq_minitoc {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 0.5em;
+}
+
+.ullinks {
+    list-style-type: disc;
+    padding-left: 30px;
+    margin-left: 0px;
+}
+
+.ulchildlink,
+.olchildlink {
+    margin-top: 0.5em;
+    margin-bottom: 0em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild,
+.sublinklist {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+/*.topictitle1 {*/
+/*    font-size: 1.5em;*/
+/*    color: #336666;*/
+/*    font-weight: bold;*/
+/*    margin-top: 1em;*/
+/*    margin-bottom: 0.5em;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.4em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle3 {
+    font-size: 1.2em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle4 {
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.sectiontitle {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: #373C42;
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.sectiontitle--inline {
+    padding-right: 0.5em;
+}
+
+.section_rel_title {
+    margin-top: 1em;
+    margin-bottom: -1em;
+    color: black;
+    font-weight: bold;
+}
+
+.section_synblk_title {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: black;
+    font-weight: bold;
+}
+
+.synblk *,
+.synph * {
+    font-family: inherit;
+}
+
+.synblk .importance--default,
+.synph .importance--default {
+    text-decoration: underline;
+}
+
+.table td,
+.table th {
+    border-left: solid 1px #c6c7ca;
+    border-right: solid 1px #c6c7ca;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+    text-align: left;
+}
+
+table.note {
+    width: auto;
+    max-width: 90%;
+}
+
+.note--table.note td {
+    vertical-align: middle;
+}
+
+.note--table.note td[role=heading] {
+    font-weight: bold;
+}
+
+.note--table.note--note td[role=heading] div {
+    background-image: url("../template_images/note.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--caution td[role=heading] div {
+    background-image: url("../template_images/caut.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--tip td[role=heading] div {
+    background-image: url("../template_images/tip.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--fastpath td[role=heading] div {
+    background-image: url("../template_images/timesave.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 31px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--warning td[role=heading] div {
+    background-image: url("../template_images/warn.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note .note__content {
+    padding: 0.5em 0px 0.5em 0px;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.note--compact {
+    margin: 0px;
+}
+
+.note--compact td {
+    padding: 0.5em 0px 0.5em 0px;
+    border-style: none;
+}
+
+.note--compact td[role=heading] {
+    font-weight: bold;
+    width: 1em;
+    padding: 0.5em 1em 0px 0px;
+}
+
+.note--compact td[role=heading] div {
+    background-image: none;
+}
+
+.heading {
+    font-size: 1.25em;
+    color: #373C42;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.userinput {
+    font-weight: bold;
+}
+
+.related_commands td,
+.related_commands th {
+    border: solid 1px #c6c7ca;
+}
+
+/*h1.topictitle1 {*/
+/*    color: #373C42;*/
+/*    font-weight: normal;*/
+/*    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;*/
+/*    border-bottom-style: none;*/
+/*}*/
+
+h2.topictitle2 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h3.topictitle3 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h4.topictitle4 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+a {
+    color: #326CD1;
+}
+
+p.p {
+    margin-bottom: .5em;
+    color: #000000;
+}
+
+ul {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+ol {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+li p.p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.steps td:first-child {
+    padding-right: 1em;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .summary_steps {
+        display: none;
+    }
+
+    .steps {
+        border-top: solid 1px #c6c7ca;
+        border-bottom: solid 1px #c6c7ca;
+    }
+
+    .steps thead {
+        display: none;
+    }
+
+    .steps > tbody > tr > td,
+    .steps > tbody > tr > th {
+        border-style: none !important;
+    }
+
+    .step--command,
+    .step--purpose {
+        display: table-row;
+    }
+}
+
+figure img.scale {
+    cursor: zoom-in;
+    max-width: 100%;
+}
+
+figure img.scale.expanded {
+    max-width: 98% !important;
+    max-height: 98% !important;
+    z-index: 1001;
+    position: absolute;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: zoom-out;
+}
+
+#scale-background {
+    z-index: 1000;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.5;
+    cursor: zoom-out;
+}
+
+#scale-background.hidden {
+    display: none;
+}
+
+nav[role=toc] {
+    font-size: inherit;
+}
+
+nav[role=toc] > div {
+    left: 0;
+    padding-right: 0;
+}
+
+nav[role=toc] ul {
+    margin-left: 0px;
+    padding-left: 0;
+    margin-top: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    overflow-y: auto;
+    height: calc(100% - 26px);
+}
+
+nav[role=toc] li {
+    display: block;
+    margin-left: 2px;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    display: block;
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: -20px;
+    margin-bottom: 0;
+    padding-top: 3px;
+    padding-right: 0;
+    padding-left: 20px;
+    padding-bottom: 3px;
+}
+
+nav[role=toc] li > a:hover,
+nav[role=toc] li > a:focus,
+nav[role=toc] li > span.title:hover,
+nav[role=toc] li > span.title:focus {
+    text-decoration: none;
+}
+
+nav[role=toc] li.active > a {
+    background-color: #d3dfea;
+    color: black;
+    text-shadow: 0 -1px 0 transparent;
+}
+
+nav[role=toc] li.expanded > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-down.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-right.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > ul {
+    display: none;
+}
+
+nav[role=toc] #toc-controls {
+    background-color: #373c42;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 24px;
+    padding: 5px;
+    display: flex;
+    justify-content: flex-end;
+    background-image: url("../template_images/Cisco Secure - linear - 1C White.png");
+    background: url("../template_images/Cisco Secure - linear - 1C White.png"), linear-gradient(90deg, #373c42, #0f1214);
+    /* it will use gradient if supported */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+nav[role=toc] .icon {
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+nav[role=toc] .icon svg .st0,
+nav[role=toc] .icon svg .st1 {
+    stroke: grey;
+}
+
+nav[role=toc] .icon:hover svg .st0,
+nav[role=toc] .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+nav[role=toc] {
+    background-color: white;
+    box-shadow: 1px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    flex: 1 1 30%;
+    height: calc(100% - 24px - (2 * 7px) - 0px);
+    min-width: 230px;
+    font-size: 75%;
+}
+
+nav[role=toc] ul {
+    padding-left: 14px;
+}
+
+nav[role=toc] > ul {
+    margin-left: 0;
+    padding-left: 24px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    text-decoration: none;
+    padding-top: 2px;
+    color: #000000;
+}
+
+nav[role=toc] li > a:hover {
+    color: #38669e;
+}
+
+nav[role=toc] li.active > a,
+nav[role=toc] li.active > a:hover {
+    background-color: #d3dfea;
+    color: black;
+}
+
+nav[role=toc] li.active > span.controller {
+    color: #e1eaf4;
+}
+
+#toggle-toc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+    height: 100%;
+    background-color: #FAFAFA;
+    width: 15px;
+    cursor: pointer;
+}
+
+#toggle-toc:hover {
+    background-color: #EEEEEE;
+}
+
+#toggle-toc svg {
+    width: 7px;
+    opacity: 0.3;
+    padding: 2px;
+}
+
+#toggle-toc svg:hover {
+    opacity: 0.5;
+}
+
+nav[role=toc].hidden {
+    display: none;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #toggle-toc {
+        display: none;
+    }
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#search {
+    display: flex;
+    flex-direction: column;
+    opacity: 0.75;
+    height: calc(100% - 24px);
+    flex: 0 0 300px;
+    max-width: 300px;
+    z-index: 1;
+    transition: ease 0.5s;
+}
+
+#search.hidden {
+    flex: 0 0 0px;
+    transition: ease 0.5s;
+}
+
+#search.hidden #close-icon {
+    opacity: 0;
+}
+
+#search-input {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    display: block;
+    transition: ease 0.5s;
+    height: 40px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #search-input.hidden {
+        left: 0;
+    }
+}
+
+#search-input input,
+#search-input input:focus,
+#search-input input:hover {
+    width: calc(300px - 45px);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: 0;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 8px;
+    transition: ease 0.5s;
+}
+
+@media (max-width: 1660px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 200px;
+    }
+}
+
+@media (max-width: 1430px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 110px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 0px;
+        margin: 8px 0px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:focus:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:hover:not(:focus):not(.has-results) + #close-icon {
+        display: none;
+    }
+}
+
+#search-input div.icon {
+    display: inline-block;
+    width: calc(1em + 3px);
+    position: relative;
+    top: 3px;
+}
+
+#search-input div.icon--left {
+    left: 8px;
+    margin-right: 4px;
+}
+
+#search-input div.icon--right {
+    right: 8px;
+    margin-left: 4px;
+}
+
+#search-input div.icon svg {
+    width: 1em;
+    height: 1em;
+}
+
+#search-results {
+    position: relative;
+    top: 40px;
+    height: calc(100% - 40px);
+    background-color: #fafafa;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.search-result {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    animation: fade-in-keyframes 0.5s;
+}
+
+span.highlight {
+    background-color: yellow;
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+nav#breadcrumbs {
+    font-size: 75%;
+    margin-top: 6px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav#breadcrumbs .home svg {
+    height: 1em;
+    width: 1em;
+}
+
+#navigate-back,
+#navigate-forward {
+    width: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+}
+
+#navigate-back.disabled,
+#navigate-forward.disabled {
+    opacity: 0.3;
+}
+
+#navigate-back.disabled .icon:hover,
+#navigate-forward.disabled .icon:hover {
+    cursor: default;
+}
+
+#navigate-back .icon svg,
+#navigate-forward .icon svg {
+    transform: scale(1, 1);
+    width: 15px;
+}
+
+#navigate-back .icon svg .st0,
+#navigate-back .icon svg .st1,
+#navigate-forward .icon svg .st0,
+#navigate-forward .icon svg .st1 {
+    stroke: grey;
+}
+
+#navigate-back .icon:hover,
+#navigate-forward .icon:hover {
+    cursor: pointer;
+}
+
+#navigate-back .icon:hover svg .st0,
+#navigate-back .icon:hover svg .st1,
+#navigate-forward .icon:hover svg .st0,
+#navigate-forward .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+#navigate-forward {
+    margin-right: 20px;
+}
+
+#navigate-back {
+    padding-left: 30px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #navigate-back {
+        padding-left: 10px;
+    }
+
+    #navigate-forward {
+        margin-right: 10px;
+    }
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+
+main[role=main] {
+    flex: 1 1 100%;
+    height: calc(100% - 24px);
+    overflow-y: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-right: -51px;
+}
+
+main[role=main] > article {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fade-in-keyframes 0.5s;
+    border-bottom: none;
+}
+
+footer {
+    font-size: 75%;
+    border-top: solid 1px #ccc;
+    line-height: 24px;
+    height: 24px;
+    clear: both;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding-left: 8px;
+    background-color: #fafafa;
+}
+
+.mobile {
+    display: none;
+}
+
+img {
+    display: inline;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .mobile {
+        display: initial;
+    }
+}
+
+.desktop {
+    display: initial;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .desktop {
+        display: none;
+    }
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+
+    html,
+    body {
+        font-size: initial;
+    }
+
+    main[role=main] {
+        padding-right: 40px;
+    }
+
+    main[role=main] figure img {
+        max-width: 100%;
+    }
+
+    nav[role=toc] {
+        display: none;
+    }
+
+    body {
+        flex-wrap: wrap;
+    }
+
+    main[role=main] {
+        flex: 1 1 calc(100% - 40px - 45px);
+    }
+
+    #search {
+        flex: 0 0 100%;
+        order: -1;
+        max-width: 100%;
+        width: 100%;
+        opacity: 1;
+    }
+
+    #search.hidden {
+        display: block;
+        position: absolute;
+        right: 0px;
+        width: auto;
+        height: auto;
+    }
+
+    #search.hidden #search-input {
+        height: auto;
+    }
+
+    #search.hidden #search-input input {
+        width: 0px;
+        margin: 8px 0px;
+    }
+
+    #search.hidden #search-input input + #close-icon {
+        display: none;
+    }
+
+    #search.hidden #search-results {
+        height: auto;
+        display: none;
+    }
+
+    #search-input {
+        position: initial;
+        height: auto;
+    }
+
+    #search-input input,
+    #search-input input:focus,
+    #search-input input:hover {
+        width: calc(100% - 5em);
+    }
+
+    #search-results {
+        position: initial;
+        height: auto;
+    }
+}
+
+@media only screen and (orientation: portrait) and (max-device-width: 768px) {
+    body {
+        -webkit-text-size-adjust: 100%;
+        font-size: 3em;
+    }
+
+    footer {
+        font-size: x-large;
+        line-height: calc(24px * 2);
+        height: calc(24px * 2);
+    }
+}
+
+main[role=main] a,
+main[role=main] a:hover {
+    text-decoration: none;
+}
+
+nav[role=toc] li a:hover {
+    text-decoration: underline;
+}
+
+.substeps {
+    list-style-type: lower-alpha;
+}
+
+.type-a {
+    list-style-type: lower-alpha;
+}
+
+.type-i {
+    list-style-type: lower-roman;
+}
+
+@media screen and (min-width: 1024px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(45vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1108px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(50vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1192px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(53vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1276px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(55vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1360px) {
+  .codeblock {
+    /*width: calc(77vw - 290px);  */
+    max-width: calc(52vw);
+    /*max-width: 760px;*/
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .codeblock {
+    /*width: calc(75vw - 315px);  */
+    max-width: calc(50vw);
+    /*max-width: 770px;*/
+  }
+}
+
+@media screen and (min-width: 1536px) {
+  .codeblock {
+    /*width: 780px;  */
+    max-width: 760px;
+  }
+}</style><div><article id="hybrid-deployment-setup" class="topic concept">
+<h1 class="title topictitle1">Hybrid Deployment Setup</h1>
+<div class="body conbody">
+<section class="section">
+<h2 class="title sectiontitle">Components</h2>
+<p class="p">AI Defense hybrid deployments have a SaaS control plane, and an on-prem data plane, referred to as the "hybrid connector", referring to the notion that it is the point of connection to the control plane. This diagram illustrates how the components of the hybrid connector work together. </p>
+<figure>
+<img class="image" src="https://securitydocs.cisco.com/docs/ai-def/user/140336.png" alt="Components of the AI Defense hybrid connector" data-src="140336.png" width="700" height="">
+<figcaption>
+<strong>
+<em>Figure 1: AI Defense hybrid connector components</em>
+</strong>
+</figcaption>
+</figure>
+</section>
+<section class="section">
+<h2 class="title sectiontitle">Addresses to allowlist</h2>
+<p class="p">The following service addresses are used during the installation and operation of hybrid deployments. In your firewall configurations, ensure traffic is allowed for these services.</p>
+<table width="100%" border="1">
+<caption>
+<span class="table--title-label table title">Table 1. </span>
+<span class="tabletitle">Addresses to allowlist for hybrid deployments</span>
+</caption>
+<thead class="thead">
+<tr>
+<th id="" font-weight="bold" align="">
+<p class="p">Component</p>
+</th>
+<th id="" font-weight="bold" align="">
+<p class="p">Address</p>
+</th>
+</tr>
+</thead>
+<tbody class="tbody">
+<tr>
+<td headers="" align="">
+<p class="p">Cloud gateway</p>
+</td>
+<td headers="" align="">
+<ul class="ul">
+<li class="li">
+<p class="p">
+<code class="ph codeph">ap.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">eu.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">uae.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">us-east1.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">use2.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">us.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Port</p>
+</td>
+<td headers="" align="">
+<p class="p">443</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Protocol</p>
+</td>
+<td headers="" align="">
+<p class="p">HTTPS</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Helm chart repo</p>
+</td>
+<td headers="" align="">
+<p class="p">
+<code class="ph codeph">chartregistry.aidefense.security.cisco.com</code>
+</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Container image registry</p>
+</td>
+<td headers="" align="">
+<p class="p">
+<code class="ph codeph">proxyimages.aidefense.security.cisco.com</code>
+</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Updates portal</p>
+</td>
+<td headers="" align="">
+<p class="p">
+<code class="ph codeph">updates.aidefense.security.cisco.com</code>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="section">
+<h2 class="title sectiontitle">Next steps</h2>
+<p class="p">In the sections that follow, we describe the prerequisite components you'll need and the setup steps you'll follow to deploy a hybrid connector in your environment.</p>
+</section>
+</div>
+</article>
+</div></template>
+                            
+                        </div>
+
+
+<div class="grid grid-cols-2 bg-white-smoke">
+    <a class="py-4 pl-16 pr-4 " href="https://securitydocs.cisco.com/docs/ai-def/user/130137.dita">
+        <span class="relative mb-1 block text-sm">
+            <span class="absolute -left-8 -top-1">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-left"></use>
+    </svg>
+</i>
+            </span>
+            Previous topic
+        </span>
+        <span class="text-xs font-semibold text-baltic-sea">
+            Beta Limitations for Hybrid-Deployed AI Defense
+        </span>
+    </a>
+
+    <a class="py-4 pl-4 pr-16 text-right " href="https://securitydocs.cisco.com/docs/ai-def/user/137552.dita">
+        <span class="relative mb-1 block text-sm">
+            Next topic
+            <span class="absolute -right-8 -top-1">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-right"></use>
+    </svg>
+</i>
+            </span>
+        </span>
+        <span class="text-xs font-semibold text-baltic-sea">
+            Cluster Availability Settings
+        </span>
+    </a>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    </main>
+
+
+
+
+<footer class="px-4 py-5 text-xs">
+    <div class="lg:container lg:mx-auto">
+        <div class="flex">
+            © 2026 Cisco System, Inc.
+            <div class="ml-auto flex gap-4">
+
+<a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank" title="Privacy policy">Privacy policy</a><a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank" title="Terms of Service">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</div>
+
+
+
+    <script>
+        function expandToc() {
+                lockTocHeight();
+
+            const buttons = [...document.querySelectorAll("button[data-selection-within]")];
+            buttons.forEach(b => b.click());
+
+                scrollSelectedTocLinkToTop();
+        }
+
+        function lockTocHeight() {
+            const tocColumn = document.getElementById("toc-scrollable");
+            const contentColumn = document.getElementById("content-column");
+
+            const contentHeight = contentColumn.clientHeight;
+
+            tocColumn.style.height = `${contentHeight}px`;
+        }
+
+        function scrollSelectedTocLinkToTop() {
+            const tocColumn = document.getElementById("toc-scrollable");
+            const selected = tocColumn.querySelector("[data-selected='true']");
+            selected.scrollIntoView({behavior: "smooth", block: "start", container: "nearest"});
+        }
+
+        const ditaDiv = document.getElementById("igx-dita-content");
+        ditaDiv.attachShadow({mode: "open"});
+
+        const style = document.createElement("style");
+        style.innerHTML = `@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700;100..700&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+
+/*!
+ * This file is part of the DITA Open Toolkit project.
+ *
+ * Copyright 2004, 2005 IBM Corporation
+ *
+ * See the accompanying LICENSE file for applicable license.
+ */
+ 
+.codeblock {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    overflow-x: auto;
+    white-space: pre;
+    margin-top: .5em;
+    margin-bottom: .5em;    
+    padding-top: .25em;
+    padding-bottom: .25em;
+    background-color: rgb(246, 248, 250);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%; /* Default to prevent overflow if no other max-width applies */    
+}
+
+.codeph {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+code {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+.kwd {
+    font-weight: bold;
+}
+
+.parmname {
+    font-weight: bold;
+}
+
+.var {
+    font-style: italic;
+}
+
+.filepath {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+div.tasklabel {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.wintitle {
+    font-weight: bold;
+}
+
+.numcharref {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.parameterentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.textentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlatt {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlelement {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlnsname {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlpi {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.frame-top {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
+.frame-bottom {
+    border-top: 0;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-topbot {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-all {
+    border: solid 1px;
+}
+
+.frame-sides {
+    border-top: 0;
+    border-left: solid 1px;
+    border-right: solid 1px;
+    border-bottom: 0;
+}
+
+.frame-none {
+    border: 0;
+}
+
+.scale-50 {
+    font-size: 50%;
+}
+
+.scale-60 {
+    font-size: 60%;
+}
+
+.scale-70 {
+    font-size: 70%;
+}
+
+.scale-80 {
+    font-size: 80%;
+}
+
+.scale-90 {
+    font-size: 90%;
+}
+
+.scale-100 {
+    font-size: 100%;
+}
+
+.scale-110 {
+    font-size: 110%;
+}
+
+.scale-120 {
+    font-size: 120%;
+}
+
+.scale-140 {
+    font-size: 140%;
+}
+
+.scale-160 {
+    font-size: 160%;
+}
+
+.scale-180 {
+    font-size: 180%;
+}
+
+.scale-200 {
+    font-size: 200%;
+}
+
+.expanse-page,
+.expanse-spread {
+    width: 100%;
+}
+
+.fig {
+    /* Default of italics to set apart figure captions */
+    /* Use @frame to create frames on figures */
+}
+
+.figcap {
+    font-style: italic;
+}
+
+.figdesc {
+    font-style: normal;
+}
+
+.figborder {
+    border-color: Silver;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figsides {
+    border-color: Silver;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figtop {
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+.figbottom {
+    border-bottom: 2px solid;
+    border-color: Silver;
+}
+
+.figtopbot {
+    border-bottom: 2px solid;
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+/* Align images based on @align on topic/image */
+div.imageleft {
+    text-align: left;
+}
+
+div.imagecenter {
+    text-align: center;
+}
+
+div.imageright {
+    text-align: right;
+}
+
+div.imagejustify {
+    text-align: justify;
+}
+
+/* Set heading sizes, getting smaller for deeper nesting */
+/*.topictitle1 {*/
+/*    font-size: 1.34em;*/
+/*    margin-bottom: 0.1em;*/
+/*    margin-top: 0;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.17em;
+    margin-bottom: 0.45em;
+    margin-top: 1pc;
+}
+
+.topictitle3 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-bottom: 0.17em;
+    margin-top: 1pc;
+}
+
+.topictitle4 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-top: 0.83em;
+}
+
+.topictitle5 {
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+.topictitle6 {
+    font-size: 1.17em;
+    font-style: italic;
+}
+
+.sectiontitle {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 1em;
+}
+
+.section {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.example {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+/* Most link groups are created with <div>. Ensure they have space before and after. */
+.ullinks {
+    list-style-type: none;
+}
+
+.ulchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.olchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.sublinklist {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.relconcepts strong {
+    line-height: 2em;
+}
+
+.relconcepts {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.reltasks strong {
+    line-height: 2em;
+}
+
+.reltasks {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relref strong {
+    line-height: 2em;
+}
+
+.relref {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relinfo {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.breadcrumb {
+    font-size: smaller;
+    margin-bottom: 1em;
+}
+
+/* Simple lists do not get a bullet */
+ul.simple {
+    list-style-type: none;
+}
+
+/* Default of bold for definition list terms */
+.dlterm {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+/* Use CSS to expand lists with @compact="no" */
+.dltermexpand {
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+*[compact="yes"] > li {
+    margin-top: 0;
+}
+
+*[compact="no"] > li {
+    margin-top: 0.53em;
+}
+
+.liexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.sliexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.dlexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.ddexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.stepexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.substepexpand {
+    margin-bottom: .25em;
+    margin-top: .25em;
+}
+
+dt.prereq {
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    margin-left: 20px;
+}
+
+/* All note formats have the same default presentation */
+.note {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.note .notetitle,
+.note .notelisttitle,
+.note .note__title {
+    font-weight: bold;
+}
+
+/* Various basic phrase styles */
+.bold {
+    font-weight: bold;
+}
+
+.bolditalic {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.uicontrol {
+    font-weight: bold;
+}
+
+.defkwd {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.shortcut {
+    text-decoration: underline;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table .desc {
+    display: block;
+    font-style: italic;
+}
+
+.cellrowborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.row-nocellborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-top: 0;
+}
+
+.cell-norowborder {
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.nocellnorowborder {
+    border: 0;
+}
+
+.firstcol {
+    font-weight: bold;
+}
+
+.table--pgwide-1 {
+    width: 100%;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-justify {
+    text-align: justify;
+}
+
+.align-char {
+    text-align: char;
+}
+
+.valign-top {
+    vertical-align: top;
+}
+
+.valign-bottom {
+    vertical-align: bottom;
+}
+
+.valign-middle {
+    vertical-align: middle;
+}
+
+.colsep-0 {
+    border-right: 0;
+}
+
+.colsep-1 {
+    border-right: 1px solid;
+}
+
+.rowsep-0 {
+    border-bottom: 0;
+}
+
+.rowsep-1 {
+    border-bottom: 1px solid;
+}
+
+.stentry {
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.stentry:last-child {
+    border-right: 0;
+}
+
+.strow:last-child .stentry {
+    border-bottom: 0;
+}
+
+/* Add space for top level topics */
+.nested0 {
+    margin-top: 1em;
+}
+
+/* div with class=p is used for paragraphs that contain blocks, to keep the XHTML valid */
+.p {
+    margin-top: 1em;
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 0.5em;
+}
+
+main {
+    display: block;
+    padding-bottom: 0.5em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+main > article {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.book-heading {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #666666;
+    font-size: 1.6em;
+    line-height: 1.6em;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    margin-right: .25em;
+    margin-top: .55em;
+}
+
+/*h1.topictitle1 {*/
+/*    padding-bottom: 0em;*/
+/*    border-bottom: solid 1pt #c6c7ca;*/
+/*}*/
+
+p,
+.p,
+td,
+th {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+td,
+th {
+    padding: 5px;
+    border: 1px solid #c6c7ca;
+}
+
+td p:first-child,
+td .p:first-child,
+th p:first-child,
+th .p:first-child {
+    margin-top: 0px;
+}
+
+td p:last-child,
+td .p:last-child,
+th p:last-child,
+th .p:last-child {
+    margin-bottom: 0px;
+}
+
+td.nocellnorowborder,
+th.nocellnorowborder {
+    border: solid 1px #c6c7ca;
+}
+
+table {
+    margin-top: 0.5em;
+    margin-bottom: calc(0.5em * 2);
+    border-color: #808080;
+    width: 90%;
+}
+
+td {
+    vertical-align: top;
+}
+
+th {
+    font-weight: bold;
+    text-align: left;
+}
+
+.stentry {
+    border: solid 1px #c6c7ca !important;
+}
+
+.olh_note td{
+    border: 0px solid #c6c7ca;
+}
+
+table.stepTable {
+    margin-bottom: 0em;
+}
+
+table.stepTable td {
+    border: 0px solid #c6c7ca;
+}
+table.stepTable td:first-child {
+    width: 5%;
+}
+
+.footnote {
+    vertical-align: top;
+}
+
+.table__footnotes {
+    font-size: .8em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.2em;
+}
+
+.steps:not(.notable) > thead > tr > th,
+.steps:not(.notable) > thead > tr > td,
+.steps:not(.notable) > tbody > tr > th,
+.steps:not(.notable) > tbody > tr > td {
+    border: solid 1px #c6c7ca;
+}
+
+.steps.notable:not(.summary_steps) {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.steps td:first-of-type {
+    width: 4em;
+    white-space: nowrap;
+}
+
+.steps th,
+.steps td {
+    text-align: left;
+    vertical-align: top;
+    padding: 3px;
+}
+
+.steps.summary_steps {
+    padding-left: 40px;
+    list-style-type: none;
+    counter-reset: summary-steps-counter;
+}
+
+.steps.summary_steps .choices {
+    padding-left: calc(40px * 2);
+}
+
+.steps.summary_steps > li:before {
+    content: counter(summary-steps-counter) ".";
+    counter-increment: summary-steps-counter;
+    float: left;
+    clear: both;
+    margin-right: 5px;
+    width: 2em;
+    font-weight: bold;
+}
+
+.choption {
+    font-weight: normal;
+}
+
+sup {
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0.55em;
+}
+
+.tabletitle {
+    font-weight: bold;
+}
+
+.cmdname {
+    font-weight: bold;
+}
+
+caption {
+    text-align: left;
+    padding-bottom: 0.5em;
+    font-weight: bold;
+}
+
+pre {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    margin-bottom: 0em;
+    margin-top: 0em;
+    line-height: 1.2em;
+}
+
+pre.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.codeblock .b {
+    background-color: yellow;
+}
+
+figure {
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+}
+
+figcaption,
+.figcap {
+    font-style: normal;
+    font-weight: bold;
+    padding-bottom: 0.5em;
+}
+
+.faq_minitoc {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 0.5em;
+}
+
+.ullinks {
+    list-style-type: disc;
+    padding-left: 30px;
+    margin-left: 0px;
+}
+
+.ulchildlink,
+.olchildlink {
+    margin-top: 0.5em;
+    margin-bottom: 0em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild,
+.sublinklist {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+/*.topictitle1 {*/
+/*    font-size: 1.5em;*/
+/*    color: #336666;*/
+/*    font-weight: bold;*/
+/*    margin-top: 1em;*/
+/*    margin-bottom: 0.5em;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.4em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle3 {
+    font-size: 1.2em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle4 {
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.sectiontitle {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: #373C42;
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.sectiontitle--inline {
+    padding-right: 0.5em;
+}
+
+.section_rel_title {
+    margin-top: 1em;
+    margin-bottom: -1em;
+    color: black;
+    font-weight: bold;
+}
+
+.section_synblk_title {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: black;
+    font-weight: bold;
+}
+
+.synblk *,
+.synph * {
+    font-family: inherit;
+}
+
+.synblk .importance--default,
+.synph .importance--default {
+    text-decoration: underline;
+}
+
+.table td,
+.table th {
+    border-left: solid 1px #c6c7ca;
+    border-right: solid 1px #c6c7ca;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+    text-align: left;
+}
+
+table.note {
+    width: auto;
+    max-width: 90%;
+}
+
+.note--table.note td {
+    vertical-align: middle;
+}
+
+.note--table.note td[role=heading] {
+    font-weight: bold;
+}
+
+.note--table.note--note td[role=heading] div {
+    background-image: url("../template_images/note.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--caution td[role=heading] div {
+    background-image: url("../template_images/caut.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--tip td[role=heading] div {
+    background-image: url("../template_images/tip.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--fastpath td[role=heading] div {
+    background-image: url("../template_images/timesave.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 31px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--warning td[role=heading] div {
+    background-image: url("../template_images/warn.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note .note__content {
+    padding: 0.5em 0px 0.5em 0px;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.note--compact {
+    margin: 0px;
+}
+
+.note--compact td {
+    padding: 0.5em 0px 0.5em 0px;
+    border-style: none;
+}
+
+.note--compact td[role=heading] {
+    font-weight: bold;
+    width: 1em;
+    padding: 0.5em 1em 0px 0px;
+}
+
+.note--compact td[role=heading] div {
+    background-image: none;
+}
+
+.heading {
+    font-size: 1.25em;
+    color: #373C42;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.userinput {
+    font-weight: bold;
+}
+
+.related_commands td,
+.related_commands th {
+    border: solid 1px #c6c7ca;
+}
+
+/*h1.topictitle1 {*/
+/*    color: #373C42;*/
+/*    font-weight: normal;*/
+/*    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;*/
+/*    border-bottom-style: none;*/
+/*}*/
+
+h2.topictitle2 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h3.topictitle3 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h4.topictitle4 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+a {
+    color: #326CD1;
+}
+
+p.p {
+    margin-bottom: .5em;
+    color: #000000;
+}
+
+ul {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+ol {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+li p.p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.steps td:first-child {
+    padding-right: 1em;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .summary_steps {
+        display: none;
+    }
+
+    .steps {
+        border-top: solid 1px #c6c7ca;
+        border-bottom: solid 1px #c6c7ca;
+    }
+
+    .steps thead {
+        display: none;
+    }
+
+    .steps > tbody > tr > td,
+    .steps > tbody > tr > th {
+        border-style: none !important;
+    }
+
+    .step--command,
+    .step--purpose {
+        display: table-row;
+    }
+}
+
+figure img.scale {
+    cursor: zoom-in;
+    max-width: 100%;
+}
+
+figure img.scale.expanded {
+    max-width: 98% !important;
+    max-height: 98% !important;
+    z-index: 1001;
+    position: absolute;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: zoom-out;
+}
+
+#scale-background {
+    z-index: 1000;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.5;
+    cursor: zoom-out;
+}
+
+#scale-background.hidden {
+    display: none;
+}
+
+nav[role=toc] {
+    font-size: inherit;
+}
+
+nav[role=toc] > div {
+    left: 0;
+    padding-right: 0;
+}
+
+nav[role=toc] ul {
+    margin-left: 0px;
+    padding-left: 0;
+    margin-top: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    overflow-y: auto;
+    height: calc(100% - 26px);
+}
+
+nav[role=toc] li {
+    display: block;
+    margin-left: 2px;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    display: block;
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: -20px;
+    margin-bottom: 0;
+    padding-top: 3px;
+    padding-right: 0;
+    padding-left: 20px;
+    padding-bottom: 3px;
+}
+
+nav[role=toc] li > a:hover,
+nav[role=toc] li > a:focus,
+nav[role=toc] li > span.title:hover,
+nav[role=toc] li > span.title:focus {
+    text-decoration: none;
+}
+
+nav[role=toc] li.active > a {
+    background-color: #d3dfea;
+    color: black;
+    text-shadow: 0 -1px 0 transparent;
+}
+
+nav[role=toc] li.expanded > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-down.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-right.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > ul {
+    display: none;
+}
+
+nav[role=toc] #toc-controls {
+    background-color: #373c42;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 24px;
+    padding: 5px;
+    display: flex;
+    justify-content: flex-end;
+    background-image: url("../template_images/Cisco Secure - linear - 1C White.png");
+    background: url("../template_images/Cisco Secure - linear - 1C White.png"), linear-gradient(90deg, #373c42, #0f1214);
+    /* it will use gradient if supported */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+nav[role=toc] .icon {
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+nav[role=toc] .icon svg .st0,
+nav[role=toc] .icon svg .st1 {
+    stroke: grey;
+}
+
+nav[role=toc] .icon:hover svg .st0,
+nav[role=toc] .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+nav[role=toc] {
+    background-color: white;
+    box-shadow: 1px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    flex: 1 1 30%;
+    height: calc(100% - 24px - (2 * 7px) - 0px);
+    min-width: 230px;
+    font-size: 75%;
+}
+
+nav[role=toc] ul {
+    padding-left: 14px;
+}
+
+nav[role=toc] > ul {
+    margin-left: 0;
+    padding-left: 24px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    text-decoration: none;
+    padding-top: 2px;
+    color: #000000;
+}
+
+nav[role=toc] li > a:hover {
+    color: #38669e;
+}
+
+nav[role=toc] li.active > a,
+nav[role=toc] li.active > a:hover {
+    background-color: #d3dfea;
+    color: black;
+}
+
+nav[role=toc] li.active > span.controller {
+    color: #e1eaf4;
+}
+
+#toggle-toc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+    height: 100%;
+    background-color: #FAFAFA;
+    width: 15px;
+    cursor: pointer;
+}
+
+#toggle-toc:hover {
+    background-color: #EEEEEE;
+}
+
+#toggle-toc svg {
+    width: 7px;
+    opacity: 0.3;
+    padding: 2px;
+}
+
+#toggle-toc svg:hover {
+    opacity: 0.5;
+}
+
+nav[role=toc].hidden {
+    display: none;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #toggle-toc {
+        display: none;
+    }
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#search {
+    display: flex;
+    flex-direction: column;
+    opacity: 0.75;
+    height: calc(100% - 24px);
+    flex: 0 0 300px;
+    max-width: 300px;
+    z-index: 1;
+    transition: ease 0.5s;
+}
+
+#search.hidden {
+    flex: 0 0 0px;
+    transition: ease 0.5s;
+}
+
+#search.hidden #close-icon {
+    opacity: 0;
+}
+
+#search-input {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    display: block;
+    transition: ease 0.5s;
+    height: 40px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #search-input.hidden {
+        left: 0;
+    }
+}
+
+#search-input input,
+#search-input input:focus,
+#search-input input:hover {
+    width: calc(300px - 45px);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: 0;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 8px;
+    transition: ease 0.5s;
+}
+
+@media (max-width: 1660px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 200px;
+    }
+}
+
+@media (max-width: 1430px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 110px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 0px;
+        margin: 8px 0px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:focus:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:hover:not(:focus):not(.has-results) + #close-icon {
+        display: none;
+    }
+}
+
+#search-input div.icon {
+    display: inline-block;
+    width: calc(1em + 3px);
+    position: relative;
+    top: 3px;
+}
+
+#search-input div.icon--left {
+    left: 8px;
+    margin-right: 4px;
+}
+
+#search-input div.icon--right {
+    right: 8px;
+    margin-left: 4px;
+}
+
+#search-input div.icon svg {
+    width: 1em;
+    height: 1em;
+}
+
+#search-results {
+    position: relative;
+    top: 40px;
+    height: calc(100% - 40px);
+    background-color: #fafafa;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.search-result {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    animation: fade-in-keyframes 0.5s;
+}
+
+span.highlight {
+    background-color: yellow;
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+nav#breadcrumbs {
+    font-size: 75%;
+    margin-top: 6px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav#breadcrumbs .home svg {
+    height: 1em;
+    width: 1em;
+}
+
+#navigate-back,
+#navigate-forward {
+    width: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+}
+
+#navigate-back.disabled,
+#navigate-forward.disabled {
+    opacity: 0.3;
+}
+
+#navigate-back.disabled .icon:hover,
+#navigate-forward.disabled .icon:hover {
+    cursor: default;
+}
+
+#navigate-back .icon svg,
+#navigate-forward .icon svg {
+    transform: scale(1, 1);
+    width: 15px;
+}
+
+#navigate-back .icon svg .st0,
+#navigate-back .icon svg .st1,
+#navigate-forward .icon svg .st0,
+#navigate-forward .icon svg .st1 {
+    stroke: grey;
+}
+
+#navigate-back .icon:hover,
+#navigate-forward .icon:hover {
+    cursor: pointer;
+}
+
+#navigate-back .icon:hover svg .st0,
+#navigate-back .icon:hover svg .st1,
+#navigate-forward .icon:hover svg .st0,
+#navigate-forward .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+#navigate-forward {
+    margin-right: 20px;
+}
+
+#navigate-back {
+    padding-left: 30px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #navigate-back {
+        padding-left: 10px;
+    }
+
+    #navigate-forward {
+        margin-right: 10px;
+    }
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+
+main[role=main] {
+    flex: 1 1 100%;
+    height: calc(100% - 24px);
+    overflow-y: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-right: -51px;
+}
+
+main[role=main] > article {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fade-in-keyframes 0.5s;
+    border-bottom: none;
+}
+
+footer {
+    font-size: 75%;
+    border-top: solid 1px #ccc;
+    line-height: 24px;
+    height: 24px;
+    clear: both;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding-left: 8px;
+    background-color: #fafafa;
+}
+
+.mobile {
+    display: none;
+}
+
+img {
+    display: inline;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .mobile {
+        display: initial;
+    }
+}
+
+.desktop {
+    display: initial;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .desktop {
+        display: none;
+    }
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+
+    html,
+    body {
+        font-size: initial;
+    }
+
+    main[role=main] {
+        padding-right: 40px;
+    }
+
+    main[role=main] figure img {
+        max-width: 100%;
+    }
+
+    nav[role=toc] {
+        display: none;
+    }
+
+    body {
+        flex-wrap: wrap;
+    }
+
+    main[role=main] {
+        flex: 1 1 calc(100% - 40px - 45px);
+    }
+
+    #search {
+        flex: 0 0 100%;
+        order: -1;
+        max-width: 100%;
+        width: 100%;
+        opacity: 1;
+    }
+
+    #search.hidden {
+        display: block;
+        position: absolute;
+        right: 0px;
+        width: auto;
+        height: auto;
+    }
+
+    #search.hidden #search-input {
+        height: auto;
+    }
+
+    #search.hidden #search-input input {
+        width: 0px;
+        margin: 8px 0px;
+    }
+
+    #search.hidden #search-input input + #close-icon {
+        display: none;
+    }
+
+    #search.hidden #search-results {
+        height: auto;
+        display: none;
+    }
+
+    #search-input {
+        position: initial;
+        height: auto;
+    }
+
+    #search-input input,
+    #search-input input:focus,
+    #search-input input:hover {
+        width: calc(100% - 5em);
+    }
+
+    #search-results {
+        position: initial;
+        height: auto;
+    }
+}
+
+@media only screen and (orientation: portrait) and (max-device-width: 768px) {
+    body {
+        -webkit-text-size-adjust: 100%;
+        font-size: 3em;
+    }
+
+    footer {
+        font-size: x-large;
+        line-height: calc(24px * 2);
+        height: calc(24px * 2);
+    }
+}
+
+main[role=main] a,
+main[role=main] a:hover {
+    text-decoration: none;
+}
+
+nav[role=toc] li a:hover {
+    text-decoration: underline;
+}
+
+.substeps {
+    list-style-type: lower-alpha;
+}
+
+.type-a {
+    list-style-type: lower-alpha;
+}
+
+.type-i {
+    list-style-type: lower-roman;
+}
+
+@media screen and (min-width: 1024px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(45vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1108px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(50vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1192px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(53vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1276px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(55vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1360px) {
+  .codeblock {
+    /*width: calc(77vw - 290px);  */
+    max-width: calc(52vw);
+    /*max-width: 760px;*/
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .codeblock {
+    /*width: calc(75vw - 315px);  */
+    max-width: calc(50vw);
+    /*max-width: 770px;*/
+  }
+}
+
+@media screen and (min-width: 1536px) {
+  .codeblock {
+    /*width: 780px;  */
+    max-width: 760px;
+  }
+}`;
+        const ditaContentDiv = document.createElement("div");
+        ditaContentDiv.innerHTML = `<article id="hybrid-deployment-setup" class="topic concept">
+<h1 class="title topictitle1">Hybrid Deployment Setup</h1>
+<div class="body conbody">
+<section class="section">
+<h2 class="title sectiontitle">Components</h2>
+<p class="p">AI Defense hybrid deployments have a SaaS control plane, and an on-prem data plane, referred to as the "hybrid connector", referring to the notion that it is the point of connection to the control plane. This diagram illustrates how the components of the hybrid connector work together. </p>
+<figure>
+<img class="image" src="/docs/ai-def/user/140336.png" alt="Components of the AI Defense hybrid connector" data-src="140336.png" width="700" height="">
+<figcaption>
+<strong>
+<em>Figure 1: AI Defense hybrid connector components</em>
+</strong>
+</figcaption>
+</figure>
+</section>
+<section class="section">
+<h2 class="title sectiontitle">Addresses to allowlist</h2>
+<p class="p">The following service addresses are used during the installation and operation of hybrid deployments. In your firewall configurations, ensure traffic is allowed for these services.</p>
+<table width="100%" border="1">
+<caption>
+<span class="table--title-label table title">Table 1. </span>
+<span class="tabletitle">Addresses to allowlist for hybrid deployments</span>
+</caption>
+<thead class="thead">
+<tr>
+<th id="" font-weight="bold" align="">
+<p class="p">Component</p>
+</th>
+<th id="" font-weight="bold" align="">
+<p class="p">Address</p>
+</th>
+</tr>
+</thead>
+<tbody class="tbody">
+<tr>
+<td headers="" align="">
+<p class="p">Cloud gateway</p>
+</td>
+<td headers="" align="">
+<ul class="ul">
+<li class="li">
+<p class="p">
+<code class="ph codeph">ap.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">eu.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">uae.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">us-east1.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">use2.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+<li class="li">
+<p class="p">
+<code class="ph codeph">us.cloudgw.aidefense.security.cisco.com</code>
+</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Port</p>
+</td>
+<td headers="" align="">
+<p class="p">443</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Protocol</p>
+</td>
+<td headers="" align="">
+<p class="p">HTTPS</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Helm chart repo</p>
+</td>
+<td headers="" align="">
+<p class="p">
+<code class="ph codeph">chartregistry.aidefense.security.cisco.com</code>
+</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Container image registry</p>
+</td>
+<td headers="" align="">
+<p class="p">
+<code class="ph codeph">proxyimages.aidefense.security.cisco.com</code>
+</p>
+</td>
+</tr>
+<tr>
+<td headers="" align="">
+<p class="p">Updates portal</p>
+</td>
+<td headers="" align="">
+<p class="p">
+<code class="ph codeph">updates.aidefense.security.cisco.com</code>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="section">
+<h2 class="title sectiontitle">Next steps</h2>
+<p class="p">In the sections that follow, we describe the prerequisite components you'll need and the setup steps you'll follow to deploy a hybrid connector in your environment.</p>
+</section>
+</div>
+</article>
+`;
+
+        ditaDiv.shadowRoot.appendChild(style);
+        ditaDiv.shadowRoot.appendChild(ditaContentDiv);
+        
+        expandToc();
+    </script>
+
+<script src="./Hybrid Deployment Setup_files/print.min.js"></script>
+<script src="./Hybrid Deployment Setup_files/flowbite.min.js"></script>
+<script src="./Hybrid Deployment Setup_files/anime.min.js" integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<super-widget><template shadowrootmode="open"><!---->
+      <div class="sp-dialoge">
+        <div class="sp-handler">
+          <img src="data:image/png;base64,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">
+        </div>
+        <div class="ext-block">
+          <div class="ext-header">
+            <div class="logo d-flex">
+              <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFIAAAAWCAYAAABT5cvhAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAATfSURBVHgB5Zh/SJ1VGMcfN6/XNJeOcf1RqDgdcpdFaFRQsXCTpMGgyEghNnO2BqkpGAz72yL6gU5ICLeiXzPabdBfGjdxRFaXRTH/8OocpE2tbte4U9LmTt/nvc87z969d917dyG3+4UP5z3nuee85zzvc97nvJdoXYfBWXAJqBi5CI6BUkpiOcEJit15dvwJdlGSaj8lxokm58EdlITi7awSzFOUZNoMjoKUSD+oqqqijo4OqqurM+oTExMUhfzga0oyRYysmpoatbq6qnS1tLREE5HddBMKy8ugG1BEh4yNjam1tTXV0NCgqqur1dzcnFpeXlZZWVlxORITvR2UgEzaYMKcHgG/gmaKUxEdMjMzo0KhkEpNTTXq9fX1qqenR+Xk5MTsSEywC+jh/TFtIGE+VSBkOhKlD7wR0xiR6O/vN1Y8MjKisrOzY0k23TaTZP0IjoAPwQmxOUEeSLPUnVLPlUjm8nG2WcZOkWjaDW7T2rmPS8oakCXjbrX05bZssEmuM8X2D/hS2hiHTf/NZv/rOrK4uFhNTU0ZHhgfH1eFhYXxOvIJceRrZBHaXhTbLqk3S3231C8BL/hL2oNgn9juBBNalP8CysV2VNpmpCwAF3gp2r2fFNvz4CG5fk5zpKnz4ujfwE9a/2fE/uwmiqCmpiZKT0+nyspKwruS3G43ITIpPz+f4tD3IARewU1Pg4NmxEWpB8DLoFHqb0nZAQrBXvAo4Mg4Yun7OahLSUm5gLIXuDmCxXYQBMGnEe57BrwEXkX/yyjfAfeYDx1qAgFwkivXRFReXp5aWFhQgUDAeB86nU41NDRkuH5yclIVFRXF847cAQbBmjzFs7K1oolIjzbOFxwtcn1GIvUTIcAPSmxmRBZrfbeBv8F7cs1z+UBsdhHpsayBo3oJHAOl4DJ4l222EVlRUUEul4v6+vooGAzSysoK1dbWUm9vL5WWltLo6CiVl5dTLMIT9QM+jG4DPMGdwG3z03SbtlXt2sHD8UNAmSZrMPkKDFn6Lmtz+APFCHgatEifPop+DRzVp0C99Oc5fEQUwZHI0kaZlpZ2pQ3HIGptbaXBwUHCu5K8Xi+VlJRQNMKit6twgnkM1ftAkZh+p3Un7YX9fpQHbIbgZMEJpRrXd4NxLIoj/wdZg5fCu+B98BldX2+CLaAVfINxvovwO/4jphD3fBDs0dr5A4Ydcwj40P/0lXVayc3NVYuLi2p+fv6qbdzV1WUkn4GBAWMPTE9PR5ts9qhr1S22MtmS+ovdurXPaXbecg1i26nWk4mpTrGZW9tlmUuGCicl1iGt3bq1X9fGXJIdYGb6b6X9qvexrTPa2tqMX/KXjcfjUT6fz6jPzs4a2byzs9M4Z0bjSJkAH1/2gwNgh8V2Fy9KhY8wmRIFLs2R/E6rUOEktd3Sl49L+8BhFc7CW6W9WMZJtZlLidgytLYs/b6ac5vNh6q1nwQrPO//dCTT3t6u/H5/+JEsLanh4WHDiaa9sbExpi+beGQ6kjaAMI+HwSmJxretdk7fEZ3pcDhUWVmZKigoiOVA/gIlSJjwRSWZ8f+WRD1n/eN2kc5PWyWYe+kWFJy3RWlfT1ZxFuRDaaKc2ENJLD6SnKMbcyAfko+DVEpC6X/o8sc6f2ZxRnVQ9OJPJ/784/PYz5Sk+hcoFp0D8fRhdgAAAABJRU5ErkJggg==">
+            </div>
+          </div>
+          <div class="ext-content">
+            <ul class="ext-tabs" id="tabs">
+              <li class="ext-tab-block tab1 active" id="tab1">
+                <div class="img-rounded">
+                  <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAvBAMAAAB56XVoAAAAHlBMVEVHcEwcJS0cJi4cJCwcJi0cJS0dJS0bJS0bJSodJi7yOUQVAAAACXRSTlMAwH9A2rWgZTASeF1GAAAAlUlEQVQoz2NgAIKZkxkYJCdBMBCwKykpzZympOQ5EYKVGhg8Z6KB6QzoIjMngoUEJWfOdBSBYKgQA+PMmQZMEAwVUlKZOTNJEYKhQljMIltoijEMmMCEJjLAACMeoSlKMKBCko2OgnAgCRVSYMAwnjghsr2dbIzhbeJsFFIaHt6GCyGMxyeE8PZMmqRCFDCNoRJdaAYA8Yhppb3pa1cAAAAASUVORK5CYII=">
+                </div>
+                <p>Agents</p>
+              </li>
+              <li class="ext-tab-block tab4" id="tab4">
+                <div class="img-rounded">
+                  <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYBAMAAAASWSDLAAAAKlBMVEUcJCxHcEwbJSoQIDAYICgcJS0cJS0cJi4dJi0bJS0dJS4cJi0bJC4dJi6AX1b2AAAADXRSTlNAADAQIMWZ4FBg8LBwgZNUFgAAAKdJREFUGNNjEAQBd0UwxQAmeRlxcAx5GQ1hHLOFvIzLDCEckdhAXsbYIAjH/CZQj+R1QzAnd6KgLqNgbyKII3wVqFJQUPoKiCN5A2yswB0gx4GBgQnIFmJgYFBkqL17966joKAvkLrIoAAUAqkCywgKBED0RMBMExYUFLsCsacRbM9GhAskVkFcIBS7kZcxtwjm6ou8jNcMYf5x5GV0JMLbgrrIoQMFAAu6K6ZDCUVWAAAAAElFTkSuQmCC">
+                </div>
+                <p>Skills</p>
+              </li>
+              <li class="ext-tab-block tab2" id="tab2">
+                <div class="img-rounded bot-chat">
+                  <img alt="" src="data:image/png;base64,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">
+                </div>
+                <p>Ask Super</p>
+              </li>
+              <li class="ext-tab-block tab3" id="tab3">
+                <div class="img-rounded">
+                  <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsTAAALEwEAmpwYAAABCElEQVR4nO2VQUpDQQyG5wB6Ab2IOw9Rr+ARRHh/pF2VTsLbFSSht6h1o6WL9jYu7K6gCyX1DTweihRT7KKBfzEw83/JzJCkqr4/h+gMohsS+4gQRDfu2c+TswS2R7C+kmgN1lGESLQmsTWxPaQtjXWUgoPEsnunpqRBNACiA/f+HwDYrknsaRf5mcMBRASOgN/i+IsO6Bfhq03nvTU7iM68tYJtSGK3RVVtF91Dd1kv23t+UuO1hug0+VDwvt0dOGB77mR0BbH3HQbOdDtwvi2PdeEq64q1R2xvEF3d5Mnp3++vBaiizduAvZgXANhe3JzYlv3x+CTMvACax4rNvARYlVjnEZl/AkhsGTPpoWcMAAAAAElFTkSuQmCC">
+                </div>
+                <p>Feedback</p>
+              </li>
+            </ul>
+            <div class="ext-tab-outer">
+              <div class="ext-tab-box tab1-content" style="">
+                <div class="search-box">
+                  <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXBAMAAAASBMmTAAAAMFBMVEVHcEx7ipp8i5p7i5p7i5p7i5p7i5p7ipl6jZt7i5l5h5p7ipp7ipl6ipp7i5l8i5qWbeGlAAAAD3RSTlMA9e7V4r+DtAtaHDChQ22dfKVDAAAAuElEQVQY02NgYOB4KiKaxQAF7+X///+UAGGzyyuaO+oLQzj1n2cwcEyWNwCx2SBUoAyIbPoClmf+tAFIJmqCObz6B4BkvAZEqz5ItbwChGP/A0j4B0ANtQJJO0A48SAV9dpgNoc8SHDSHzCHTRDkIKYvF0CcJV8awBb4Akluf4h1lz7F7dpZ8l8HzOG0/6gi9F/5I8SK5UL/PzpvsBeHWLEyJ28BA/NHAwYEMPyKxGEVfIDES2VAAQAQuS6Z2Bg5UwAAAABJRU5ErkJggg==">
+                  <input type="text" placeholder="Search">
+                </div>
+                <div class="ext-list scrollable">
+                  <ul></ul>
+                </div>
+              </div>
+              <div class="ext-tab-box tab4-content" style="display: none;">
+                <div class="search-box">
+                  <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXBAMAAAASBMmTAAAAMFBMVEVHcEx7ipp8i5p7i5p7i5p7i5p7i5p7ipl6jZt7i5l5h5p7ipp7ipl6ipp7i5l8i5qWbeGlAAAAD3RSTlMA9e7V4r+DtAtaHDChQ22dfKVDAAAAuElEQVQY02NgYOB4KiKaxQAF7+X///+UAGGzyyuaO+oLQzj1n2cwcEyWNwCx2SBUoAyIbPoClmf+tAFIJmqCObz6B4BkvAZEqz5ItbwChGP/A0j4B0ANtQJJO0A48SAV9dpgNoc8SHDSHzCHTRDkIKYvF0CcJV8awBb4Akluf4h1lz7F7dpZ8l8HzOG0/6gi9F/5I8SK5UL/PzpvsBeHWLEyJ28BA/NHAwYEMPyKxGEVfIDES2VAAQAQuS6Z2Bg5UwAAAABJRU5ErkJggg==">
+                  <input type="text" placeholder="Search">
+                </div>
+                <div class="ext-list scrollable">
+                  <ul></ul>
+                </div>
+              </div>
+              <div class="ext-tab-box tab2-content" style="display: none;">
+                <!--?lit$471298579$--><qa-chat data-source="extensionWidget"><template shadowrootmode="open"><!---->
+      <!--?lit$471298579$--> <searchable-dropdown><template shadowrootmode="open"><!---->
+      <div class="dropdown">
+        <div class="dropdown-input">
+          <input type="text" class="dropdown-select" placeholder="Select Collection">
+          <img style="cursor:pointer;" src="data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; width=&#39;24&#39; height=&#39;24&#39; viewBox=&#39;0 0 24 24&#39; fill=&#39;none&#39; stroke=&#39;currentColor&#39; stroke-width=&#39;2&#39; stroke-linecap=&#39;round&#39; stroke-linejoin=&#39;round&#39; class=&#39;feather feather-chevron-down&#39;%3E%3Cpolyline points=&#39;6 9 12 15 18 9&#39;%3E%3C/polyline%3E%3C/svg%3E">
+        </div>
+
+        <div class="dropdown-menu" style="">
+          <!--?lit$471298579$-->
+        </div>
+      </div>
+    </template></searchable-dropdown>
+      <div class="qa-chat">
+        <div class="qa-chat-inner scrollable">
+          <div class="system-chat">
+            <div class="system-icon">
+              <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAAAXNSR0IArs4c6QAAFvJJREFUeAHdXQd8FNXW/89sSUJIQkhHglQJvQUQEKQpYgUe+lD0iRUbinyxgM/6QFAURX0gyidWRB4qKioWhPcQFAzdCCgYDCUJJYGElG1z3zmz7GZ7tswuft/5/TZz59xzzj3z3zN3zi07kfBno8JjOXpZ6SJJogsUdCH32kFCc0kgWUAkS5KUzi4LIY5LkKqEhCoIVBBrP2QUCSEVWeOkn9Els4zl/iwknVVHhNAZth3vBck2SBJiEIR0AYGao5FPR+jr2CAgfQ+h22Dpnb4dkmTTyHbIZs4K0Ppt5QSscj15ew1FZfOQvQ5Dge4GjvrlQpLfsfbK2hiGiYhUYgf0jrI2Rqu4EZCup6htF5HXkSoL6mYg3jXrpbfQI7s4UnPB6Ecf6G2VzfTCPEWCmEaNNQvGqVjJCOAkfZ63xskvUp9+OprtRg/ooqNN9SZx/58RYE9A+cEqZPkZq1F6NVqARwVo/fbSYbKCV6ib6Ox5UX/uc/GLIuMea8+ctVr7qS3QRUezDfXKfEnCNVo7Gkt7QuADS7w8VcsUUTOgKZO4iFK0d8hgVixBiVZb1HeXC0m6gTKUb7RoI3Kgi0W8obJsJnUT/LCL3J4WV6WRDQJbUPA8bxbZM5AvWSIxGxEwxq2lnWlAsJyM8Aju/y3Rw3KLxSBfg+5Zv4d7keEDveNES6PNwg+N9uE2HoyeOF0N8ct2iMoTlIxVAtUngYREShSbQ0pNg5TdAlLbjsGYilTmN7PBMALd0g6GYyg8oAvL2xklZS0NaXPDabQxHWVnIZRvV0EUboDYs6sxcbVe6tAZ0vkXQjeOxkPnRmk8JESJGboR6JO5LyinXIRCBtq4o6yrsGENKWa62NGkaHtnIWwfvQv8QQO3CEjq1hu6B2dB7tIrAiu+VanfPirpMdLcPTu4CDhjJjSgt5W2NirSRg0nflQ3bB+/B9vCZ4Hj5b6vLkyufP0d0N39MKS4+DAt+FETKDXLYiB65RzwI+HFDh5oBllI35GFNl5WwmQIiwW2x6ZA+WplmBaCUGvdHoZ5b0Kio8ZUbJbE8GDBDg5oGogYTQrPeGkHcn0drFMmQmyJzUSa/tUVkPtdoDHWKDbHyQODGdjIwbRsMNnmaAoyDb2sD94aM5D5Gq0FN0EU/xrM5YYi0+YMNo3qNAq0YVvpJJozvrFRSyEI2F6eBfH9mhA0NBClNNHCd1CNtpN0jA1j1JiHgbuOLcc7GWAppOWjJo0ZCrZe2fQfWO88e1Mh0ojLYZi7OFh3g5KjAU0tze/0NffO+cWfQsCINsD6Ty1BFnW1sD56jz9fYsIXa1ZBWbda07YYIxohvxTIqF+g1S5DwrBAyqHWKW8voBTuaKhqmsvbXnkaQlE0tUtdw4hAXYjvroMm7Q31tmLHirMWHonqKlhG9QAo2/gzkP7Z1yGPvEJTV3gBwRKva+Nr8cBnRNOc8kwtQearUb797E8DMvtj+3QZHzQlxoyx82XUG2jKmWl28HZfwpHwojooCcMx8cM6iCqaoNKcCDtaJ/U06wW00SSm0jeT4CkYybk6A7d5fSQmtNe12aCs/1Zzu4ydUamf6mnYHejCihTa/zDZUyjSc7F9U6QmoqLPs4PRINo9da9nVLsBrZfNd9LT0SvsI3VG2VEYqYmo6Cs7foqKXRrEpOqF6Q5X425A0/6261wrtSqL3/zm8Vo1EZ6dA/sgqAuJBlHATnC16wRav610KI1uurlWalUWBw+EZKpVTiaevHtSSDphCx86ELZqIEUCuodh29GeDhkn0BTNkxxMzY8Vx0IyOeveW3D/DeMxZvigkPTCERYnQvMtpDYUZZJD3g504RGay5DGO5iaH031QZvs2zUPVw2zA7zosWno2TFKy1IOj2q1nWRymFWPkriO9hfruawCrddJ/SjUE92EtDwJYTT4XEHDMyQhPg4fz38Kndud6+ZNVlqq23lEJ2ZTROqBlOmhmGHYWp7PMirQtH1raCCFiOuapQVlYtJVo9Arr72bbFqzFHz92lwM7t3w+Bh/8YW4bMj5bnJhn8RrOmTw5YbqqL3rADTy2lc7xEtO8VPRwG7dIguzp97WwHApJSc2wecLZuPWcZeq3Pe/+A6vPj7N2cW4iKrFpCYhgJeY5Kmu6TklGEPZoEx9iEQJdl9NrXsYk1rkenDcT+PjjHjr6elITIh3r/A4m/fgXVj02P38swrMWbwUb8+ejn9MudlDCtDpZFw5dKAX3xdDSsv0xdaMR75ewBjL2HKiI/UlUd11L53XJaDjCx+d6tVl+FO49tIR2LbidRXsbzYW4t6J4/DN63ORm53hVDlZXYNLBvdD/+6dnDx/Bamle//vTy5cPg3J0xhjWaez5YVrJFg9uXsfv6IzbpuIv4wc4rfeV0VqclO1m+naoY1a3a9bJxR+sAgP39ow3lq47BMsf/7xgFmL1C4mO5zoDrPlybSJL+pAS+cP9YUXJowejhl33QJdclrAjxzneyUtJ4P0EpOhJ/2mGTl4dNoUHNiwGk/PKECLNu3x7c79+PKdRRjc1/dGGqn3AJ9+ac1kjPW0I5+ApuQuiiQ1SYR86XgoX6xwtlIw6RrMmj0Hxmx7VDor/BTMZcUw/dEwlJf0BiR06KOC7KrCHcH0gaMw3YX57x82YcnCV3DLlGkuXHpA9Y3+gIgbZIw5mW7NJ9Em3S33qUB37ZuPmXdMxMWDB6sgm0p+geXYIQirfVds2bFjqKmpQ7vWrZwuGTJyEd+2O5TaaliPHaSfFQJxrTqDI71294+wVp1wyu7cvQeZ6WnIzrD32SxjPKcDbrrzHjTX2XDXU3NRWmZfTpP6h9ZlORsJvdBaMm4p3UObFaPeWV2qVOL1JjVITm1OgFXBkN6SJnSsqPu1YWbvoVlzsGv3XvUyunfuiEfum4KkRPs4Kr5tDwI2AXUELK/2Jfe/DPW/74SZgGfaf6AEs+a/jPJjx9Xz68ZdhYnjxqhl/pOUP8oua6rDb0dP4e0PlmP+xIed9dEsUGDskCmuA+dUGnnwD9tBJCUlqX0xg8b9siutXP21E+QZz7yE/JFXYs36hvliYbOoOk0JYAaZiXkOWvrRSifIX27dh82796vgO+pJGnHUTcWd2xl5Hc/Dk5Ovx7U2+5fSIBOdEvXR8XpaJo+Pbg9td/5cYYb58G/qhzmOCHVc2u8l9sjk8zdemovTVafQtmUOxlxysSqia5IMa2U5LNRXc9eh6ifwYKNMrf9x6zb1yH+mTByDfbt/xrETw9QuiPtzSWdwuwNYbuSBY3j/vNFcjCrRTzSa0chQaD7RH4zXSl2VW1S3O7ehTy47fBCnadV8QH5DWihTdmGrOaX2x9wnK6ZayIkNI86B+b2dzTLITG1b2W3yl8Rkqz2lHh1/dCX7YH3uUcdpFI+CgT47pNRUqQ07Urcxoy/GWPo46KIhg8E8JkdEKtUVajQzz0Zgc5/toNtvuA5tz3xZiQkJKLjjNmRmpKvVnAIy2c60qZ7QHxqoQVn6OpTCjQ5W1I6UdUgnyXrMf0llowciE0cqR6dQBBisO2+8AdU1NUiMj4dCPCZnRJKcg4S53slnXkZaGhbMmQmZJhd4iG5VaOXErg4YEyia7e059PlI66PqqfWJ+2Bc9ZNrlcZl6aRMbtVrbDUoc5zOcVQas1qrEctKDLbVakVCXBwUAouJo5nTM4WyBf5CHORI6fjh5iAbLUtZSN/Ky1NnQFbTu4yWsFbY+3KHLB+LD5XbT48cpH0eH7hWaVpmjPXkUD3dQVGnZXI6JijuT3nOoRM6DUBiz2FwdCWejnDE803OaR0fHcSgc3rH+bUhNdvtS3DI8JFHjRzN5vIDrmz1y3j/izVOnrLuS+iu/KvzXNMCYaynJyK9YARRz6Mf0bdErsWEQaLaeQ3cZ9Zs/w4GijjI6kKEs85ZOEmZhsuAxsmnAufQHNmG9HNc2W5l6/HDzlzbUcFR/8hLi/HzvmIHi/Zq/+Asa12g2dEyybC19E16KNyotXF/9gYp1ZhlK0FXEdoePO53aWDlz2zQ/MlPPI/VGzaDZ/g8Sf/aR5Dzg5te9dQNdE7PgrdkyqP3BBLSum6DnAT+hEwagExPSSxbvdYnyOxPtH7mwRjL1HXEFGi+oBLE8SFo4jRMC6qsCrwQq/W+aYfPjLFMY/ADDkasjqFGtOJIISJ08LeSQwEtiL32gU5AoTAqbTbdHtnSM2MH9X8N019hGApV5Wf6pUYoUc3xTHmomh+H2par/NLPG7IMV340y9Q/V6BP2l4KaF4yRMMUWjRbdbG9TOc+qeRS5bPIz0IejITbidTU1WHJytU+bbsytR4lksfrGWPHEJyT1JjSIl0mTkEXszZf/eCzmLXl2hBN6arYqkDT623WuVbGonwKeizSBR75iz1F0FebYESC2yeOzl0/2Bw4Tmpr6/HUq28HdVmaZx6SUJ1TRwnWZtk/GirLa+i2tM+yB+VS5EIc1RNsJ9AKvncLCVptkZNzEDdynN/GrFs30hsQiiD1O9+vzKP/fMNvXTQrqLerYWy5DftwrI1Uj62lK2hEELOBCzfOUT1F3xqfWO2rKsxzJalHL9S/swTm9V9BTs92rVLLgvbN2Ur2A339g/zTrt1Y/OEXXrqxYYgVYGyJnONeeiK+STtKYwo0O8CpHkf2ZJt9HY95DpJ4h9OIi6Cs+QaKvzcfpKX7jebj9L6H8fTrq1BIoRRPsyeHoNe7nSHHwxDWXjnriFfsqIjl8RFdK/Ckky+S8rpAGn05Lfp5jCaNNOihSJYmXO9LDRbKUEbpO6Mqz/dWA59KzKQFBy1I0DqhpY+922B7zojmE3pCvkbIz+ZyrOke6kKSabLnUoWnx91Jatse/BG0vCVVV0MhkKUzq9zukvYzK23AGqM/DyWSEfLQS6B8Fr0pUF/tqzyBN13rnBHNTKsU9yol2JWuArEs/03f3m9ksx/clUjntAwIsplAvlzfEZulpqrr8rDRQFP7CkusroWi+aRFGJe4tucGNHqlnpQgv+YqEOsyR/azuhZhNVtHV9jZ0B1bJPfkSQU7SItapHe06j0f+c3dFijdgSZnzIo8n4bkoc1hBnkRwYox0DxZ51hqakyP5XjE+BM9WDmT8STd5AJPVtTOGTuziHvBswEvoJGfUUpeL/AUjPW5Ov2swseIU6h6EfGYTXW6RqZQeduwfEXwqyei2i0YvVoOyGDsPKKZ5b2BJqYlTvcEfTPHAxqMWSWhyXMchDdHLe3mVp1W5z2YRxWO74EnnvyRGtVB9tVib5E/MwH5jBlj50vIJ9Dqr/NlPOBL4WzxBKVEalxTwn8mkL1coe/AL3FU6ybe7rdekwrGzM97qH0DTa1aeuW8SX1fNNfgQ7u2ANEarCGO6sY2xbOtcB6IdFetZcz8+eIXaFawCMONdDs0rPH7s/J/iK9//aNG0z0eHYZCBPIpi153ZyCdgECjT/pu6gNvDWTg7NepHYnqBu3maJSkpBR4gu0Z5aGuiNNTYwJ6ZPiesDnjUVA3pHFr+Ry6oR5q9CqCEDDs3gX5aCn0FcchHzsKmX5VK5lMSKT3cHaUzJhRMA3t6d+qNDUE5ZpXi7vq4rGSFmDX/fwL/tBTPk1mREoqrJm094NeGqs0T4elfR5s/N69aZMgfi2CgXYpKWu/hG3Rc6DdlapN/fNLEFz+LT1j7p31sJcjHoygr4ZeYUxTYBINs0Inw67tiKe3g8VvXAfZzy9V+9EmxQUvzlX3y/209hvkNTGH3hCnJp0Gq9uDP1z5Gf7+5NOoqfXd85nzuqJ+wIU4vWcnkJ6lPig5rbM+fh8EvdyK00H9k/Mb8UGspjeDBYVJ0ECDX8hdUb6WrsX/nKSrW/RGsMTVK5Hw1afQnaxwrXEr6/V6PHj/FEy+5UY1VePKg7SFt1kpARAiFdNWje7DL3NqHTp8BLfdfT+K6FcAgaiu70DUjJsIW5sOqhgvZ3F088PT3z4P6rA2W5KyhqCD5Hsy3aPB4IFmxd1Vaca6Wp7Ibu9hx+00bsNaJC+eD5nADkStWp6DxQvm08Zw+wW6yu7/9ypkhrhz+3dDNnr0btjqy/Z4H968lxZgwWtv0KZJyhEDUF3/wai643/o/dT2HydxhHOf7kX0f1zM8Qn90CXFfwR5KAV+GHoIo1PyCbOQR1MiW+pZ5ThPXLoYzV6e3SjIE8aPxderPvQJMts6IdsnhRx2Gzua6EnYuVsPLzG9TqfeMSveW4KszEyveldGwqb1SHuI3tB7+A+V7QfkMrOQRoUCMhsLDWjWoJdUmyEPoeFYCZ+6UsLnH6Hpp8tdWT7LQwcPwmPTH0AT2sfsjzp09QbNnyzzi+tkGAze8xwOnfzePfHiszMdp36P+qNlaDZrOk3H+piXFuIggXwB8rNoWSc0Cq3rcLW960Su0WJZQyz1vteVHUZawW2QaE45GDIYDBg1cjiuHnclhgwaqP6s2FNvB73CrW1ScLFwOLkt8jp18jSB8qPH8OEnn2HZvz7GgT+8YsNL3sGoG3IRqu5yGxzvM+sMw9Aj7ZBDJpRj+EBzKzvKMg028TnNROSnPPsY4req65ChtK/Kpqc1x9Vjr8L4sVeiQ/u2Tv2tmzehQxBTLqdMCloOucKpZ6J08atv12LFx5/iPxt+aLRvdiq6FDg7PzFnAWz03mkaIRdadNJl9H+1vNfbXHQCFSMDmi0XCkP8oR9eSn/wjslkLGJ7r73yAi65aLjqs8lkxumtX8MYaLaIJItqDDh/+MWqDv8ZPfavKPolcKbhFA5QqMsfIE4VPDHPomRPj/TfgwR3XwZwhh2oHzPwzpqLr5hhS04JZnDm19oFA/o7QWahOHrrwf7TfsWdFa3yujnLXJg76wnqiiJbYrWlptlszdJnWHrnFEQKMvsUmTds4QzVb17/vbj93hWy3jhaV3YkNdTQTm3WDMvf/V8keDwgT9aZkWLxPz98sNqCtj36OtxQj5m0nmikZ8D39NPkUIm7DHPPvsU1fQYOOvXCoytD1fcnHyoe/uy48VMLZt6TsOn753TlR2ipOjh6bwn9OH6g91iIJrVweP0qpMT5vvmKTIk4f8hQr0ZY7+rrb8bmwq1edf4YtqwWprr+FxRUPvf3V/zJhMv37X241s7osaNH1q9uWjdg2Oe0Ys1BEpBSkpPRItv39jCe2D9oMfjUt9EApGO3nj7rWK9bl84+6zyZSnyCUnvhqJXsczRA5vY06zo8nadzpXbHpqXS+L+9JzKyu8pVJ8+VzSafdxBnCR99sgq9enRDLo0WPUnoaffdae8H/q+VFrTr1stTHGazBfcWTMeyFR971bkybCmpSn2fAd+acnIvqnxj3iKqCzx0dFUOsezzwkO0EZz4i0uzmv++Z2Hc9sLL9GWHjL6UZNoW//zsp/CXMQ2pmkNu73efoEWi+4BkL9KQ39+9u6morMSk2+/B9p3+55Stua1Ndd3zPzvZLf8u3HzpMUcb0TzGDmiXq0ia9+5Y495dDxl378zXlx32uqt4gml6wVQw8A76Yd136JrQsDhfZ7Yipd8llJk0PAZ+Lz6A626ajCOlZQ4159GafY7N3LHrFnPX3nOq77s2cKg7tbQrnBWgne7Tv6tOmrnwMuPRI9fojh8doD9ckiuXHVFnokcMHULTps86s5CKikrof93gnOHbWWHFoNFXOU1t/HGzOlNXffq0uqZobZFrsbXILaF56I3WFq2WVz9w05ekHFH66WwsjMLZBdqHw3Hz3mmfUH54tFx1amCrxPiuc6benZOblpLQRJYM+9d9qeuXQluRiHY0aa207Jhnq1WE5cOv19a98q+PS61JKUVKUvLGupadPjfdOzbk+Qgf7mjG+i/Z2KCjvvOnNAAAAABJRU5ErkJggg==">
+            </div>
+            <div class="sys-chat">
+              <p>Hello! How can I assist you today?</p>
+            </div>
+          </div>
+          <!--?lit$471298579$-->
+          <!--?lit$471298579$--> <!--?lit$471298579$-->
+        </div>
+        <div class="fixed-chat-menu" part="qa-chat-query-input">
+          <div hidden="" class="mic-icon">
+            <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAV1BMVEVHcEzz9fjy9fby9vfy9fby9fby9fby9ffy9fb3+v3z9vjy+fnz9fby9vfy9fYdJi5RWV+9wcSprrKMkpfj5+l5gIXJzs9scnguNj7W2txETFNtc3lfZmvDlhU2AAAADnRSTlMAR7VX2PLDZYAUNSeYdeZv4A0AAAEqSURBVEjH7ZbZboQwDEUNhCUMZIewzP9/Z0MYmE4Fii21b71vwD3kynLiAOziRc5KcSNWNQ/4EO9uzYeq9ps/S9o3dae/EThVfPcXAqt8zyPwiqlyAlCGUFxQ1APUJIABVCRAPKCkAcU1YJWcnubqSw0XL90io1Ys4OVLBgkcfqn+gV8E1KHhrwBSpFGNEfAqAnZIAqGBpq2NtobyIV0y0uTFcDafkzYJWDmL5+638SEFuGlxwvhQojHkGxBV0nJ5/dZsLKKsepKr0douUjnkFh22OsnFYLdo0Cy9E+hDQIxay1XrGQ2oo6yEFTZdr0A++RgNaKGjAZwwsI6hRcqUAW2iVEAbcuV+H+CMEigSuLFVZu+7A6a27ON+0qYWYT38VFv0zY3qjJ+2L40ed32+g0jCAAAAAElFTkSuQmCC">
+          </div>
+          <div class="chat-input">
+            <input type="text" placeholder="Type here">
+          </div>
+          <div class="chat-submit">
+            <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAUVBMVEVHcEwBzp0Bzp0Bzp0A0ZwBzp0Az54Az50BzZ0Az5wCzp0Azp0Czp3///8R0aNJ3Lke1Kjb+fLL9uu58uTo+/b2/vyj7tx45cuL6dNd4MEw16/FIjdXAAAADHRSTlMA2MO1FPIuZIBMmHWMXMf8AAABIUlEQVRIx82W2XqDIBCFAUFFGcAFl7z/g5YlSZt8Ncxctef6/DobDIwVya7hylyIi75lL5LDpfkh8RPRVXvS8PT3Bichi78zWDUlHoNXjqohACoGJQ1FIyWD3BHGBAkwLVM0QFOBjpm/BzwFsOe2OjTgjhkAZlxIt30JkHWrAymOYo7QVku6xJE1u8j5z4BdH25YTz8BHLWyurs9HDb5g632YS/Be5P8sCMatwFMsfQ2+VdUp5f02eyHEz0aNpdqQs9S8YNDA8W/4Kd1/20oPuawRP9GOQ+xSMGTDpAPB/HEOfuPL4F3gHzzcerdOtAASVpAZWlxWgq0jSIYbcmpstwlpwSUCdzaUvr77YCpLX95n7S1n/CRvavVY3+hTsun7QvVVGZv9usu4AAAAABJRU5ErkJggg==">
+          </div>
+        </div>
+      </div>
+    </template></qa-chat>
+              </div>
+              <div class="ext-tab-box tab3-content" style="display: none;">
+                <div class="rating-block">
+                  <h3>Rate us</h3>
+                  <div class="rating">
+                    <!--?lit$471298579$--><!----><button class="active">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9.543" viewBox="0 0 10 9.543">
+                            <path data-name="Path 339085" d="m103.49 39.78 1.067 3.3h3.48a.232.232 0 0 1 .133.422l-2.813 2.046 1.078 3.3a.231.231 0 0 1-.356.256l-2.813-2.035-2.813 2.046a.23.23 0 0 1-.356-.256l1.078-3.3-2.813-2.046a.234.234 0 0 1 .133-.422h3.48l1.067-3.313a.235.235 0 0 1 .445 0z" transform="translate(-98.27 -39.621)"></path>
+                          </svg>
+                        </button><!----><!----><button class="active">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9.543" viewBox="0 0 10 9.543">
+                            <path data-name="Path 339085" d="m103.49 39.78 1.067 3.3h3.48a.232.232 0 0 1 .133.422l-2.813 2.046 1.078 3.3a.231.231 0 0 1-.356.256l-2.813-2.035-2.813 2.046a.23.23 0 0 1-.356-.256l1.078-3.3-2.813-2.046a.234.234 0 0 1 .133-.422h3.48l1.067-3.313a.235.235 0 0 1 .445 0z" transform="translate(-98.27 -39.621)"></path>
+                          </svg>
+                        </button><!----><!----><button class="active">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9.543" viewBox="0 0 10 9.543">
+                            <path data-name="Path 339085" d="m103.49 39.78 1.067 3.3h3.48a.232.232 0 0 1 .133.422l-2.813 2.046 1.078 3.3a.231.231 0 0 1-.356.256l-2.813-2.035-2.813 2.046a.23.23 0 0 1-.356-.256l1.078-3.3-2.813-2.046a.234.234 0 0 1 .133-.422h3.48l1.067-3.313a.235.235 0 0 1 .445 0z" transform="translate(-98.27 -39.621)"></path>
+                          </svg>
+                        </button><!----><!----><button class="">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9.543" viewBox="0 0 10 9.543">
+                            <path data-name="Path 339085" d="m103.49 39.78 1.067 3.3h3.48a.232.232 0 0 1 .133.422l-2.813 2.046 1.078 3.3a.231.231 0 0 1-.356.256l-2.813-2.035-2.813 2.046a.23.23 0 0 1-.356-.256l1.078-3.3-2.813-2.046a.234.234 0 0 1 .133-.422h3.48l1.067-3.313a.235.235 0 0 1 .445 0z" transform="translate(-98.27 -39.621)"></path>
+                          </svg>
+                        </button><!----><!----><button class="">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9.543" viewBox="0 0 10 9.543">
+                            <path data-name="Path 339085" d="m103.49 39.78 1.067 3.3h3.48a.232.232 0 0 1 .133.422l-2.813 2.046 1.078 3.3a.231.231 0 0 1-.356.256l-2.813-2.035-2.813 2.046a.23.23 0 0 1-.356-.256l1.078-3.3-2.813-2.046a.234.234 0 0 1 .133-.422h3.48l1.067-3.313a.235.235 0 0 1 .445 0z" transform="translate(-98.27 -39.621)"></path>
+                          </svg>
+                        </button><!---->
+                  </div>
+                  <textarea class="form-control" placeholder="Feedback" rows="5"></textarea>
+                  <div class="btn-right">
+                    <div class="feedback-notification" style="visibility:hidden;">
+                      <p class="success">Feedback submitted successfully.</p>
+                    </div>
+                    <button class="btn-black">
+                      Submit
+                      <img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAY1BMVEVHcEwcJS0VISkbJSwcJS0cJS0aJS0cJi4cJi0bJCwcJS0cJS0SHyUcJSwcJS0cJS0dJi7///8vNz9dY2lAR04mLjb4+Pjg4eLFx8nV1ti1uLqGi4+ipqludHns7e2VmZ3p6uvnFlk4AAAAEHRSTlMA8Bdc2MMsgGVItfkNdZ6QyCOEBQAAATRJREFUSMe9lulygzAMhAWYwxyJZYOhXOH9n7JgN5kkbWJpOu3+/nZYYdkSgFedlCJSLyTSPIMHxedKBZTKO15GiqDTjc8VTWns+URRVfo8FdngU5V0XlV7qFhx1AAULIMASFkGlUHEMyRQcQ08XhV/YNAcg17G1VANnbl8IOJAi9ROg0WnNmzQy7w51o4Wx1DRPofTYDa07XuDXq80bovuEefQbzVfuL10B2918Bwmn6ZVB48T4eBmxH7/9Y5fO8pJD9OOaVf6Qm6NzvE9uZc8j4Zs8PxA79bpp6Z4W8O48yPnPnT996YIdKudmTfO6P+70782MF8+CYL7tp5YfFWDZBmOoSV4JXBm4j5HgTfkIr8P1IITyC0OtLEV3S0PZ8o8fNhPstBHRAPPypImf6FCxjfsEy2Rh2EdxhIFAAAAAElFTkSuQmCC">
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="overlay"></div>
+    </template></super-widget><super-dialog><template shadowrootmode="open"><!----><web-dialog id="info-dialog" center="" aria-modal="true"><template shadowrootmode="open">
+  <style>*{box-sizing:border-box}:host{padding:var(--dialog-container-padding,5vw 24px);z-index:var(--dialog-z-index,12345678);outline:none}#backdrop,:host{position:fixed;top:0;left:0;bottom:0;right:0}:host,:host([center]) #dialog{overflow-x:var(--dialog-overflow-x,hidden);overflow-y:var(--dialog-overflow-y,auto);overscroll-behavior:contain;-webkit-overflow-scrolling:touch}:host([center]){display:flex;align-items:center;justify-content:center;overflow:hidden}:host([center]) #dialog{max-height:var(--dialog-max-height,100%)}:host(:not(:defined)),:host(:not([open])){display:none}#backdrop{background:var(--dialog-backdrop-bg,rgba(0,0,0,.6));animation:fadeIn var(--dialog-animation-duration,.1s) var(--dialog-animation-easing,ease-out);z-index:-1}#dialog{animation:scaleIn var(--dialog-animation-duration,.1s) var(--dialog-animation-easing,ease-out);border-radius:var(--dialog-border-radius,12px);box-shadow:var(--dialog-box-shadow,0 2px 10px -5px rgba(0,0,0,.6));max-width:var(--dialog-max-width,700px);width:var(--dialog-width,100%);padding:var(--dialog-padding,24px);max-height:var(--dialog-max-height,unset);height:var(--dialog-height,auto);color:var(--dialog-color,currentColor);background:var(--dialog-bg,#fff);z-index:1;position:relative;display:flex;flex-direction:column;margin:0 auto;border:none}::slotted(article),article{flex-grow:1;overflow-y:auto;-webkit-overflow-scrolling:touch}::slotted(footer),::slotted(header),footer,header{flex-shrink:0}@keyframes scaleIn{0%{transform:scale(.9) translateY(30px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}@keyframes fadeIn{0%{opacity:0}to{opacity:1}}</style>
+  <div id="backdrop" part="backdrop"></div>
+  <focus-trap id="dialog" part="dialog" role="alertdialog"><template shadowrootmode="open">
+	<div id="start" tabindex="-1"></div>
+	<div id="backup"></div>
+	<slot></slot>
+	<div id="end" tabindex="-1"></div>
+</template>
+    <slot></slot>
+  </focus-trap>
+</template>
+      <header>
+        <button type="button" class="close" data-dismiss="modal">
+          ×
+        </button>
+      </header>
+      <article>
+        <div class="check-icon">
+          <img class="check-icon" src="data:image/png;base64,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">
+        </div>
+        <h4><!--?lit$471298579$--></h4>
+      </article>
+    </web-dialog></template></super-dialog></body></html>

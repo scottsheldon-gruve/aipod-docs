@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Dive: OVN → Cilium Migration</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --surface3: #21262d;
+    --border: #30363d;
+    --border2: #21262d;
+    --accent: #58a6ff;
+    --accent-dim: rgba(88,166,255,0.1);
+    --green: #3fb950;
+    --green-dim: rgba(63,185,80,0.1);
+    --yellow: #d29922;
+    --yellow-dim: rgba(210,153,34,0.1);
+    --red: #f85149;
+    --red-dim: rgba(248,81,73,0.1);
+    --purple: #bc8cff;
+    --purple-dim: rgba(188,140,255,0.1);
+    --orange: #e3b341;
+    --text: #c9d1d9;
+    --text-muted: #8b949e;
+    --text-dim: #6e7681;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.75; }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar { width: 260px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.5rem 0; }
+  .sidebar-logo { padding: 0 1.25rem 1.5rem; border-bottom: 1px solid var(--border2); margin-bottom: 1rem; }
+  .sidebar-logo-tag { font-family: var(--mono); font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.4rem; }
+  .sidebar-logo-title { font-weight: 700; font-size: 0.95rem; color: #fff; line-height: 1.3; }
+  .sidebar-logo-sub { font-family: var(--mono); font-size: 0.68rem; color: var(--accent); margin-top: 0.3rem; }
+  .nav-section { padding: 0.25rem 0 0.75rem; }
+  .nav-section-label { padding: 0.25rem 1.25rem; font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-dim); margin-bottom: 0.25rem; }
+  .nav-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 1.25rem; font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: all 0.15s; cursor: pointer; border-left: 2px solid transparent; }
+  .nav-item:hover { color: var(--text); background: var(--surface2); border-left-color: var(--border); }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Main */
+  .main { flex: 1; min-width: 0; padding: 3rem 3rem 6rem; max-width: 900px; }
+  .page-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .page-eyebrow { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.75rem; }
+  .page-title { font-size: 2.25rem; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 1rem; }
+  .page-desc { color: var(--text-muted); font-size: 0.93rem; max-width: 680px; line-height: 1.8; }
+  .meta-pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1.25rem; }
+  .pill { font-family: var(--mono); font-size: 0.68rem; padding: 0.25rem 0.6rem; border-radius: 20px; border: 1px solid var(--border); color: var(--text-muted); background: var(--surface2); }
+
+  /* Phase */
+  .phase { margin-bottom: 4rem; scroll-margin-top: 2rem; }
+  .phase-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.75rem; }
+  .phase-num { font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); background: var(--surface2); border: 1px solid var(--border); padding: 0.2rem 0.5rem; border-radius: 4px; margin-top: 0.4rem; flex-shrink: 0; }
+  .phase-title { font-size: 1.35rem; font-weight: 700; color: #fff; line-height: 1.3; }
+  .phase-subtitle { font-size: 0.83rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+  /* Steps */
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1.5rem; overflow: hidden; }
+  .step-header { padding: 0.9rem 1.25rem; background: var(--surface2); border-bottom: 1px solid var(--border2); display: flex; align-items: center; gap: 0.75rem; }
+  .step-badge { font-family: var(--mono); font-size: 0.6rem; padding: 0.15rem 0.4rem; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.08em; flex-shrink: 0; }
+  .step-badge.diagnose { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(188,140,255,0.25); }
+  .step-badge.fix { background: var(--green-dim); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+  .step-badge.verify { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(88,166,255,0.25); }
+  .step-badge.error { background: var(--red-dim); color: var(--red); border: 1px solid rgba(248,81,73,0.25); }
+  .step-badge.warn { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(210,153,34,0.25); }
+  .step-title { font-weight: 600; font-size: 0.9rem; color: #fff; }
+  .step-body { padding: 1.25rem; }
+  .step-why { font-size: 0.87rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.75; padding-left: 0.75rem; border-left: 2px solid var(--border); }
+
+  /* Commands */
+  .cmd-wrap { margin: 0.75rem 0; }
+  .cmd-label { font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 0.3rem; }
+  .cmd { background: #010409; border: 1px solid var(--border2); border-radius: 6px; padding: 0.8rem 1rem; font-family: var(--mono); font-size: 0.8rem; color: #e6edf3; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; }
+  .output { background: #010409; border: 1px solid var(--border2); border-top: 2px solid var(--border); border-radius: 0 0 6px 6px; padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; overflow-x: auto; white-space: pre-wrap; }
+  .g { color: var(--green); }
+  .r { color: var(--red); }
+  .y { color: var(--yellow); }
+  .b { color: var(--accent); }
+  .p { color: var(--purple); }
+
+  /* Callouts */
+  .callout { border-radius: 6px; padding: 0.9rem 1.1rem; margin: 1rem 0; font-size: 0.85rem; line-height: 1.7; display: flex; gap: 0.75rem; }
+  .callout-icon { flex-shrink: 0; font-size: 1rem; margin-top: 0.05rem; }
+  .callout-body { flex: 1; }
+  .callout-title { font-weight: 600; margin-bottom: 0.2rem; font-size: 0.83rem; }
+  .callout.info { background: var(--accent-dim); border: 1px solid rgba(88,166,255,0.2); color: #8ecaff; }
+  .callout.info .callout-title { color: var(--accent); }
+  .callout.success { background: var(--green-dim); border: 1px solid rgba(63,185,80,0.2); color: #7ee787; }
+  .callout.success .callout-title { color: var(--green); }
+  .callout.warning { background: var(--yellow-dim); border: 1px solid rgba(210,153,34,0.2); color: #e3b341; }
+  .callout.warning .callout-title { color: var(--orange); }
+
+  .insight { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem 1.1rem; margin: 1rem 0; font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; }
+  .insight strong { color: var(--text); }
+
+  code { font-family: var(--mono); font-size: 0.82em; background: var(--surface3); border: 1px solid var(--border2); padding: 0.1em 0.35em; border-radius: 3px; color: #e6edf3; }
+
+  .divider { height: 1px; background: var(--border2); margin: 3rem 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 1rem 0; }
+  th { text-align: left; padding: 0.6rem 0.9rem; background: var(--surface2); color: var(--text-muted); font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid var(--border); font-weight: 500; }
+  td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border2); color: var(--text-muted); vertical-align: top; line-height: 1.6; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.01); }
+  .td-cmd { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); }
+
+  footer { margin-top: 5rem; padding-top: 2rem; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 0.68rem; color: var(--text-dim); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+  @media (max-width: 768px) { .sidebar { display: none; } .main { padding: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-tag">Deep Dive Report</div>
+    <div class="sidebar-logo-title">OVN → Isovalent<br>Cilium Migration</div>
+    <div class="sidebar-logo-sub">oslab.oslab · Apr 10, 2026</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Overview</div>
+    <a class="nav-item" href="#overview"><span class="nav-dot" style="background:#58a6ff"></span>Environment &amp; Goals</a>
+    <a class="nav-item" href="#prereqs"><span class="nav-dot" style="background:#58a6ff"></span>Prerequisites</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Phase 1 — Operator</div>
+    <a class="nav-item" href="#p1-pkg"><span class="nav-dot" style="background:#f85149"></span>Wrong Package Name</a>
+    <a class="nav-item" href="#p1-channel"><span class="nav-dot" style="background:#f85149"></span>No Stable Channel</a>
+    <a class="nav-item" href="#p1-success"><span class="nav-dot" style="background:#3fb950"></span>Operator Running</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Phase 2 — CiliumConfig</div>
+    <a class="nav-item" href="#p2-hubble"><span class="nav-dot" style="background:#f85149"></span>Hubble UI Blocked</a>
+    <a class="nav-item" href="#p2-scc"><span class="nav-dot" style="background:#f85149"></span>SCC Denied</a>
+    <a class="nav-item" href="#p2-cnipath"><span class="nav-dot" style="background:#f85149"></span>RHCOS Read-Only FS</a>
+    <a class="nav-item" href="#p2-success"><span class="nav-dot" style="background:#3fb950"></span>Cilium Agents Up</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Phase 3 — Cutover</div>
+    <a class="nav-item" href="#p3-patch"><span class="nav-dot" style="background:#d29922"></span>Network Operator Patch</a>
+    <a class="nav-item" href="#p3-ovn"><span class="nav-dot" style="background:#f85149"></span>OVN Stuck Rollout</a>
+    <a class="nav-item" href="#p3-multus"><span class="nav-dot" style="background:#f85149"></span>Multus Crash Loop</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Phase 4 — Validation</div>
+    <a class="nav-item" href="#p4-dns"><span class="nav-dot" style="background:#f85149"></span>DNS Broken</a>
+    <a class="nav-item" href="#p4-pods"><span class="nav-dot" style="background:#d29922"></span>Pod IP Migration</a>
+    <a class="nav-item" href="#p4-verify"><span class="nav-dot" style="background:#3fb950"></span>Final Verification</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-label">Reference</div>
+    <a class="nav-item" href="#cmd-summary"><span class="nav-dot" style="background:#8b949e"></span>Command Summary</a>
+    <a class="nav-item" href="#outstanding"><span class="nav-dot" style="background:#8b949e"></span>Outstanding Items</a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="page-header" id="overview">
+    <div class="page-eyebrow">Technical Deep Dive · Migration Report</div>
+    <h1 class="page-title">OVN-Kubernetes → Isovalent<br>Enterprise Cilium</h1>
+    <p class="page-desc">Every command executed during the migration — what it was looking for, what it found, and how that finding led to each fix. Covers all 8 blocking issues encountered on a 4-node OpenShift 4.21.5 cluster on VMware ESXi.</p>
+    <div class="meta-pills">
+      <span class="pill">OpenShift 4.21.5</span>
+      <span class="pill">VMware ESXi / vSphere</span>
+      <span class="pill">Cilium v1.14.22-cee.1</span>
+      <span class="pill">4 Nodes</span>
+      <span class="pill">April 10, 2026</span>
+      <span class="pill">Cisco FlashStack CVD Reference</span>
+    </div>
+  </div>
+
+  <!-- Prerequisites -->
+  <div class="phase" id="prereqs">
+    <div class="phase-header">
+      <span class="phase-num">00</span>
+      <div>
+        <div class="phase-title">Environment &amp; Prerequisites</div>
+        <div class="phase-subtitle">Baseline checks before any migration work</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge verify">Verify</span><span class="step-title">Confirm all nodes are healthy</span></div>
+      <div class="step-body">
+        <p class="step-why">Before touching any CNI configuration we need a clean baseline. Pre-existing node issues compound during a CNI migration and make debugging nearly impossible. This is the mandatory first gate.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Command</div>
+          <div class="cmd">$ oc get nodes</div>
+          <div class="output"><span class="g">00-0c-29-00-5a-a2   Ready    control-plane,master,worker   23d   v1.34.4
+00-0c-29-60-9f-c0   Ready    control-plane,master,worker   23d   v1.34.4
+00-0c-29-6d-c4-20   Ready    worker                        11d   v1.34.4
+00-0c-29-e1-2f-26   Ready    control-plane,master,worker   23d   v1.34.4</span></div>
+        </div>
+        <div class="callout success"><span class="callout-icon">✓</span><div class="callout-body"><div class="callout-title">Clean baseline confirmed</div>All 4 nodes Ready. 3 compact control-plane nodes plus 1 dedicated worker. No pre-existing issues.</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge verify">Verify</span><span class="step-title">Back up network operator configuration</span></div>
+      <div class="step-body">
+        <p class="step-why">The network operator config is the most critical object we will modify. This backup is the only way to quickly restore OVN if the migration fails before completion. We also took VMware snapshots of all 4 VMs at this point.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Command</div>
+          <div class="cmd">$ oc get network.operator cluster -o yaml > ~/network-operator-backup.yaml</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Phase 1 -->
+  <div class="phase" id="p1-pkg">
+    <div class="phase-header">
+      <span class="phase-num">01</span>
+      <div>
+        <div class="phase-title">Phase 1 — Installing the Cilium Operator</div>
+        <div class="phase-subtitle">Discovering the wrong package name and non-existent channel in the CVD</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge fix">Setup</span><span class="step-title">Create namespace and OperatorGroup</span></div>
+      <div class="step-body">
+        <p class="step-why">Cilium Enterprise is installed via OLM into its own namespace. OpenShift requires an OperatorGroup to scope which namespaces the operator watches. Both must exist before the Subscription can be created.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Command</div>
+          <div class="cmd">$ cat &lt;&lt;EOF | oc apply -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: isovalent
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: isovalent-operatorgroup
+  namespace: isovalent
+spec:
+  targetNamespaces:
+  - isovalent
+EOF</div>
+          <div class="output"><span class="g">namespace/isovalent created
+operatorgroup.operators.coreos.com/isovalent-operatorgroup created</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge error">Error</span><span class="step-title">CVD subscription fails — no pods appear after 3 minutes</span></div>
+      <div class="step-body">
+        <p class="step-why">The CVD specifies <code>name: isovalent</code> and <code>channel: stable</code>. We applied exactly as written. The Subscription resource was accepted by the API server (no YAML errors) but no operator pod ever appeared — a sign OLM resolved the subscription but couldn't find the package.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Command — as written in Cisco CVD</div>
+          <div class="cmd">$ cat &lt;&lt;EOF | oc apply -f -
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: isovalent
+  namespace: isovalent
+spec:
+  channel: stable
+  name: isovalent
+  source: certified-operators
+  sourceNamespace: openshift-marketplace
+EOF</div>
+          <div class="output"><span class="g">subscription.operators.coreos.com/isovalent created</span></div>
+        </div>
+        <div class="callout warning"><span class="callout-icon">⚠</span><div class="callout-body"><div class="callout-title">No pods after 3 minutes</div>OLM accepted the object syntax but couldn't resolve the package to an operator bundle. The subscription is stuck in a failed resolution state.</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge diagnose">Diagnose</span><span class="step-title">Inspect subscription status.conditions to find the real error</span></div>
+      <div class="step-body">
+        <p class="step-why">When OLM cannot resolve a subscription it records the failure reason in <code>status.conditions</code>. We fetch the full subscription YAML to read that field and get the exact error message rather than guessing.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Command</div>
+          <div class="cmd">$ oc get subscription isovalent -n isovalent -o yaml</div>
+          <div class="output">status:
+  conditions:
+  - message: <span class="r">'constraints not satisfiable: no operators found in package isovalent
+      in the catalog referenced by subscription isovalent'</span>
+    reason: ConstraintsNotSatisfiable
+    type: ResolutionFailed</div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> The package name <code>isovalent</code> does not exist anywhere in the <code>certified-operators</code> catalog. OLM searched the full index and found nothing. The CVD package name is simply wrong.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p1-channel">
+      <div class="step-header"><span class="step-badge diagnose">Diagnose</span><span class="step-title">Search the catalog for the real package name and channels</span></div>
+      <div class="step-body">
+        <p class="step-why">The PackageManifest objects represent the catalog index. Grepping them for Cilium/Isovalent terms will surface what the actual package is called. Then we query that specific package for its available channels.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Find the package</div>
+          <div class="cmd">$ oc get packagemanifest -n openshift-marketplace | grep -i -E "isovalent|cilium"</div>
+          <div class="output"><span class="g">cilium-enterprise</span>                                    Certified Operators   23d</div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Find available channels</div>
+          <div class="cmd">$ oc get packagemanifest cilium-enterprise -n openshift-marketplace \
+  -o jsonpath='{.status.channels[*].name}'</div>
+          <div class="output"><span class="g">1.10 1.11 1.12 1.13 1.14</span></div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> The package is <code>cilium-enterprise</code> not <code>isovalent</code>. There is no <code>stable</code> channel — only versioned channels 1.10 through 1.14. We use <code>1.14</code> as the latest, which matches the version referenced in the CVD body text even though the YAML example is wrong.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p1-success">
+      <div class="step-header"><span class="step-badge fix">Fix</span><span class="step-title">Recreate subscription with correct package name and channel</span></div>
+      <div class="step-body">
+        <p class="step-why">OLM does not self-heal a failed subscription. We delete the broken one and recreate with the correct values. A stuck subscription blocks any new subscription for the same operator in the same namespace.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Commands</div>
+          <div class="cmd">$ oc delete subscription isovalent -n isovalent
+
+$ cat &lt;&lt;EOF | oc apply -f -
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cilium-enterprise
+  namespace: isovalent
+spec:
+  channel: "1.14"
+  name: cilium-enterprise
+  source: certified-operators
+  sourceNamespace: openshift-marketplace
+EOF</div>
+          <div class="output"><span class="g">subscription.operators.coreos.com/isovalent deleted
+subscription.operators.coreos.com/cilium-enterprise created</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Verify — CSV and operator pod</div>
+          <div class="cmd">$ oc get csv -n isovalent
+$ oc get pods -n isovalent</div>
+          <div class="output"><span class="g">NAME                                  PHASE
+cilium-enterprise.v1.14.22-x6d86c88   Succeeded
+
+NAME                             READY   STATUS
+cilium-ee-olm-844b88746d-ntvxr   1/1     Running</span></div>
+        </div>
+        <div class="callout success"><span class="callout-icon">✓</span><div class="callout-body"><div class="callout-title">Phase 1 complete</div>CSV Succeeded. Operator pod Running. Ready to deploy CiliumConfig.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Phase 2 -->
+  <div class="phase" id="p2-hubble">
+    <div class="phase-header">
+      <span class="phase-num">02</span>
+      <div>
+        <div class="phase-title">Phase 2 — Deploying CiliumConfig</div>
+        <div class="phase-subtitle">Three separate blocking issues: Hubble UI validation, RHCOS read-only filesystem, and SCC permissions</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge error">Error</span><span class="step-title">Hubble UI chart validation rejects every CiliumConfig apply</span></div>
+      <div class="step-body">
+        <p class="step-why">We applied the CiliumConfig from the CVD with Hubble enabled. The operator kept looping — no Cilium agent pods appeared. We needed to read the operator logs to find out why the Helm install kept failing.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — operator logs filtered to errors only</div>
+          <div class="cmd">$ oc logs -n isovalent deployment/cilium-ee-olm --tail=10 | grep -v OverrideValues | grep -v DEBUG</div>
+          <div class="output"><span class="r">ERROR helm.controller Release failed
+  "error": "failed to install release: execution error at
+  (cilium-enterprise/charts/hubble-ui/templates/configmap.yaml:58:17):
+  `frontend.server.host` OR (`ingress.enabled` AND `ingress.host`) required"</span></div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> The Hubble UI Helm subchart has a required field guard at configmap.yaml line 58. It refuses to render without a hostname or ingress config. The CVD enables Hubble UI without providing these fields. The operator loops every ~30 seconds trying to install a chart that will always fail this validation check.</div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Attempted fix — get cluster ingress domain and add hostname</div>
+          <div class="cmd">$ oc get ingress.config cluster -o jsonpath='{.spec.domain}'
+<span class="y"># → apps.oslab.oslab
+# Added frontend.server.host: "hubble-ui.apps.oslab.oslab" to CiliumConfig
+# STILL failed — the YAML nesting didn't match the Helm value path</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Fix — disable Hubble UI using correct Helm subchart keys</div>
+          <div class="cmd">$ cat &lt;&lt;EOF | oc apply -f -
+apiVersion: cilium.io/v1alpha1
+kind: CiliumConfig
+metadata:
+  name: cilium
+  namespace: isovalent
+spec:
+  debug:
+    enabled: false
+  kubeProxyReplacement: "strict"
+  hubble:
+    enabled: false
+  hubble-ui:          # subchart key — disables the whole subchart
+    enabled: false
+  hubble-enterprise:  # subchart key — disables enterprise hubble
+    enabled: false
+EOF</div>
+        </div>
+        <div class="insight"><strong>Why <code>hubble-ui:</code> as a top-level key?</strong> Cilium Enterprise is a Helm parent chart with named subcharts. In Helm values, subchart configuration lives under the subchart's chart name as a top-level key. <code>hubble.ui.enabled: false</code> sets a value inside the parent chart's <code>hubble</code> block. <code>hubble-ui.enabled: false</code> disables the entire subchart. These are different things.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p2-scc">
+      <div class="step-header"><span class="step-badge error">Error</span><span class="step-title">SCC admission blocks all Cilium pods from scheduling</span></div>
+      <div class="step-body">
+        <p class="step-why">CiliumConfig showed <code>UpgradeSuccessful</code> but the DaemonSet showed DESIRED=4, CURRENT=0. No pods were scheduling. We need to find out why the pods are being rejected — DaemonSet events will show the scheduler/admission error.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — DaemonSet events</div>
+          <div class="cmd">$ oc describe daemonset cilium -n isovalent | grep -A3 "Events"</div>
+          <div class="output"><span class="r">Error creating: pods "cilium-" is forbidden: unable to validate against
+any security context constraint:
+  provider restricted-v2: .spec.securityContext.hostNetwork: Invalid: Host network not allowed
+  provider restricted-v2: .containers[0].capabilities.add: "NET_ADMIN" may not be added
+  provider restricted-v2: .containers[0].capabilities.add: "SYS_ADMIN" may not be added
+  provider "privileged": Forbidden: not usable by user or serviceaccount</span></div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> OpenShift's SCC admission evaluated the Cilium pod spec against every available SCC and rejected it from all of them. The Cilium agent needs <code>hostNetwork</code>, hostPath volumes, and privileged kernel capabilities — none permitted by default. Critically the <code>privileged</code> SCC shows "not usable by user or serviceaccount" — meaning the SCC exists but the Cilium service accounts haven't been bound to it. This is an RBAC binding gap, not a missing SCC.</div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Fix — bind the privileged SCC to Cilium service accounts</div>
+          <div class="cmd">$ oc adm policy add-scc-to-user privileged -z cilium -n isovalent
+$ oc adm policy add-scc-to-user privileged -z cilium-operator -n isovalent</div>
+          <div class="output"><span class="g">clusterrole.rbac.authorization.k8s.io/system:openshift:scc:privileged added: "cilium"
+clusterrole.rbac.authorization.k8s.io/system:openshift:scc:privileged added: "cilium-operator"</span></div>
+        </div>
+        <div class="insight"><strong>Why privileged SCC?</strong> Cilium is a CNI plugin operating at the kernel level via eBPF. It needs to mount BPF filesystems, access /proc, manage iptables, and use CAP_NET_ADMIN and CAP_SYS_ADMIN. These are the same capabilities OVN-Kubernetes already had. The CVD was written for upstream Kubernetes where SCCs don't exist.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p2-cnipath">
+      <div class="step-header"><span class="step-badge error">Error</span><span class="step-title">RHCOS read-only filesystem blocks CNI binary installation</span></div>
+      <div class="step-body">
+        <p class="step-why">After SCC was granted, pods started but all hit Init:CreateContainerError. We need to identify which init container is failing and the exact error to understand the root cause.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — pod events</div>
+          <div class="cmd">$ oc describe pod -n isovalent -l k8s-app=cilium | grep "Error\|Failed" | head -3</div>
+          <div class="output"><span class="r">Error: failed to mkdir /opt/cni/bin: mkdir /opt/cni: file exists</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Investigate the node filesystem structure</div>
+          <div class="cmd">$ oc debug node/00-0c-29-e1-2f-26 -- chroot /host ls -la /opt/cni</div>
+          <div class="output"><span class="y">lrwxrwxrwx. 1 root root 21 Mar 17 20:45 /opt/cni -> ../../usr/lib/opt/cni</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Confirm the symlink target is on a read-only overlay</div>
+          <div class="cmd">$ oc debug node/00-0c-29-e1-2f-26 -- chroot /host mkdir -p /usr/lib/opt/cni/bin</div>
+          <div class="output"><span class="r">mkdir: cannot create directory '/usr/lib/opt/cni': Read-only file system</span></div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> On RHCOS, <code>/opt/cni</code> is a symlink to <code>/usr/lib/opt/cni</code>. The <code>/usr</code> tree is on an immutable OSTree overlay — read-only by design. The init container tries to <code>mkdir /opt/cni</code> which fails because the symlink already exists, and even if it didn't, the target is read-only. The writable path for CNI binaries on RHCOS is <code>/var/lib/cni/bin</code> which lives on the writable <code>/var</code> partition.</div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Fix — override CNI bin path in CiliumConfig with correct subchart prefix</div>
+          <div class="cmd">$ cat &lt;&lt;EOF | oc apply -f -
+apiVersion: cilium.io/v1alpha1
+kind: CiliumConfig
+metadata:
+  name: cilium
+  namespace: isovalent
+spec:
+  debug:
+    enabled: false
+  kubeProxyReplacement: "strict"
+  hubble:
+    enabled: false
+  hubble-ui:
+    enabled: false
+  hubble-enterprise:
+    enabled: false
+  cilium:             # subchart prefix required for CNI values
+    cni:
+      binPath: "/var/lib/cni/bin"
+      confPath: "/var/run/multus/cni/net.d"
+EOF</div>
+        </div>
+        <div class="insight"><strong>Why the <code>cilium:</code> prefix?</strong> The CiliumConfig maps to Helm values. Since cilium-enterprise wraps the main Cilium chart as a subchart named <code>cilium</code>, CNI values must be nested under <code>cilium:</code> to reach the subchart. Without the prefix, the values are ignored at the parent chart level.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p2-success">
+      <div class="step-header"><span class="step-badge verify">Verify</span><span class="step-title">Confirm all 4 Cilium agents are running</span></div>
+      <div class="step-body">
+        <div class="cmd-wrap">
+          <div class="cmd-label">Commands</div>
+          <div class="cmd">$ oc get all -n isovalent</div>
+          <div class="output"><span class="g">pod/cilium-8q8vq    1/1   Running   0   2m   (node: 00-0c-29-e1-2f-26)
+pod/cilium-h249s    1/1   Running   0   2m   (node: 00-0c-29-00-5a-a2)
+pod/cilium-qkjjk    1/1   Running   0   2m   (node: 00-0c-29-60-9f-c0)
+pod/cilium-v6pdq    1/1   Running   0   2m   (node: 00-0c-29-6d-c4-20)
+pod/cilium-operator-668789cb7d-6ndmk   1/1   Running   0   2m
+pod/cilium-operator-668789cb7d-xsqmb   1/1   Running   0   2m
+
+daemonset.apps/cilium   DESIRED: 4   CURRENT: 4   READY: 4</span></div>
+        </div>
+        <div class="callout success"><span class="callout-icon">✓</span><div class="callout-body"><div class="callout-title">Phase 2 complete</div>4/4 Cilium agents running. Cilium is deployed — but OVN is still the active CNI. The cutover hasn't happened yet.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Phase 3 -->
+  <div class="phase" id="p3-patch">
+    <div class="phase-header">
+      <span class="phase-num">03</span>
+      <div>
+        <div class="phase-title">Phase 3 — The CNI Cutover</div>
+        <div class="phase-subtitle">Triggering the OVN → Cilium handoff and resolving the stuck rollout and Multus crash</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge diagnose">Diagnose</span><span class="step-title">Confirm current active CNI before patching</span></div>
+      <div class="step-body">
+        <p class="step-why">Despite Cilium agents running on all nodes, OVN is still authoritative. The network operator controls CNI selection. We verify the exact current state so we understand precisely what we are switching away from.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Command</div>
+          <div class="cmd">$ oc get network.operator cluster -o jsonpath='{.spec.defaultNetwork.type}'</div>
+          <div class="output"><span class="y">OVNKubernetes</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge fix">Fix</span><span class="step-title">Apply the three-object migration sequence</span></div>
+      <div class="step-body">
+        <p class="step-why">We initially tried patching only <code>network.operator</code> — it was silently reverted. Then we tried patching only <code>network.config</code> — the operator rejected it as "unsafe configuration change: cannot change default network type when not doing migration." All three objects must be updated together to satisfy the operator's safety checks.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Step 1 — Migration annotation (unlocks the safety gate)</div>
+          <div class="cmd">$ oc annotate network.operator cluster \
+  networkoperator.openshift.io/ovn-to-cilium-migration="" \
+  --overwrite</div>
+          <div class="output"><span class="g">network.operator.openshift.io/cluster annotated</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Step 2 — network.config (the authoritative desired-state object)</div>
+          <div class="cmd">$ oc patch network.config cluster --type merge \
+  -p '{"spec":{"networkType":"Cilium"}}'</div>
+          <div class="output"><span class="g">network.config.openshift.io/cluster patched</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Step 3 — network.operator migration field (triggers migration controller)</div>
+          <div class="cmd">$ oc patch network.operator cluster --type merge \
+  -p '{"spec":{"migration":{"networkType":"Cilium"}}}'</div>
+          <div class="output"><span class="g">network.operator.openshift.io/cluster patched</span></div>
+        </div>
+        <div class="insight"><strong>Why three objects?</strong> <code>network.config</code> is the cluster's desired networking state. <code>network.operator</code> is the operator's own config. The <code>migration</code> field signals the operator to use a controlled migration procedure rather than an abrupt switch. The annotation unlocks a safety gate that prevents accidental CNI type changes. All three must align or the operator rejects the change.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p3-ovn">
+      <div class="step-header"><span class="step-badge error">Error</span><span class="step-title">OVN DaemonSet rollout hung — ovnkube-controller not ready on all 4 nodes</span></div>
+      <div class="step-body">
+        <p class="step-why">After the migration patch the network operator started progressing but then reported a hung rollout. We need to identify specifically which container is not ready and whether this is expected behavior or an actual error.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — per-container readiness on OVN pods</div>
+          <div class="cmd">$ oc get pods -n openshift-ovn-kubernetes -l app=ovnkube-node \
+  -o jsonpath='{range .items[*]}{.metadata.name}: {range .status.containerStatuses[*]}{.name}={.ready} {end}{"\n"}{end}'</div>
+          <div class="output">ovnkube-node-8pgdv: kube-rbac-proxy-node=true nbdb=true northd=true ovn-controller=true <span class="r">ovnkube-controller=false</span> sbdb=true
+ovnkube-node-96kr2: kube-rbac-proxy-node=true nbdb=true northd=true ovn-controller=true <span class="r">ovnkube-controller=false</span> sbdb=true
+ovnkube-node-pz4nt: kube-rbac-proxy-node=true nbdb=true northd=true ovn-controller=true <span class="r">ovnkube-controller=false</span> sbdb=true
+ovnkube-node-tdmzm: kube-rbac-proxy-node=true nbdb=true northd=true ovn-controller=true <span class="r">ovnkube-controller=false</span> sbdb=true</div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — check ovnkube-controller logs for actual errors</div>
+          <div class="cmd">$ oc logs -n openshift-ovn-kubernetes ovnkube-node-8pgdv -c ovnkube-controller --tail=5</div>
+          <div class="output"><span class="b">I0410 20:37:01 iptables.go:401] "Running" command="iptables-save"
+I0410 20:37:11 reflector.go:979] "Watch close" type="*v1.EgressIP" totalItems=10
+I0410 20:38:01 reflector.go:979] "Watch close" type="*v1.NetworkPolicy" totalItems=10</span></div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> The ovnkube-controller is still running — the informer watch-closes are normal Kubernetes behavior, not errors. Its readiness probe is intentionally failing as the migration handoff mechanism — OVN signals to the network operator that it has yielded control. But the DaemonSet rollout controller was waiting for all pods to complete an update cycle that would never naturally finish. Manual intervention was required to unblock it.</div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Fix — scale down OVN control plane and evict node pods</div>
+          <div class="cmd">$ oc scale deployment ovnkube-control-plane \
+  -n openshift-ovn-kubernetes --replicas=0
+
+$ oc patch daemonset ovnkube-node \
+  -n openshift-ovn-kubernetes \
+  -p '{"spec":{"template":{"spec":{"nodeSelector":{"non-existing":"true"}}}}}'</div>
+          <div class="output"><span class="g">deployment.apps/ovnkube-control-plane scaled
+daemonset.apps/ovnkube-node patched</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" id="p3-multus">
+      <div class="step-header"><span class="step-badge error">Error</span><span class="step-title">Multus enters CrashLoopBackOff immediately after OVN removal</span></div>
+      <div class="step-body">
+        <p class="step-why">As soon as OVN pods were removed, all 4 Multus pods crashed. Multus is the primary CNI shim — without it, no new pods can get network interfaces. The cluster operator went Degraded. We need to diagnose fast.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — Multus logs</div>
+          <div class="cmd">$ oc logs -n openshift-multus -l app=multus --tail=5</div>
+          <div class="output"><span class="r">ERROR: still waiting for readinessindicatorfile @
+/host/run/multus/cni/net.d/10-ovn-kubernetes.conf.
+pollimmediate error: timed out waiting for the condition</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Verify what CNI configs exist on the node</div>
+          <div class="cmd">$ oc debug node/00-0c-29-60-9f-c0 -- chroot /host ls -la /run/multus/cni/net.d/</div>
+          <div class="output"><span class="g">-rw-r--r--. 1 root root 191 Apr 10 20:06 05-cilium.conflist</span>
+<span class="y">-rw-------. 1 root root 252 Apr 10 20:39 10-ovn-kubernetes.conf.cilium_bak</span></div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> Cilium had already correctly written its CNI config (<code>05-cilium.conflist</code>) and renamed the OVN config with a <code>.cilium_bak</code> suffix. But Multus's daemon config hardcoded <code>10-ovn-kubernetes.conf</code> as its readiness indicator — the specific file it waits for before marking itself Ready. With OVN gone, that file would never exist again. Multus would crash indefinitely on every restart cycle.</div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Fix — patch Multus daemon config to use Cilium readiness file</div>
+          <div class="cmd">$ oc patch configmap multus-daemon-config -n openshift-multus \
+  --type merge -p '{
+  "data": {
+    "daemon-config.json": "{\"chrootDir\":\"/hostroot\",\"logToStderr\":true,
+      \"cniConfigDir\":\"/run/multus/cni/net.d\",\"multusConfigFile\":\"auto\",
+      \"readinessIndicatorFile\":\"/run/multus/cni/net.d/05-cilium.conflist\",
+      \"namespaceIsolation\":false,
+      \"globalNamespaces\":\"default,kube-system,openshift-multus\"}"
+  }
+}'
+$ oc rollout restart daemonset/multus -n openshift-multus</div>
+          <div class="output"><span class="g">configmap/multus-daemon-config patched
+daemonset.apps/multus restarted</span></div>
+        </div>
+        <div class="insight"><strong>Path note:</strong> Multus uses <code>chrootDir: /hostroot</code>, meaning it prepends <code>/hostroot</code> to all config paths internally. The config must reference <code>/run/multus/cni/net.d/05-cilium.conflist</code> without a <code>/host</code> prefix — Multus resolves it against its chroot. The node directory listing confirmed this file exists at <code>/run/multus/cni/net.d/</code> on the host.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Phase 4 -->
+  <div class="phase" id="p4-dns">
+    <div class="phase-header">
+      <span class="phase-num">04</span>
+      <div>
+        <div class="phase-title">Phase 4 — Validation &amp; Pod IP Migration</div>
+        <div class="phase-subtitle">Diagnosing DNS failure caused by OVN-era pod IPs stranded outside Cilium's IPAM range</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge verify">Verify</span><span class="step-title">Confirm network operator and OVN state post-cutover</span></div>
+      <div class="step-body">
+        <div class="cmd-wrap">
+          <div class="cmd-label">Commands</div>
+          <div class="cmd">$ oc get co network
+$ oc get pods -n openshift-ovn-kubernetes</div>
+          <div class="output"><span class="g">NAME      VERSION   AVAILABLE   PROGRESSING   DEGRADED
+network   4.21.5    True        False         False
+
+No resources found in openshift-ovn-kubernetes namespace.</span></div>
+        </div>
+        <div class="callout success"><span class="callout-icon">✓</span><div class="callout-body"><div class="callout-title">OVN fully removed</div>Network operator healthy. Zero OVN pods remaining. All 4 nodes Ready.</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge error">Error</span><span class="step-title">DNS test times out — new pods can't reach cluster DNS</span></div>
+      <div class="step-body">
+        <p class="step-why">The definitive test of pod networking is creating a new pod and verifying it can resolve DNS. This exercises pod scheduling, CNI IP assignment, and service routing in a single command.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Test</div>
+          <div class="cmd">$ oc run test --image=busybox --rm -it --restart=Never \
+  -- nslookup kubernetes.default.svc.cluster.local</div>
+          <div class="output"><span class="r">;; connection timed out; no servers could be reached</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — check what backend Cilium is routing DNS to</div>
+          <div class="cmd">$ oc exec -n isovalent cilium-8q8vq -- cilium service list 2>&amp;1 | grep "172.30.0.10"</div>
+          <div class="output">62    172.30.0.10:53    ClusterIP    1 => <span class="r">10.130.0.75</span>:5353 (active)</div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — check actual DNS pod IPs</div>
+          <div class="cmd">$ oc get pods -n openshift-dns -o wide</div>
+          <div class="output">NAME              IP              NODE
+dns-default-pp62g  <span class="r">10.128.0.65</span>   00-0c-29-60-9f-c0   (OVN-era IP)
+dns-default-t75b9  <span class="r">10.130.0.75</span>   00-0c-29-00-5a-a2   (OVN-era IP)</div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Diagnosis — check Cilium's IPAM node CIDR allocations</div>
+          <div class="cmd">$ oc exec -n isovalent cilium-8q8vq -- cilium node list 2>&amp;1</div>
+          <div class="output">Name                IPv4 Address   Endpoint CIDR
+00-0c-29-00-5a-a2   10.7.1.82      <span class="g">10.0.2.0/24</span>
+00-0c-29-60-9f-c0   10.7.1.83      <span class="g">10.0.3.0/24</span>
+00-0c-29-6d-c4-20   10.7.1.84      <span class="g">10.0.1.0/24</span>
+00-0c-29-e1-2f-26   10.7.1.81      <span class="g">10.0.0.0/24</span></div>
+        </div>
+        <div class="insight"><strong>What this told us:</strong> Cilium allocated pod CIDRs in the <code>10.0.x.x/24</code> range — one /24 per node. DNS pods still had IPs from OVN's ranges (<code>10.128-131.x.x</code>). Cilium has no routes to these old addresses since they are outside its entire IPAM allocation. When a new pod (on a Cilium IP) queries <code>172.30.0.10:53</code>, Cilium routes the request to <code>10.130.0.75</code> (the DNS backend) — but has no way to reach that address. The fix is to restart DNS pods so they receive new Cilium IPs, after which Kubernetes automatically updates the service endpoint and Cilium picks up the new backend.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p4-pods">
+      <div class="step-header"><span class="step-badge fix">Fix</span><span class="step-title">Restart DNS pods — verify they receive Cilium IPs and service map updates</span></div>
+      <div class="step-body">
+        <div class="cmd-wrap">
+          <div class="cmd-label">Restart DNS DaemonSet</div>
+          <div class="cmd">$ oc rollout restart daemonset/dns-default -n openshift-dns</div>
+          <div class="output"><span class="g">daemonset.apps/dns-default restarted</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Verify new pods get Cilium IPs</div>
+          <div class="cmd">$ oc get pods -n openshift-dns -o wide</div>
+          <div class="output">NAME              IP            NODE
+dns-default-dqkt9  <span class="g">10.0.2.22</span>    00-0c-29-00-5a-a2
+dns-default-vtbpc  <span class="g">10.0.3.32</span>    00-0c-29-60-9f-c0</div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Verify Cilium service map auto-updated</div>
+          <div class="cmd">$ oc exec -n isovalent cilium-8q8vq -- cilium service list 2>&amp;1 | grep "172.30.0.10"</div>
+          <div class="output">62    172.30.0.10:53    ClusterIP    1 => <span class="g">10.0.3.32</span>:5353 (active)</div>
+        </div>
+        <div class="insight"><strong>What happened:</strong> When DNS pods restarted, Kubernetes updated the Endpoints/EndpointSlice objects for the <code>dns-default</code> service. Cilium's controller watches EndpointSlices and automatically updated its eBPF service map with the new backend IPs. No manual Cilium intervention was needed — this is Cilium's reconciliation loop working correctly.</div>
+      </div>
+    </div>
+
+    <div class="step" id="p4-verify">
+      <div class="step-header"><span class="step-badge verify">Verify</span><span class="step-title">Final DNS test and Cilium health check</span></div>
+      <div class="step-body">
+        <div class="cmd-wrap">
+          <div class="cmd-label">DNS resolution test</div>
+          <div class="cmd">$ oc run test --image=busybox --rm -it --restart=Never \
+  -- nslookup kubernetes.default.svc.cluster.local</div>
+          <div class="output"><span class="g">Server:    172.30.0.10
+Address:   172.30.0.10:53
+
+Name:      kubernetes.default.svc.cluster.local
+Address:   172.30.0.1</span></div>
+        </div>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Cilium agent health check</div>
+          <div class="cmd">$ oc exec -n isovalent cilium-8q8vq -- cilium status 2>&amp;1 | head -12</div>
+          <div class="output"><span class="g">KVStore:              Ok   Disabled
+Kubernetes:           Ok   1.34 (v1.34.4)
+Cilium:               Ok   1.14.22-cee.1
+NodeMonitor:          Listening for events on 8 CPUs
+Cilium health daemon: Ok
+IPAM:                 IPv4: 2/254 allocated from 10.0.2.0/24
+Controller Status:    22/22 healthy
+CNI Config file:      successfully wrote CNI configuration file to /host/etc/cni/net.d/05-cilium.conflist</span></div>
+        </div>
+        <div class="callout success"><span class="callout-icon">✓</span><div class="callout-body"><div class="callout-title">Migration fully verified</div>DNS resolving. Cilium Ok. 22/22 controllers healthy. CNI config written. All 34 cluster operators Available, 0 Degraded.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Command Summary -->
+  <div class="phase" id="cmd-summary">
+    <div class="phase-header">
+      <span class="phase-num">05</span>
+      <div>
+        <div class="phase-title">Command Reference Summary</div>
+        <div class="phase-subtitle">Every diagnostic command and what it revealed</div>
+      </div>
+    </div>
+    <table>
+      <thead><tr><th>Command</th><th>Purpose</th><th>Key Finding / Result</th></tr></thead>
+      <tbody>
+        <tr><td class="td-cmd">oc get nodes</td><td>Baseline health check</td><td>4/4 nodes Ready — clean start confirmed</td></tr>
+        <tr><td class="td-cmd">oc get subscription ... -o yaml</td><td>Read OLM resolution error</td><td>ConstraintsNotSatisfiable — package name wrong</td></tr>
+        <tr><td class="td-cmd">oc get packagemanifest | grep cilium</td><td>Find correct package name</td><td>Correct name: cilium-enterprise</td></tr>
+        <tr><td class="td-cmd">oc get packagemanifest ... -o jsonpath channels</td><td>List available channels</td><td>No stable channel — versioned 1.10–1.14 only</td></tr>
+        <tr><td class="td-cmd">oc get csv -n isovalent</td><td>Confirm operator install</td><td>Phase: Succeeded</td></tr>
+        <tr><td class="td-cmd">oc logs deployment/cilium-ee-olm</td><td>Find why no Cilium pods appeared</td><td>Hubble UI: frontend.server.host required</td></tr>
+        <tr><td class="td-cmd">oc describe ciliumconfig ... | grep Conditions</td><td>CiliumConfig install status</td><td>ReleaseFailed → UpgradeSuccessful after fix</td></tr>
+        <tr><td class="td-cmd">oc describe daemonset cilium | grep Events</td><td>Why pods won't schedule</td><td>SCC forbidden — privileged SCC not bound</td></tr>
+        <tr><td class="td-cmd">oc debug node/... ls -la /opt/cni</td><td>Inspect CNI path on node</td><td>Symlink to read-only /usr/lib/opt/cni</td></tr>
+        <tr><td class="td-cmd">oc debug node/... mkdir /usr/lib/opt/cni</td><td>Confirm read-only filesystem</td><td>Read-only file system error confirmed</td></tr>
+        <tr><td class="td-cmd">oc get all -n isovalent</td><td>Confirm Cilium deployment</td><td>DaemonSet 4/4 ready</td></tr>
+        <tr><td class="td-cmd">oc get network.operator ... jsonpath type</td><td>Confirm OVN still active</td><td>OVNKubernetes</td></tr>
+        <tr><td class="td-cmd">oc get co network -w</td><td>Watch migration progress</td><td>Progressing → Degraded (Multus crash)</td></tr>
+        <tr><td class="td-cmd">oc get pods ... -o jsonpath containerStatuses</td><td>Per-container readiness</td><td>ovnkube-controller=false on all 4 nodes</td></tr>
+        <tr><td class="td-cmd">oc logs ovnkube-node ... -c ovnkube-controller</td><td>Is OVN erroring or intentional?</td><td>Running normally — readiness probe intentional</td></tr>
+        <tr><td class="td-cmd">oc logs -n openshift-multus -l app=multus</td><td>Diagnose Multus crash</td><td>Waiting for 10-ovn-kubernetes.conf (deleted)</td></tr>
+        <tr><td class="td-cmd">oc debug node/... ls /run/multus/cni/net.d/</td><td>What CNI configs exist on node</td><td>05-cilium.conflist present, OVN renamed .bak</td></tr>
+        <tr><td class="td-cmd">oc exec cilium-... -- cilium service list</td><td>Check DNS backend in Cilium</td><td>Pointing to stale OVN-era IP</td></tr>
+        <tr><td class="td-cmd">oc exec cilium-... -- cilium node list</td><td>Cilium IPAM CIDR allocations</td><td>10.0.x.x/24 per node — incompatible with OVN IPs</td></tr>
+        <tr><td class="td-cmd">oc get pods -n openshift-dns -o wide</td><td>DNS pod IPs</td><td>Still on 10.128-131.x.x — outside Cilium IPAM</td></tr>
+        <tr><td class="td-cmd">oc exec cilium-... -- cilium status</td><td>Final health verification</td><td>All Ok, 22/22 controllers healthy</td></tr>
+        <tr><td class="td-cmd">oc run test ... nslookup kubernetes.default</td><td>End-to-end DNS test</td><td>Resolved — migration complete</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Outstanding -->
+  <div class="phase" id="outstanding">
+    <div class="phase-header">
+      <span class="phase-num">06</span>
+      <div>
+        <div class="phase-title">Outstanding Items</div>
+        <div class="phase-subtitle">Three items not yet completed — follow-up required</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge warn">Warn</span><span class="step-title">KubeProxy Replacement in hybrid mode — eBPF service routing not active</span></div>
+      <div class="step-body">
+        <p class="step-why">Cilium status shows KubeProxyReplacement: False. Service routing is falling back to iptables instead of eBPF. Full replacement is one of Cilium's primary benefits.</p>
+        <div class="cmd-wrap">
+          <div class="cmd-label">Current state</div>
+          <div class="cmd">$ oc exec -n isovalent cilium-8q8vq -- cilium status | grep KubeProxy</div>
+          <div class="output"><span class="y">KubeProxyReplacement:    False   [br-ex  (Direct Routing)]</span></div>
+        </div>
+        <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><div class="callout-title">To enable full replacement</div>Update CiliumConfig: set <code>kubeProxyReplacement: true</code>, add <code>k8sServiceHost: api.oslab.oslab</code> and <code>k8sServicePort: "6443"</code>. Also set <code>deployKubeProxy: false</code> on the network operator. Test during a maintenance window as this may briefly disrupt service routing.</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge warn">Warn</span><span class="step-title">Hubble UI disabled — needs proper hostname configuration to enable</span></div>
+      <div class="step-body">
+        <p class="step-why">Hubble UI was disabled to unblock the migration. It provides real-time L3–L7 network flow visibility and is one of the key value-adds of Cilium Enterprise.</p>
+        <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><div class="callout-title">To enable Hubble UI</div>In CiliumConfig: set <code>hubble-ui.enabled: true</code> and <code>hubble-ui.frontend.server.host: "hubble-ui.apps.oslab.oslab"</code>. Also set <code>hubble.relay.enabled: true</code>. Then create an OpenShift Route to expose the Hubble UI service externally.</div></div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header"><span class="step-badge warn">Warn</span><span class="step-title">Multus ConfigMap change may not survive cluster upgrades</span></div>
+      <div class="step-body">
+        <p class="step-why">The <code>multus-daemon-config</code> ConfigMap is owned by the OpenShift network operator. During a cluster upgrade, the operator may reconcile this ConfigMap back to its original state, restoring the OVN readiness indicator path — which would crash Multus again since OVN is gone.</p>
+        <div class="callout info"><span class="callout-icon">ℹ</span><div class="callout-body"><div class="callout-title">Recommended action</div>Monitor this ConfigMap during the next cluster upgrade. If reverted, investigate whether an operator override annotation can prevent reconciliation. Consider opening a Red Hat support case — this is a gap in the official OVN-to-Cilium migration tooling for OpenShift.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>OVN → Isovalent Cilium Deep Dive · oslab.oslab · April 10, 2026</span>
+    <span>OpenShift 4.21.5 · Cilium v1.14.22-cee.1 · 8 issues resolved · 3 outstanding</span>
+  </footer>
+</main>
+</div>
+</body>
+</html>

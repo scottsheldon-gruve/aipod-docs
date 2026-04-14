@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cisco AI Defense — TLS Certificate Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4f8;--bg2:#e2eaf2;--surface:#fff;--border:#ccd8e8;--border2:#b8cad8;
+  --ink:#0d1f35;--ink2:#2a4a6e;--ink3:#5a7a9a;
+  --accent:#0057b8;--accent-bg:#e8f0fc;--accent-border:#b8d0f0;
+  --green:#0a6e3a;--green-bg:#e6f4ec;--green-border:#a8d8bc;
+  --yellow:#7a5500;--yellow-bg:#fef8e6;--yellow-border:#f0d878;
+  --red:#8b1a1a;--red-bg:#fdf0f0;--red-border:#e8b8b8;
+  --orange:#8b4000;--orange-bg:#fef2e6;--orange-border:#f0c890;
+  --cisco:#049fd9;
+  --mono:'JetBrains Mono',monospace;--sans:'Outfit',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7}
+
+header{background:linear-gradient(135deg,#001f3f 0%,#0a3d7a 55%,#0f6ea8 100%);color:#fff;padding:0;overflow:hidden;position:relative}
+header::after{content:'TLS';position:absolute;right:-1.5rem;bottom:-1rem;font-family:var(--sans);font-size:12rem;font-weight:800;color:rgba(255,255,255,.04);pointer-events:none;line-height:1}
+.header-inner{max-width:960px;margin:0 auto;padding:2.5rem 2.5rem 2rem;position:relative;z-index:1}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.cisco-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.63rem;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.15em;display:flex;align-items:center;gap:.5rem}
+.cisco-badge::before{content:'🔒';font-size:.75rem}
+.urgency-badge{background:rgba(249,115,22,.2);border:1px solid rgba(249,115,22,.4);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.63rem;color:#fdba74;text-transform:uppercase;letter-spacing:.12em;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+h1{font-size:clamp(1.75rem,4vw,2.6rem);font-weight:800;line-height:1.15;color:#fff;margin-bottom:.65rem}
+h1 span{color:#7dd4f0}
+.header-desc{font-size:.88rem;color:rgba(255,255,255,.6);max-width:580px;line-height:1.75}
+.header-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.1rem}
+.chip{font-family:var(--mono);font-size:.6rem;padding:.2rem .55rem;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.7)}
+
+/* Cert flow diagram strip */
+.cert-strip{background:rgba(0,0,0,.25);border-top:1px solid rgba(255,255,255,.1);padding:.9rem 2.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;overflow:hidden}
+.cs-node{display:flex;flex-direction:column;align-items:center;gap:.2rem;min-width:80px}
+.cs-icon{font-size:1.2rem}
+.cs-label{font-family:var(--mono);font-size:.55rem;color:rgba(255,255,255,.5);text-align:center;white-space:nowrap;line-height:1.3}
+.cs-arrow{color:rgba(255,255,255,.25);font-size:.8rem;flex-shrink:0}
+.cs-badge{font-family:var(--mono);font-size:.52rem;background:rgba(0,87,184,.3);border:1px solid rgba(0,87,184,.5);border-radius:3px;padding:.1rem .35rem;color:#7dd4f0;margin-top:.15rem}
+
+/* TOC */
+.toc-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0;position:sticky;top:0;z-index:50;overflow-x:auto}
+.toc-inner{max-width:960px;margin:0 auto;padding:0 2.5rem;display:flex;gap:0}
+.toc-item{font-family:var(--mono);font-size:.62rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;padding:.75rem .85rem;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;text-decoration:none;transition:all .15s;flex-shrink:0}
+.toc-item:hover,.toc-item.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--accent-bg)}
+
+/* Main */
+.main{max-width:960px;margin:0 auto;padding:2.5rem 2.5rem 5rem}
+
+/* Overview box */
+.overview-box{background:var(--accent-bg);border:1px solid var(--accent-border);border-left:4px solid var(--accent);border-radius:6px;padding:1.25rem 1.5rem;margin-bottom:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.overview-box.full{grid-template-columns:1fr}
+.ov-block h4{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.5rem}
+.ov-block p{font-size:.84rem;color:var(--ink2);line-height:1.7}
+
+/* Sections */
+.section{margin-bottom:3rem;scroll-margin-top:3.5rem}
+.section-header{display:flex;align-items:center;gap:.85rem;margin-bottom:1.5rem;padding-bottom:.65rem;border-bottom:2px solid var(--border2)}
+.snum{font-family:var(--mono);font-size:.6rem;color:#fff;background:var(--accent);padding:.2rem .45rem;border-radius:3px;flex-shrink:0;font-weight:600}
+h2{font-family:var(--sans);font-size:1.15rem;font-weight:700;color:var(--ink)}
+.sbadge{font-family:var(--mono);font-size:.58rem;padding:.15rem .4rem;border-radius:3px;border:1px solid;text-transform:uppercase;letter-spacing:.07em;margin-left:.25rem}
+.sbadge.required{background:var(--red-bg);color:var(--red);border-color:var(--red-border)}
+.sbadge.optional{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+.sbadge.prereq{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow-border)}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:1.25rem;overflow:hidden}
+.step-header{padding:.8rem 1.25rem;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.step-num{font-family:var(--mono);font-size:.62rem;color:#fff;background:var(--ink2);padding:.15rem .4rem;border-radius:3px;flex-shrink:0;font-weight:600}
+.step-title{font-weight:600;font-size:.9rem;color:var(--ink);flex:1}
+.step-type{font-family:var(--mono);font-size:.58rem;padding:.12rem .35rem;border-radius:3px;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0}
+.step-type.cmd{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)}
+.step-type.config{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.step-type.verify{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.step-type.info{background:var(--bg);color:var(--ink3);border:1px solid var(--border)}
+.step-body{padding:1.1rem 1.25rem}
+.step-desc{font-size:.84rem;color:var(--ink2);line-height:1.75;margin-bottom:.85rem}
+.step-desc:last-child{margin-bottom:0}
+
+/* Code blocks */
+.cmd-block{background:#001428;border-radius:5px;padding:.8rem 1.1rem;font-family:var(--mono);font-size:.73rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.cmd-block .p{color:#7dd4f0}
+.cmd-block .c{color:#3a5a78;font-style:italic}
+.cmd-block .g{color:#5cb87a}
+.cmd-block .w{color:#f0c850}
+.cmd-block .r{color:#f08070}
+.cmd-block .y{color:#ffd780}
+.cmd-block .m{color:#d0a0ff}
+
+/* YAML blocks */
+.yaml-block{background:#0a1a2e;border:1px solid #1a3a5e;border-radius:5px;padding:.8rem 1.1rem;font-family:var(--mono);font-size:.72rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.yaml-block .key{color:#7dd4f0}
+.yaml-block .val{color:#a0e0a0}
+.yaml-block .comment{color:#3a5a78;font-style:italic}
+.yaml-block .str{color:#ffd780}
+
+/* Callout boxes */
+.callout{border-radius:6px;padding:.85rem 1.1rem;margin:.75rem 0;font-size:.82rem;line-height:1.7;display:flex;gap:.7rem}
+.callout-icon{flex-shrink:0;font-size:1rem;margin-top:.05rem}
+.callout-body{flex:1}
+.callout-title{font-weight:700;margin-bottom:.15rem;font-size:.78rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.callout.warn{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow)}
+.callout.warn .callout-title{color:#c07000}
+.callout.info{background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--ink2)}
+.callout.info .callout-title{color:var(--accent)}
+.callout.success{background:var(--green-bg);border:1px solid var(--green-border);color:var(--ink2)}
+.callout.success .callout-title{color:var(--green)}
+.callout.danger{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+.callout.danger .callout-title{color:#c02020}
+
+/* Option tabs */
+.option-tabs{display:flex;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin:.75rem 0}
+.opt-tab{flex:1;padding:.6rem .9rem;text-align:center;cursor:pointer;font-family:var(--mono);font-size:.65rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;background:var(--bg2);border-right:1px solid var(--border);transition:all .15s}
+.opt-tab:last-child{border-right:none}
+.opt-tab.active{background:var(--accent);color:#fff}
+.opt-content{display:none;padding:.85rem;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px}
+.opt-content.active{display:block}
+
+/* Comparison table */
+.compare-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:.75rem 0}
+.compare-table th{padding:.55rem .85rem;background:var(--accent);color:#fff;text-align:left;font-weight:600;font-size:.72rem}
+.compare-table td{padding:.55rem .85rem;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:top}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover td{background:var(--bg)}
+.tick{color:var(--green);font-weight:700}
+.cross{color:var(--red)}
+.maybe{color:var(--yellow)}
+
+/* Cert structure diagram */
+.cert-diagram{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin:.75rem 0}
+.cert-diagram h4{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:1rem}
+.cert-chain{display:flex;flex-direction:column;gap:.5rem}
+.cert-node{display:flex;align-items:center;gap:.75rem;padding:.65rem .9rem;border-radius:5px;border:1px solid}
+.cert-node.root{background:#f5f0fb;border-color:#c8b0e8}
+.cert-node.intermediate{background:var(--accent-bg);border-color:var(--accent-border)}
+.cert-node.leaf{background:var(--green-bg);border-color:var(--green-border)}
+.cert-icon{font-size:1.1rem;flex-shrink:0}
+.cert-info{flex:1}
+.cert-name{font-weight:700;font-size:.82rem;color:var(--ink)}
+.cert-detail{font-family:var(--mono);font-size:.65rem;color:var(--ink3)}
+.cert-connector{width:2px;height:1.25rem;background:var(--border2);margin-left:1.4rem}
+
+.divider{height:1px;background:var(--border);margin:2.5rem 0}
+.inline-code{font-family:var(--mono);font-size:.8em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px;color:var(--ink)}
+
+footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);font-size:.65rem;padding:1.5rem 0;margin-top:3rem}
+.footer-inner{max-width:960px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:640px){.overview-box{grid-template-columns:1fr}.cert-strip{padding:.9rem 1.5rem}.toc-inner{padding:0 1rem}.main{padding:1.5rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="cisco-badge">Cisco AI Defense · Hybrid Deployment</div>
+      <div class="urgency-badge">⚡ CU Preparation Guide</div>
+    </div>
+    <h1>TLS Certificate<br><span>Installation Guide</span></h1>
+    <div class="header-desc">Step-by-step certificate planning, generation, and configuration for the AI Defense Hybrid Connector on Cisco AI PODs — covering all three cert options, NGINX Ingress routes, and OCP cluster cert setup.</div>
+    <div class="header-chips">
+      <span class="chip">OCP 4.18+</span>
+      <span class="chip">NGINX Ingress Operator</span>
+      <span class="chip">AI Defense Hybrid Connector</span>
+      <span class="chip">Cisco AI POD / ACI</span>
+      <span class="chip">ai-defense-proxy-service</span>
+      <span class="chip">ai-defense-apigateway</span>
+    </div>
+  </div>
+  <div class="cert-strip">
+    <div class="cs-node"><div class="cs-icon">🔐</div><div class="cs-label">CA / PKI</div><div class="cs-badge">Root/Int</div></div>
+    <div class="cs-arrow">→</div>
+    <div class="cs-node"><div class="cs-icon">📜</div><div class="cs-label">TLS Cert<br>+ Key</div><div class="cs-badge">PEM format</div></div>
+    <div class="cs-arrow">→</div>
+    <div class="cs-node"><div class="cs-icon">🔑</div><div class="cs-label">OCP TLS<br>Secret</div><div class="cs-badge">oc create secret</div></div>
+    <div class="cs-arrow">→</div>
+    <div class="cs-node"><div class="cs-icon">⚙️</div><div class="cs-label">NGINX Ingress<br>Route YAML</div><div class="cs-badge">cert embedded</div></div>
+    <div class="cs-arrow">→</div>
+    <div class="cs-node"><div class="cs-icon">🛡️</div><div class="cs-label">AI Defense<br>Proxy Service</div><div class="cs-badge">HTTPS ✓</div></div>
+    <div class="cs-arrow">→</div>
+    <div class="cs-node"><div class="cs-icon">🤖</div><div class="cs-label">AI Defense<br>API Gateway</div><div class="cs-badge">HTTPS ✓</div></div>
+  </div>
+</header>
+
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-item" href="#overview">Overview</a>
+    <a class="toc-item" href="#cert-options">Cert Options</a>
+    <a class="toc-item" href="#generate">Generate / Obtain</a>
+    <a class="toc-item" href="#ocp-secret">OCP Secret</a>
+    <a class="toc-item" href="#nginx-route">NGINX Route</a>
+    <a class="toc-item" href="#dns">DNS Entry</a>
+    <a class="toc-item" href="#verify">Verify</a>
+    <a class="toc-item" href="#renew">Renewal</a>
+    <a class="toc-item" href="#troubleshoot">Troubleshoot</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- Overview -->
+<div class="section" id="overview">
+  <div class="section-header"><span class="snum">00</span><h2>Certificate Architecture Overview</h2></div>
+
+  <div class="overview-box">
+    <div class="ov-block">
+      <h4>What Needs a Certificate</h4>
+      <p>AI Defense Runtime requires two HTTPS endpoints exposed via NGINX Ingress on the OCP cluster. A TLS certificate is needed for the subdomain that fronts both services — either embedded directly in the Ingress route YAML, or via an OCP TLS Secret.</p>
+    </div>
+    <div class="ov-block">
+      <h4>Why It Matters for AI Applications</h4>
+      <p>AI applications on your on-prem network connect to AI Defense as a proxy. They make HTTPS calls to the AI Defense proxy URL. If the certificate is self-signed or untrusted, the AI application must be configured to trust it or connections will fail with TLS errors.</p>
+    </div>
+  </div>
+
+  <div class="cert-diagram">
+    <h4>Certificate Trust Chain for AI Defense Ingress</h4>
+    <div class="cert-chain">
+      <div class="cert-node root">
+        <div class="cert-icon">🏛️</div>
+        <div class="cert-info">
+          <div class="cert-name">Root CA Certificate</div>
+          <div class="cert-detail">Your internal PKI root CA — or a public CA (DigiCert, Let's Encrypt, etc.)</div>
+        </div>
+      </div>
+      <div class="cert-connector"></div>
+      <div class="cert-node intermediate">
+        <div class="cert-icon">🔗</div>
+        <div class="cert-info">
+          <div class="cert-name">Intermediate CA (optional)</div>
+          <div class="cert-detail">Often present in enterprise PKI chains — include in cert bundle if present</div>
+        </div>
+      </div>
+      <div class="cert-connector"></div>
+      <div class="cert-node leaf">
+        <div class="cert-icon">📜</div>
+        <div class="cert-info">
+          <div class="cert-name">Server Certificate — aidefense.&lt;your-domain&gt;</div>
+          <div class="cert-detail">SANs: aidefense.&lt;domain&gt; — This is what goes into the NGINX Ingress route</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-icon">⚠</span>
+    <div class="callout-body">
+      <div class="callout-title">Private Key Must Be Unencrypted</div>
+      If your private key is password-protected, you must decrypt it before use in OpenShift. OCP does not support passphrase-protected keys in TLS Secrets. Run: <span class="inline-code">openssl rsa -in encrypted.key -out decrypted.key</span>
+    </div>
+  </div>
+
+  <div style="margin-top:1rem">
+    <table class="compare-table">
+      <thead><tr><th>Certificate Location</th><th>Required For</th><th>Optional For</th></tr></thead>
+      <tbody>
+        <tr><td><strong>NGINX Ingress Route TLS</strong></td><td>Runtime (proxy gateway + API endpoint)</td><td>—</td></tr>
+        <tr><td><strong>OCP Cluster Default Ingress Cert</strong></td><td>External access to all .apps routes</td><td>Can use self-signed for internal-only</td></tr>
+        <tr><td><strong>OCP API Server Cert</strong></td><td>External tooling, pipelines, jump server oc login</td><td>Internal cluster comms use internal CA</td></tr>
+        <tr><td><strong>gRPC / Connector to SaaS</strong></td><td>Handled automatically by AI Defense connector</td><td>No manual cert needed here</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Cert Options -->
+<div class="section" id="cert-options">
+  <div class="section-header"><span class="snum">01</span><h2>Choose Your Certificate Option <span class="sbadge required">Required Decision</span></h2></div>
+
+  <p style="font-size:.87rem;color:var(--ink2);margin-bottom:1rem;line-height:1.75">The Cisco CVD notes that certificate incorporation "may vary depending on customer's environment." Three options are available. Choose the one that fits your environment — Option A is the fastest for a CU, Option B is preferred for production.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Option</th><th>Method</th><th>Best For</th><th>AI App Trust</th><th>Renewal</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>A — Self-Signed</strong></td>
+        <td>Generated with openssl on jump server</td>
+        <td>Lab, CU, proof of concept</td>
+        <td class="cross">✗ Must configure trust on AI apps</td>
+        <td>Manual, annually</td>
+      </tr>
+      <tr>
+        <td><strong>B — Internal CA Signed</strong></td>
+        <td>CSR submitted to internal PKI / AD CS</td>
+        <td>Production, enterprise environments</td>
+        <td class="tick">✓ Trusted if CA in AD/OS trust store</td>
+        <td>Manual or auto via ACME</td>
+      </tr>
+      <tr>
+        <td><strong>C — Wildcard .apps Domain</strong></td>
+        <td>Use existing OCP wildcard cert</td>
+        <td>When AI Defense subdomain is under .apps.*</td>
+        <td class="tick">✓ Same trust as rest of OCP apps</td>
+        <td>Same cycle as OCP cluster certs</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <span class="callout-icon">ℹ</span>
+    <div class="callout-body">
+      <div class="callout-title">Recommendation for CU</div>
+      Use <strong>Option A (self-signed)</strong> for the CU to get the deployment running quickly, then replace with an internal CA-signed cert (Option B) before handing off to the customer for production use. Document the replacement procedure in your handoff notes.
+    </div>
+  </div>
+</div>
+
+<!-- Generate -->
+<div class="section" id="generate">
+  <div class="section-header"><span class="snum">02</span><h2>Generate or Obtain the Certificate <span class="sbadge required">Required</span></h2></div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.1</span><span class="step-title">Decide on the subdomain / CN for the certificate</span><span class="step-type info">Info</span></div>
+    <div class="step-body">
+      <div class="step-desc">Before generating anything, decide on the hostname. This same value is used in the cert CN/SAN, the NGINX Ingress route, and the DNS A record. Changing it later requires regenerating the cert and redeploying the Ingress route.</div>
+      <div class="cmd-block"><span class="c"># Common patterns — pick one and stick with it:</span>
+<span class="y">aidefense.apps.&lt;cluster-name&gt;.&lt;domain&gt;</span>   <span class="c"># under OCP apps wildcard</span>
+<span class="y">aidefense.&lt;your-internal-domain&gt;</span>           <span class="c"># separate DNS entry</span>
+<span class="y">ai-defense.&lt;your-internal-domain&gt;</span>          <span class="c"># hyphenated variant</span>
+
+<span class="c"># This hostname must:</span>
+<span class="c"># 1. Match the CN or SAN in your TLS certificate</span>
+<span class="c"># 2. Be configured in your internal DNS pointing to OCP Ingress IP</span>
+<span class="c"># 3. Be reachable from your AI applications on the on-prem network</span>
+
+<span class="c"># Get OCP Ingress Controller IP (needed for DNS entry later):</span>
+<span class="p">$</span> oc get svc -n nginx-ingress
+<span class="c"># Note EXTERNAL-IP — this is where the DNS A record points</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.2A</span><span class="step-title">Option A — Generate a self-signed certificate</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="step-desc">Generates a self-signed cert and key in PEM format valid for 1 year. Replace <span class="inline-code">aidefense.yourdomain.com</span> with your chosen subdomain.</div>
+      <div class="cmd-block"><span class="c"># Generate private key and self-signed certificate in one step:</span>
+<span class="p">$</span> openssl req -x509 -nodes -days 365 \
+  -newkey rsa:2048 \
+  -keyout ai-defense.key \
+  -out ai-defense.crt \
+  -subj "/C=US/ST=CA/O=YourOrg/CN=aidefense.yourdomain.com" \
+  -addext "subjectAltName=DNS:aidefense.yourdomain.com"
+
+<span class="c"># Verify the cert:</span>
+<span class="p">$</span> openssl x509 -in ai-defense.crt -text -noout | grep -A2 "Subject\|SAN\|Validity"
+
+<span class="c"># Output files:</span>
+<span class="g">ai-defense.crt   ← certificate (PEM format)</span>
+<span class="g">ai-defense.key   ← private key (unencrypted PEM)</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          <div class="callout-title">Self-signed trust issue</div>
+          AI applications making HTTPS calls through the AI Defense proxy will receive a certificate from an untrusted CA. They must either be configured to skip TLS verification (insecure, not for production) or the self-signed cert's CA must be added to their trust store.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.2B</span><span class="step-title">Option B — Generate a CSR and get it signed by internal CA</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="step-desc">Generates a private key and a Certificate Signing Request (CSR) to submit to your internal PKI (AD CS, HashiCorp Vault, etc.).</div>
+      <div class="cmd-block"><span class="c"># Step 1 — Generate private key:</span>
+<span class="p">$</span> openssl genrsa -out ai-defense.key 2048
+
+<span class="c"># Step 2 — Create CSR with SAN:</span>
+<span class="p">$</span> cat > ai-defense-csr.conf &lt;&lt;EOF
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+req_extensions = req_ext
+
+[dn]
+C = US
+ST = YourState
+O = YourOrganization
+CN = aidefense.yourdomain.com
+
+[req_ext]
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = aidefense.yourdomain.com
+EOF
+
+<span class="p">$</span> openssl req -new -key ai-defense.key -out ai-defense.csr -config ai-defense-csr.conf
+
+<span class="c"># Step 3 — Verify CSR contents:</span>
+<span class="p">$</span> openssl req -text -noout -verify -in ai-defense.csr
+
+<span class="c"># Step 4 — Submit ai-defense.csr to your internal CA</span>
+<span class="c"># Retrieve the signed certificate as ai-defense.crt (PEM format)</span>
+<span class="c"># Also retrieve intermediate/root CA cert as ca-bundle.crt if needed</span>
+
+<span class="c"># Step 5 — Verify signed cert:</span>
+<span class="p">$</span> openssl verify -CAfile ca-bundle.crt ai-defense.crt
+<span class="g"># ai-defense.crt: OK</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.2C</span><span class="step-title">Option C — Use existing OCP wildcard .apps certificate</span><span class="step-type info">Info</span></div>
+    <div class="step-body">
+      <div class="step-desc">If your AI Defense subdomain is under <span class="inline-code">*.apps.&lt;cluster&gt;.&lt;domain&gt;</span> you can reuse the existing OCP cluster wildcard certificate. Extract it from the cluster.</div>
+      <div class="cmd-block"><span class="c"># Check if a custom wildcard cert is configured:</span>
+<span class="p">$</span> oc get ingresscontroller default -n openshift-ingress-operator \
+  -o jsonpath='{.spec.defaultCertificate}'
+
+<span class="c"># If custom cert is configured, extract it:</span>
+<span class="p">$</span> oc get secret &lt;secret-name&gt; -n openshift-ingress \
+  -o jsonpath='{.data.tls\.crt}' | base64 -d > ai-defense.crt
+<span class="p">$</span> oc get secret &lt;secret-name&gt; -n openshift-ingress \
+  -o jsonpath='{.data.tls\.key}' | base64 -d > ai-defense.key
+
+<span class="c"># If using the default self-signed OCP wildcard:</span>
+<span class="p">$</span> oc get secret router-certs-default -n openshift-ingress \
+  -o jsonpath='{.data.tls\.crt}' | base64 -d > ai-defense.crt
+<span class="p">$</span> oc get secret router-certs-default -n openshift-ingress \
+  -o jsonpath='{.data.tls\.key}' | base64 -d > ai-defense.key</div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          <div class="callout-title">Only works if subdomain is under .apps.*</div>
+          The wildcard cert covers <span class="inline-code">*.apps.clustername.domain</span>. If your AI Defense subdomain is <span class="inline-code">aidefense.apps.clustername.domain</span> this works. If it's a completely separate DNS name (e.g. <span class="inline-code">aidefense.corp.com</span>) you need Option A or B.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OCP Secret -->
+<div class="section" id="ocp-secret">
+  <div class="section-header"><span class="snum">03</span><h2>Create the OCP TLS Secret <span class="sbadge required">Required</span></h2></div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.1</span><span class="step-title">Create the ai-defense namespace if it doesn't exist</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> oc get namespace ai-defense 2>/dev/null || oc create namespace ai-defense
+<span class="c"># The Helm install creates this namespace — only needed if creating secret before Helm</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.2</span><span class="step-title">Create the TLS secret in the ai-defense namespace</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="step-desc">The secret must be in the same namespace as the AI Defense services (<span class="inline-code">ai-defense</span>). The NGINX Ingress route YAML references this secret by name.</div>
+      <div class="cmd-block"><span class="p">$</span> oc create secret tls ai-defense-tls \
+  --cert=ai-defense.crt \
+  --key=ai-defense.key \
+  -n ai-defense
+
+<span class="c"># Verify the secret was created correctly:</span>
+<span class="p">$</span> oc get secret ai-defense-tls -n ai-defense
+<span class="p">$</span> oc describe secret ai-defense-tls -n ai-defense
+<span class="g"># Should show: Type: kubernetes.io/tls</span>
+<span class="g"># Data: tls.crt and tls.key present</span>
+
+<span class="c"># Verify cert content in secret:</span>
+<span class="p">$</span> oc get secret ai-defense-tls -n ai-defense \
+  -o jsonpath='{.data.tls\.crt}' | base64 -d | \
+  openssl x509 -text -noout | grep -E "Subject:|DNS:|Not After"</div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body">
+          <div class="callout-title">Create this secret AFTER the Helm install</div>
+          The Helm install creates the <span class="inline-code">ai-defense</span> namespace. If you create the secret before Helm runs it may be in the wrong namespace or get overwritten. Create the secret as the first post-install step, then apply the Ingress route YAML.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.3</span><span class="step-title">If using a CA-signed cert — also add CA bundle to OCP cluster trust</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="step-desc">For AI applications to trust the certificate without manual configuration, the signing CA must be in the OCP cluster's trust bundle. This is required for Option B (internal CA).</div>
+      <div class="cmd-block"><span class="c"># Add your internal CA to the OCP cluster trust bundle:</span>
+<span class="p">$</span> oc create configmap internal-ca \
+  --from-file=ca-bundle.crt=./ca-bundle.crt \
+  -n openshift-config
+
+<span class="p">$</span> oc patch proxy/cluster \
+  --type=merge \
+  --patch='{"spec":{"trustedCA":{"name":"internal-ca"}}}'
+
+<span class="c"># This propagates the CA to all nodes via the MCO (takes 5-10 min)</span>
+<span class="c"># Monitor propagation:</span>
+<span class="p">$</span> oc get co machine-config
+<span class="c"># Wait for PROGRESSING=False</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- NGINX Route -->
+<div class="section" id="nginx-route">
+  <div class="section-header"><span class="snum">04</span><h2>Configure NGINX Ingress Route for AI Defense <span class="sbadge required">Required for Runtime</span></h2></div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.1</span><span class="step-title">Understand the two AI Defense services to expose</span><span class="step-type info">Info</span></div>
+    <div class="step-body">
+      <table class="compare-table">
+        <thead><tr><th>Service Name</th><th>Path</th><th>Purpose</th><th>Used By</th></tr></thead>
+        <tbody>
+          <tr><td><span class="inline-code">ai-defense-proxy-service</span></td><td><span class="inline-code">/</span> (root)</td><td>Gateway proxy — AI app sends LLM calls here instead of directly to model</td><td>AI applications (Runtime Gateway mode)</td></tr>
+          <tr><td><span class="inline-code">ai-defense-apigateway</span></td><td><span class="inline-code">/api/v1/inspect</span></td><td>API inspection endpoint — inspect prompts/responses programmatically</td><td>AI applications (Runtime API mode)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body">
+          <div class="callout-title">Both services share the same subdomain</div>
+          Both services are exposed under a single subdomain with different paths. Your NGINX Ingress config routes to the appropriate backend service based on the path.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.2</span><span class="step-title">Create the NGINX Ingress route YAML — cert embedded in route</span><span class="step-type config">Config</span></div>
+    <div class="step-body">
+      <div class="step-desc">This is the approach used in the Cisco CVD — the certificate and key are embedded directly into the Ingress route. Replace <span class="inline-code">aidefense.yourdomain.com</span> with your chosen subdomain, and replace the cert/key values with base64-encoded content.</div>
+      <div class="cmd-block"><span class="c"># Get base64-encoded cert and key values for embedding:</span>
+<span class="p">$</span> cat ai-defense.crt | base64 -w 0
+<span class="p">$</span> cat ai-defense.key | base64 -w 0
+<span class="c"># You'll insert these values into the YAML below</span></div>
+      <div class="yaml-block"><span class="key">apiVersion</span>: <span class="val">networking.k8s.io/v1</span>
+<span class="key">kind</span>: <span class="val">Ingress</span>
+<span class="key">metadata</span>:
+  <span class="key">name</span>: <span class="val">ai-defense-ingress</span>
+  <span class="key">namespace</span>: <span class="val">ai-defense</span>
+  <span class="key">annotations</span>:
+    <span class="key">nginx.org/proxy-connect-timeout</span>: <span class="str">"30s"</span>
+    <span class="key">nginx.org/proxy-read-timeout</span>: <span class="str">"300s"</span>   <span class="comment"># important for long AI inference calls</span>
+    <span class="key">nginx.ingress.kubernetes.io/ssl-redirect</span>: <span class="str">"true"</span>
+<span class="key">spec</span>:
+  <span class="key">ingressClassName</span>: <span class="val">nginx</span>
+  <span class="key">tls</span>:
+  - <span class="key">hosts</span>:
+    - <span class="val">aidefense.yourdomain.com</span>
+    <span class="key">secretName</span>: <span class="val">ai-defense-tls</span>    <span class="comment"># references the TLS secret from Step 3.2</span>
+  <span class="key">rules</span>:
+  - <span class="key">host</span>: <span class="val">aidefense.yourdomain.com</span>
+    <span class="key">http</span>:
+      <span class="key">paths</span>:
+      - <span class="key">path</span>: <span class="val">/api/v1/inspect</span>
+        <span class="key">pathType</span>: <span class="val">Prefix</span>
+        <span class="key">backend</span>:
+          <span class="key">service</span>:
+            <span class="key">name</span>: <span class="val">ai-defense-apigateway</span>
+            <span class="key">port</span>:
+              <span class="key">number</span>: <span class="val">443</span>
+      - <span class="key">path</span>: <span class="val">/</span>
+        <span class="key">pathType</span>: <span class="val">Prefix</span>
+        <span class="key">backend</span>:
+          <span class="key">service</span>:
+            <span class="key">name</span>: <span class="val">ai-defense-proxy-service</span>
+            <span class="key">port</span>:
+              <span class="key">number</span>: <span class="val">443</span></div>
+      <div class="cmd-block"><span class="c"># Apply the Ingress configuration:</span>
+<span class="p">$</span> oc apply -f ai-defense-ingress.yaml
+
+<span class="c"># Verify it was created:</span>
+<span class="p">$</span> oc get ingress -n ai-defense
+<span class="p">$</span> oc describe ingress ai-defense-ingress -n ai-defense</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.3</span><span class="step-title">Alternative — embed cert/key directly in route (CVD approach)</span><span class="step-type config">Config</span></div>
+    <div class="step-body">
+      <div class="step-desc">The CVD example embeds cert and key directly in the route object rather than referencing a Secret. Both approaches work — use whichever matches your team's preference. The Secret reference approach (Step 4.2) is more maintainable for cert rotation.</div>
+      <div class="cmd-block"><span class="c"># Create OCP Route directly with embedded cert (CVD method):</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: ai-defense-proxy
+  namespace: ai-defense
+spec:
+  host: aidefense.yourdomain.com
+  path: /
+  to:
+    kind: Service
+    name: ai-defense-proxy-service
+  port:
+    targetPort: 443
+  tls:
+    termination: edge
+    certificate: |
+$(cat ai-defense.crt | sed 's/^/      /')
+    key: |
+$(cat ai-defense.key | sed 's/^/      /')
+    insecureEdgeTerminationPolicy: Redirect
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: ai-defense-api
+  namespace: ai-defense
+spec:
+  host: aidefense.yourdomain.com
+  path: /api/v1/inspect
+  to:
+    kind: Service
+    name: ai-defense-apigateway
+  port:
+    targetPort: 443
+  tls:
+    termination: edge
+    certificate: |
+$(cat ai-defense.crt | sed 's/^/      /')
+    key: |
+$(cat ai-defense.key | sed 's/^/      /')
+    insecureEdgeTerminationPolicy: Redirect
+EOF</div>
+    </div>
+  </div>
+</div>
+
+<!-- DNS -->
+<div class="section" id="dns">
+  <div class="section-header"><span class="snum">05</span><h2>DNS Configuration <span class="sbadge required">Required</span></h2></div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.1</span><span class="step-title">Get the OCP Ingress Controller external IP</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Get the external IP of the NGINX Ingress service:</span>
+<span class="p">$</span> oc get svc -n nginx-ingress
+<span class="c"># Note the EXTERNAL-IP — this is the IP your DNS A record must point to</span>
+
+<span class="c"># Alternative — if using OCP default router (HAProxy):</span>
+<span class="p">$</span> oc get svc router-default -n openshift-ingress
+<span class="c"># Note the EXTERNAL-IP</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.2</span><span class="step-title">Add the DNS A record in your internal DNS (ACI environment)</span><span class="step-type config">Config</span></div>
+    <div class="step-body">
+      <div class="step-desc">Add the DNS record to your internal DNS server. In an ACI environment this is typically the same DNS server configured in your ACI EPG/BD for the OCP network.</div>
+      <div class="cmd-block"><span class="c"># DNS record to add:</span>
+<span class="y">aidefense.yourdomain.com</span>  IN  A  <span class="y">&lt;NGINX Ingress EXTERNAL-IP&gt;</span>
+
+<span class="c"># Verify DNS resolution after adding the record (allow 60s for propagation):</span>
+<span class="p">$</span> nslookup aidefense.yourdomain.com
+<span class="g"># Expected: Address: &lt;your NGINX Ingress IP&gt;</span>
+
+<span class="p">$</span> dig aidefense.yourdomain.com +short
+<span class="g"># Expected: &lt;your NGINX Ingress IP&gt;</span>
+
+<span class="c"># Test HTTPS reachability (this should work after Ingress route is applied):</span>
+<span class="p">$</span> curl -sk https://aidefense.yourdomain.com/api/v1/inspect \
+  -o /dev/null -w "HTTP: %{http_code}\n"
+<span class="c"># Expected: HTTP 4xx (route exists, auth required) — NOT connection refused</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Verify -->
+<div class="section" id="verify">
+  <div class="section-header"><span class="snum">06</span><h2>Verify Certificate is Working <span class="sbadge required">Required</span></h2></div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.1</span><span class="step-title">Check certificate presented by the endpoint</span><span class="step-type verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check what cert is being served:</span>
+<span class="p">$</span> openssl s_client -connect aidefense.yourdomain.com:443 \
+  -servername aidefense.yourdomain.com &lt; /dev/null 2>/dev/null | \
+  openssl x509 -text -noout | grep -E "Subject:|Issuer:|Not After:|DNS:"
+
+<span class="c"># Expected output (self-signed example):</span>
+<span class="g">        Subject: CN=aidefense.yourdomain.com</span>
+<span class="g">        Issuer: CN=aidefense.yourdomain.com</span>
+<span class="g">        Not After : Apr 10 2027 ...</span>
+<span class="g">        DNS:aidefense.yourdomain.com</span>
+
+<span class="c"># Test with curl — check cert validity:</span>
+<span class="p">$</span> curl -v https://aidefense.yourdomain.com/api/v1/inspect 2>&amp;1 | \
+  grep -E "SSL|certificate|expire|verify"
+
+<span class="c"># For self-signed (ignore cert errors to confirm routing works):</span>
+<span class="p">$</span> curl -sk https://aidefense.yourdomain.com/ -w "\nHTTP: %{http_code}\n"
+<span class="c"># Should return HTTP: 200 or 401/403 (not 000 connection refused)</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.2</span><span class="step-title">Verify AI Defense services are reachable through the Ingress</span><span class="step-type verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check both AI Defense service endpoints are routable:</span>
+<span class="p">$</span> curl -sk https://aidefense.yourdomain.com/ \
+  -w "\n--- Proxy service HTTP: %{http_code} ---\n"
+
+<span class="p">$</span> curl -sk https://aidefense.yourdomain.com/api/v1/inspect \
+  -w "\n--- API gateway HTTP: %{http_code} ---\n"
+
+<span class="c"># Check AI Defense pods are running and healthy:</span>
+<span class="p">$</span> oc get pods -n ai-defense
+<span class="g"># All pods should be Running</span>
+
+<span class="c"># Check services exist:</span>
+<span class="p">$</span> oc get svc -n ai-defense | grep -E "proxy-service|apigateway"
+
+<span class="c"># Check Ingress/Routes are properly configured:</span>
+<span class="p">$</span> oc get ingress -n ai-defense
+<span class="p">$</span> oc describe ingress ai-defense-ingress -n ai-defense | grep -A10 "Rules\|TLS"</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.3</span><span class="step-title">Verify AI Defense connector shows Active in SCC after cert configuration</span><span class="step-type verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># In SCC → AI Defense → Administration → Hybrid Deployment</span>
+<span class="c"># The connector status must show: Active ✓</span>
+<span class="c"># If it shows Pending or Error, check connector logs:</span>
+<span class="p">$</span> oc get pods -n ai-defense | grep connector
+<span class="p">$</span> oc logs -n ai-defense &lt;connector-pod-name&gt; --tail=30</div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body">
+          <div class="callout-title">Cert configuration complete when all of these are true</div>
+          TLS secret exists in ai-defense namespace · Ingress route applied · DNS resolving to correct IP · curl returns non-zero HTTP code (not connection refused) · AI Defense connector shows Active in SCC
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Renewal -->
+<div class="section" id="renew">
+  <div class="section-header"><span class="snum">07</span><h2>Certificate Renewal Procedure <span class="sbadge optional">Operational</span></h2></div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.1</span><span class="step-title">Check certificate expiry date</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check expiry of the cert currently in the OCP secret:</span>
+<span class="p">$</span> oc get secret ai-defense-tls -n ai-defense \
+  -o jsonpath='{.data.tls\.crt}' | base64 -d | \
+  openssl x509 -noout -enddate
+<span class="g"># notAfter=Apr 10 00:00:00 2027 GMT</span>
+
+<span class="c"># Set a reminder 30 days before expiry</span>
+<span class="c"># Self-signed certs default to 1 year with the openssl command above</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.2</span><span class="step-title">Replace an expired or expiring certificate</span><span class="step-type cmd">Command</span></div>
+    <div class="step-body">
+      <div class="step-desc">Generate the new cert (repeat Section 02 steps), then update the secret and trigger an Ingress controller refresh.</div>
+      <div class="cmd-block"><span class="c"># Step 1 — Generate new cert (see Section 02 for your chosen option)</span>
+<span class="c"># Step 2 — Update the TLS secret in-place:</span>
+<span class="p">$</span> oc create secret tls ai-defense-tls \
+  --cert=ai-defense-new.crt \
+  --key=ai-defense-new.key \
+  -n ai-defense \
+  --dry-run=client -o yaml | oc apply -f -
+
+<span class="c"># Step 3 — Restart NGINX Ingress pods to pick up the new cert:</span>
+<span class="p">$</span> oc rollout restart deployment -n nginx-ingress
+
+<span class="c"># Step 4 — Verify new cert is being served:</span>
+<span class="p">$</span> openssl s_client -connect aidefense.yourdomain.com:443 \
+  -servername aidefense.yourdomain.com &lt; /dev/null 2>/dev/null | \
+  openssl x509 -noout -enddate
+<span class="g"># Should show new expiry date</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Troubleshoot -->
+<div class="section" id="troubleshoot">
+  <div class="section-header"><span class="snum">08</span><h2>Troubleshooting <span class="sbadge optional">Reference</span></h2></div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T1</span><span class="step-title">curl: (35) SSL connect error / TLS handshake failed</span><span class="step-type info">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Diagnose TLS handshake failures:</span>
+<span class="p">$</span> openssl s_client -connect aidefense.yourdomain.com:443 \
+  -servername aidefense.yourdomain.com -debug 2>&amp;1 | head -30
+
+<span class="c"># Common causes:</span>
+<span class="r"># 1. Private key in secret doesn't match the certificate:</span>
+<span class="p">$</span> openssl x509 -noout -modulus -in ai-defense.crt | md5sum
+<span class="p">$</span> openssl rsa  -noout -modulus -in ai-defense.key | md5sum
+<span class="c"># Both must return the SAME md5 hash</span>
+
+<span class="r"># 2. Certificate CN/SAN doesn't match the hostname:</span>
+<span class="p">$</span> openssl x509 -text -noout -in ai-defense.crt | grep -A1 "Subject Alt\|Subject:"
+
+<span class="r"># 3. Ingress controller not reloaded after secret update:</span>
+<span class="p">$</span> oc rollout restart deployment -n nginx-ingress</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T2</span><span class="step-title">curl: (000) connection refused — Ingress not routing</span><span class="step-type info">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check NGINX Ingress pods are Running:</span>
+<span class="p">$</span> oc get pods -n nginx-ingress
+
+<span class="c"># Check Ingress resource was applied correctly:</span>
+<span class="p">$</span> oc get ingress -n ai-defense
+<span class="p">$</span> oc describe ingress ai-defense-ingress -n ai-defense
+
+<span class="c"># Check AI Defense services exist and have endpoints:</span>
+<span class="p">$</span> oc get svc -n ai-defense
+<span class="p">$</span> oc get endpoints -n ai-defense
+
+<span class="c"># Check DNS is resolving to the correct IP:</span>
+<span class="p">$</span> dig aidefense.yourdomain.com +short
+<span class="c"># Must match NGINX Ingress EXTERNAL-IP, not the OCP HAProxy router IP</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T3</span><span class="step-title">AI Defense connector stuck in Pending — not Active in SCC</span><span class="step-type info">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check connector pod logs:</span>
+<span class="p">$</span> oc get pods -n ai-defense
+<span class="p">$</span> oc logs -n ai-defense &lt;connector-pod&gt; --tail=50
+
+<span class="c"># Common causes:</span>
+<span class="r"># 1. Outbound port 443 blocked to Cisco SCC (ACI contract or firewall)</span>
+<span class="p">$</span> oc exec -n ai-defense &lt;connector-pod&gt; -- \
+  curl -sk https://security.cisco.com -o /dev/null -w "%{http_code}"
+
+<span class="r"># 2. Wrong API key used during Helm install</span>
+<span class="c"># → Delete connector in SCC UI, generate new one, reinstall Helm</span>
+
+<span class="r"># 3. SCC commands were not run before Helm install</span>
+<span class="c"># → Check SCC for required commands, apply them, restart connector pods</span>
+<span class="p">$</span> oc rollout restart deployment -n ai-defense</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T4</span><span class="step-title">AI application gets certificate trust errors when calling AI Defense proxy</span><span class="step-type info">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># For self-signed cert (quick workaround — not for production):</span>
+<span class="c"># Configure the AI application to skip TLS verification</span>
+<span class="c"># Python requests example:</span>
+<span class="c"># requests.post(url, verify=False)</span>
+
+<span class="c"># For production — distribute the CA cert to the AI application hosts:</span>
+<span class="c"># Copy ai-defense.crt (or ca-bundle.crt for Option B) to the AI app host</span>
+<span class="c"># Linux — add to system trust:</span>
+<span class="p">$</span> sudo cp ai-defense.crt /etc/pki/ca-trust/source/anchors/
+<span class="p">$</span> sudo update-ca-trust
+
+<span class="c"># Python — use the cert file directly:</span>
+<span class="c"># requests.post(url, verify='/path/to/ai-defense.crt')</span>
+
+<span class="c"># If using Option B (internal CA), ensure the ROOT CA cert</span>
+<span class="c"># (not the leaf cert) is distributed — the leaf cert alone is not sufficient</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<footer>
+  <div class="footer-inner">
+    <span>Cisco AI Defense TLS Certificate Guide · Hybrid Deployment on AI PODs · CU Reference Document</span>
+    <span>OCP 4.18+ · NGINX Ingress Operator · ACI Fabric</span>
+  </div>
+</footer>
+
+<script>
+// TOC active highlighting on scroll
+const sections = document.querySelectorAll('.section[id]');
+const tocItems = document.querySelectorAll('.toc-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  tocItems.forEach(t => {
+    t.classList.remove('active');
+    if (t.getAttribute('href') === '#' + current) t.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

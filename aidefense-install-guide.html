@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cisco AI Defense — Complete Install Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4f8;--bg2:#e2eaf2;--surface:#fff;--border:#ccd8e8;--border2:#b8cad8;
+  --ink:#0d1f35;--ink2:#2a4a6e;--ink3:#5a7a9a;
+  --accent:#0057b8;--accent-bg:#e8f0fc;--accent-border:#b8d0f0;
+  --green:#0a6e3a;--green-bg:#e6f4ec;--green-border:#a8d8bc;
+  --yellow:#7a5500;--yellow-bg:#fef8e6;--yellow-border:#f0d878;
+  --red:#8b1a1a;--red-bg:#fdf0f0;--red-border:#e8b8b8;
+  --orange:#8b4000;--orange-bg:#fef2e6;--orange-border:#f0c890;
+  --purple:#4a1a7a;--purple-bg:#f0e8fc;--purple-border:#c8b0e8;
+  --cisco:#049fd9;
+  --mono:'JetBrains Mono',monospace;--sans:'Outfit',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7}
+
+/* Header */
+header{background:linear-gradient(160deg,#001428 0%,#002a5c 45%,#005596 80%,#0083c8 100%);color:#fff;padding:0;overflow:hidden;position:relative}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(4,159,217,.15) 0%,transparent 60%);pointer-events:none}
+.header-inner{max-width:1000px;margin:0 auto;padding:2.5rem 2.5rem 0;position:relative;z-index:1}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.header-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.15em}
+.header-version{background:rgba(4,159,217,.25);border:1px solid rgba(4,159,217,.4);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.62rem;color:#7dd4f0;text-transform:uppercase;letter-spacing:.1em}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.1;color:#fff;margin-bottom:.75rem}
+h1 span{color:#7dd4f0}
+.header-desc{font-size:.9rem;color:rgba(255,255,255,.6);max-width:600px;line-height:1.75;margin-bottom:1.25rem}
+.header-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.chip{font-family:var(--mono);font-size:.6rem;padding:.2rem .55rem;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.7)}
+
+/* Phase tabs in header */
+.phase-strip{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.1);overflow-x:auto}
+.ph-tab{flex:1;min-width:100px;padding:.9rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.08);cursor:pointer;transition:background .15s;text-decoration:none}
+.ph-tab:hover{background:rgba(255,255,255,.06)}
+.ph-tab:last-child{border-right:none}
+.ph-num{font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.4);display:block;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.1em}
+.ph-name{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.75);display:block;line-height:1.3}
+
+/* Sticky nav */
+.sticky-nav{background:var(--ink);border-bottom:1px solid rgba(255,255,255,.1);padding:0;position:sticky;top:0;z-index:60;overflow-x:auto}
+.nav-inner{max-width:1000px;margin:0 auto;padding:0 2.5rem;display:flex;gap:0}
+.nav-item{font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;padding:.7rem .85rem;border-bottom:2px solid transparent;white-space:nowrap;text-decoration:none;transition:all .15s;flex-shrink:0}
+.nav-item:hover,.nav-item.active{color:#7dd4f0;border-bottom-color:#7dd4f0}
+
+/* Main */
+.main{max-width:1000px;margin:0 auto;padding:2.5rem 2.5rem 6rem}
+
+/* Phase headers */
+.phase-block{margin-bottom:3.5rem;scroll-margin-top:4rem}
+.phase-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding:1.1rem 1.5rem;background:linear-gradient(135deg,var(--accent),#0083c8);border-radius:8px;color:#fff;position:relative;overflow:hidden}
+.phase-header::after{content:attr(data-phase);position:absolute;right:-0.5rem;top:50%;transform:translateY(-50%);font-size:5rem;font-weight:800;color:rgba(255,255,255,.08);font-family:var(--sans);pointer-events:none;white-space:nowrap}
+.phase-circle{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;font-weight:700;flex-shrink:0}
+.phase-info{}
+.phase-title{font-size:1.1rem;font-weight:700;line-height:1.2}
+.phase-subtitle{font-size:.78rem;color:rgba(255,255,255,.7);margin-top:.15rem}
+
+/* Steps */
+.step{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:1.1rem;overflow:hidden}
+.step-header{padding:.8rem 1.25rem;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.step-num{font-family:var(--mono);font-size:.6rem;color:#fff;background:var(--accent);padding:.18rem .42rem;border-radius:3px;flex-shrink:0;font-weight:600}
+.step-title{font-weight:600;font-size:.9rem;color:var(--ink);flex:1;line-height:1.3}
+.step-badge{font-family:var(--mono);font-size:.57rem;padding:.12rem .35rem;border-radius:3px;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0}
+.sb-cmd{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)}
+.sb-ui{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.sb-config{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.sb-verify{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.sb-warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.sb-info{background:var(--bg2);color:var(--ink3);border:1px solid var(--border)}
+.step-body{padding:1.1rem 1.25rem}
+.step-desc{font-size:.84rem;color:var(--ink2);line-height:1.8;margin-bottom:.85rem}
+.step-desc:last-child{margin-bottom:0}
+p.sd{font-size:.84rem;color:var(--ink2);line-height:1.8;margin-bottom:.85rem}
+
+/* Code blocks */
+.cmd-block{background:#001428;border-radius:5px;padding:.8rem 1.1rem;font-family:var(--mono);font-size:.73rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.cmd-block .p{color:#7dd4f0}
+.cmd-block .c{color:#2a4a6a;font-style:italic}
+.cmd-block .g{color:#5cb87a}
+.cmd-block .w{color:#f0c850}
+.cmd-block .r{color:#f08070}
+.cmd-block .y{color:#ffd780}
+.cmd-block .m{color:#d0a0ff}
+.cmd-block .h{color:#049fd9}
+
+/* YAML */
+.yaml-block{background:#0a1828;border:1px solid #1a3a5e;border-radius:5px;padding:.8rem 1.1rem;font-family:var(--mono);font-size:.72rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.yaml-block .k{color:#7dd4f0}
+.yaml-block .v{color:#a0e0a0}
+.yaml-block .s{color:#ffd780}
+.yaml-block .c{color:#2a4a6a;font-style:italic}
+
+/* UI Steps */
+.ui-steps{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:6px;padding:1rem 1.25rem;margin:.65rem 0}
+.ui-steps h4{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.65rem}
+.ui-step-list{list-style:none;counter-reset:ui-step}
+.ui-step-list li{counter-increment:ui-step;display:flex;align-items:flex-start;gap:.65rem;margin-bottom:.5rem;font-size:.84rem;color:var(--ink2);line-height:1.6}
+.ui-step-list li::before{content:counter(ui-step);font-family:var(--mono);font-size:.62rem;color:#fff;background:var(--purple);min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem;font-weight:600}
+.ui-step-list li:last-child{margin-bottom:0}
+
+/* Callouts */
+.callout{border-radius:6px;padding:.85rem 1.1rem;margin:.75rem 0;font-size:.82rem;line-height:1.7;display:flex;gap:.7rem}
+.callout-icon{flex-shrink:0;font-size:1rem;margin-top:.05rem}
+.callout-body{flex:1}
+.callout-title{font-weight:700;margin-bottom:.15rem;font-size:.75rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.callout.warn{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow)}
+.callout.warn .callout-title{color:#c07000}
+.callout.info{background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--ink2)}
+.callout.info .callout-title{color:var(--accent)}
+.callout.success{background:var(--green-bg);border:1px solid var(--green-border);color:var(--ink2)}
+.callout.success .callout-title{color:var(--green)}
+.callout.danger{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+.callout.danger .callout-title{color:#c02020}
+.callout.purple{background:var(--purple-bg);border:1px solid var(--purple-border);color:var(--ink2)}
+.callout.purple .callout-title{color:var(--purple)}
+
+/* Tables */
+.data-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:.75rem 0;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.data-table th{padding:.55rem .85rem;background:var(--accent);color:#fff;text-align:left;font-weight:600;font-size:.72rem}
+.data-table td{padding:.55rem .85rem;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:top;line-height:1.5}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--bg)}
+
+/* Inline code */
+.ic{font-family:var(--mono);font-size:.8em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px;color:var(--ink);white-space:nowrap}
+
+/* Status badges */
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:.75rem 0}
+.status-card{background:var(--surface);border:1px solid var(--border);border-top:3px solid;border-radius:6px;padding:.9rem 1rem}
+.status-card.green{border-top-color:var(--green)}
+.status-card.blue{border-top-color:var(--accent)}
+.status-card.orange{border-top-color:#f97316}
+.sc-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:.35rem}
+.sc-value{font-weight:700;font-size:.88rem;color:var(--ink)}
+.sc-sub{font-size:.75rem;color:var(--ink3);margin-top:.1rem}
+
+.divider{height:1px;background:var(--border);margin:2.75rem 0}
+
+footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);font-size:.65rem;padding:1.5rem 0;margin-top:3rem}
+.footer-inner{max-width:1000px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:680px){.phase-strip{display:none}.main{padding:1.5rem}.header-inner{padding:1.5rem 1.5rem 0}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-badge">🛡️ Cisco AI Defense · Hybrid Install Guide</div>
+      <div class="header-version">AI PODs · OCP 4.18+ · April 2026</div>
+    </div>
+    <h1>Cisco AI Defense<br><span>Complete Installation Guide</span></h1>
+    <div class="header-desc">End-to-end deployment of the AI Defense Hybrid Connector on Cisco AI PODs — from OCP cluster preparation through SCC configuration, Helm install, post-install setup, Validation runs, and Runtime protection configuration.</div>
+    <div class="header-chips">
+      <span class="chip">UCS C845A Workers · NVIDIA L40S</span>
+      <span class="chip">OCP 4.18+</span>
+      <span class="chip">NVIDIA GPU Operator</span>
+      <span class="chip">NGINX Ingress</span>
+      <span class="chip">Helm 3</span>
+      <span class="chip">Cisco SCC</span>
+      <span class="chip">ACI Fabric</span>
+    </div>
+  </div>
+  <div class="phase-strip">
+    <a class="ph-tab" href="#phase0"><span class="ph-num">Phase 0</span><span class="ph-name">Pre-flight Checks</span></a>
+    <a class="ph-tab" href="#phase1"><span class="ph-num">Phase 1</span><span class="ph-name">OCP Preparation</span></a>
+    <a class="ph-tab" href="#phase2"><span class="ph-num">Phase 2</span><span class="ph-name">SCC & AI Defense</span></a>
+    <a class="ph-tab" href="#phase3"><span class="ph-num">Phase 3</span><span class="ph-name">SCC Config + Helm</span></a>
+    <a class="ph-tab" href="#phase4"><span class="ph-num">Phase 4</span><span class="ph-name">Post-Install</span></a>
+    <a class="ph-tab" href="#phase5"><span class="ph-num">Phase 5</span><span class="ph-name">Validation</span></a>
+    <a class="ph-tab" href="#phase6"><span class="ph-num">Phase 6</span><span class="ph-name">Runtime</span></a>
+    <a class="ph-tab" href="#phase7"><span class="ph-num">Phase 7</span><span class="ph-name">Verify & Monitor</span></a>
+  </div>
+</header>
+
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a class="nav-item" href="#phase0">Pre-flight</a>
+    <a class="nav-item" href="#phase1">OCP Prep</a>
+    <a class="nav-item" href="#phase2">SCC Setup</a>
+    <a class="nav-item" href="#phase3">Helm Install</a>
+    <a class="nav-item" href="#phase4">Post-Install</a>
+    <a class="nav-item" href="#phase5">Validation</a>
+    <a class="nav-item" href="#phase6">Runtime</a>
+    <a class="nav-item" href="#phase7">Verify</a>
+    <a class="nav-item" href="#troubleshoot">Troubleshoot</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- Phase 0 -->
+<div class="phase-block" id="phase0">
+  <div class="phase-header" data-phase="0">
+    <div class="phase-circle">0</div>
+    <div class="phase-info">
+      <div class="phase-title">Pre-flight Verification</div>
+      <div class="phase-subtitle">Confirm all prerequisites are in place before touching anything</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.1</span><span class="step-title">Verify OCP cluster health — all nodes Ready, all operators green</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">Do not proceed if any node is NotReady or any cluster operator is degraded. AI Defense adds workloads to all worker nodes — pre-existing issues will be compounded.</p>
+      <div class="cmd-block"><span class="p">$</span> oc get nodes
+<span class="c"># All nodes must show STATUS=Ready</span>
+<span class="p">$</span> oc get co | grep -v "True.*False.*False"
+<span class="g"># No output = all operators healthy. Ready to proceed.</span>
+<span class="p">$</span> oc version
+<span class="g"># Server Version: 4.18.x or higher (hard requirement)</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.2</span><span class="step-title">Confirm outbound internet access on port 443 from OCP nodes</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">The AI Defense connector communicates with the SaaS control plane via a bidirectional gRPC stream encrypted with TLS over port 443. This is the only outbound port required — but it must be fully unrestricted (no TLS inspection/MITM proxy).</p>
+      <div class="cmd-block"><span class="p">$</span> curl -sk https://security.cisco.com -o /dev/null -w "SCC: %{http_code}\n"
+<span class="p">$</span> curl -sk https://us.aidefense.security.cisco.com -o /dev/null -w "AI Defense: %{http_code}\n"
+<span class="g"># Any HTTP response (200, 30x, 40x) = port 443 is open</span>
+<span class="r"># curl: (000) or (35) = blocked at ACI or firewall — fix before proceeding</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">TLS inspection will break the gRPC stream</div>If your firewall performs SSL/TLS inspection on port 443, the gRPC connection between the on-prem connector and the AI Defense cloud gateway will fail. Add <span class="ic">*.security.cisco.com</span> and <span class="ic">*.aidefense.security.cisco.com</span> to your inspection bypass list.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.3</span><span class="step-title">Confirm Helm 3 and oc CLI are installed on jump server</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> helm version --short
+<span class="g"># v3.x.x</span>
+<span class="p">$</span> oc whoami
+<span class="g"># Must return your username</span>
+<span class="p">$</span> oc auth can-i '*' '*' --all-namespaces
+<span class="g"># yes (cluster-admin required)</span>
+<span class="c"># Install Helm if missing:</span>
+<span class="p">$</span> curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.4</span><span class="step-title">Confirm Cisco SCC account has AI Defense entitlement visible</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>Steps in Browser</h4>
+        <ol class="ui-step-list">
+          <li>Navigate to <strong>https://security.cisco.com</strong> and log in with your Cisco CCO credentials</li>
+          <li>From the product list, click <strong>AI Defense</strong></li>
+          <li>Confirm the AI Defense dashboard loads — if you see a licensing error, contact your Cisco account team before proceeding</li>
+          <li>Navigate to <strong>Administration → Licenses</strong> — confirm status is Active and check expiry date</li>
+          <li>Navigate to <strong>Administration → Regional Points of Presence</strong> — note your assigned PoP region (e.g., <strong>US</strong>)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 1 -->
+<div class="phase-block" id="phase1">
+  <div class="phase-header" data-phase="1">
+    <div class="phase-circle">1</div>
+    <div class="phase-info">
+      <div class="phase-title">OCP Cluster Preparation</div>
+      <div class="phase-subtitle">Install required operators and configure the cluster before AI Defense can be deployed</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.1</span><span class="step-title">Install the NVIDIA GPU Operator</span><span class="step-badge sb-ui">OCP Console</span></div>
+    <div class="step-body">
+      <p class="sd">AI Defense Validation and Runtime processing uses GPU resources on the AI POD worker nodes. The NVIDIA GPU Operator must be installed and all GPUs must be schedulable before the AI Defense Helm chart is deployed.</p>
+      <div class="ui-steps">
+        <h4>Install via OCP Console OperatorHub</h4>
+        <ol class="ui-step-list">
+          <li>Open the OCP Web Console → <strong>Operators → OperatorHub</strong></li>
+          <li>Search for <strong>NVIDIA GPU Operator</strong></li>
+          <li>Click the operator, then click <strong>Install</strong></li>
+          <li>Set Installation Mode: <strong>All namespaces</strong></li>
+          <li>Set Installed Namespace: <strong>gpu-operator-resources</strong> (create new)</li>
+          <li>Set Update Approval: <strong>Automatic</strong></li>
+          <li>Click <strong>Install</strong> and wait for status to show <strong>Succeeded</strong></li>
+        </ol>
+      </div>
+      <div class="cmd-block"><span class="c"># Verify GPU Operator is running:</span>
+<span class="p">$</span> oc get pods -n gpu-operator-resources
+<span class="g"># All pods should be Running</span>
+
+<span class="c"># Verify GPUs are visible as schedulable resources on worker nodes:</span>
+<span class="p">$</span> oc get nodes -o json | jq '.items[].status.allocatable | with_entries(select(.key | contains("nvidia")))'
+<span class="g"># Each C845A worker should show: "nvidia.com/gpu": "4" or "8"</span>
+
+<span class="c"># Double-check on a specific node:</span>
+<span class="p">$</span> oc describe node &lt;worker-node-name&gt; | grep -A3 "Allocatable:"
+<span class="g"># nvidia.com/gpu:  4  (small config) or 8 (medium/large)</span></div>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><div class="callout-title">Do not proceed if GPUs are not showing</div>If <span class="ic">nvidia.com/gpu</span> does not appear in node allocatable resources, AI Defense Validation pods will fail to schedule. Common cause: GPU Operator installed but Node Feature Discovery (NFD) hasn't labelled the nodes yet. Wait 5 minutes and re-check.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.2</span><span class="step-title">Install the NGINX Ingress Operator</span><span class="step-badge sb-ui">OCP Console</span></div>
+    <div class="step-body">
+      <p class="sd">The NGINX Ingress Operator exposes the AI Defense proxy gateway and API endpoint to on-prem AI applications. Required for Runtime protection. If you plan to use only Validation initially, this can be deferred — but install it before any Runtime configuration.</p>
+      <div class="ui-steps">
+        <h4>Install via OCP Console OperatorHub</h4>
+        <ol class="ui-step-list">
+          <li>Open OCP Web Console → <strong>Operators → OperatorHub</strong></li>
+          <li>Search for <strong>NGINX Ingress Operator</strong></li>
+          <li>Click Install → Set namespace to <strong>nginx-ingress</strong> → Click <strong>Install</strong></li>
+          <li>After install, navigate to <strong>Operators → Installed Operators → NGINX Ingress Operator</strong></li>
+          <li>Click <strong>Create NginxIngressController</strong></li>
+        </ol>
+      </div>
+      <div class="cmd-block"><span class="c"># Create the NginxIngressController CR:</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: charts.nginx.org/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: ai-defense-nginx
+  namespace: nginx-ingress
+spec:
+  type: deployment
+  nginxPlus: false
+  ingressClass: nginx
+  serviceType: LoadBalancer
+EOF
+
+<span class="c"># Verify NGINX is running and has an external IP:</span>
+<span class="p">$</span> oc get pods -n nginx-ingress
+<span class="g"># nginx-ingress-controller-xxx   1/1   Running</span>
+
+<span class="p">$</span> oc get svc -n nginx-ingress
+<span class="g"># Note the EXTERNAL-IP — needed for DNS configuration later</span>
+
+<span class="p">$</span> oc get ingressclass
+<span class="g"># nginx   nginx.org/ingress-controller   &lt;age&gt;</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.3</span><span class="step-title">Prepare TLS certificate for AI Defense Ingress endpoint</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">A TLS certificate is required for the AI Defense proxy and API endpoint. Choose your subdomain now — this value cannot be changed without redeploying the Ingress configuration. See the separate <strong>TLS Certificate Guide</strong> for all three cert options.</p>
+      <div class="cmd-block"><span class="c"># Decide your AI Defense subdomain, e.g.:</span>
+<span class="y">AIDEF_HOST="aidefense.apps.&lt;cluster-name&gt;.&lt;domain&gt;"</span>
+
+<span class="c"># Generate self-signed cert (for CU / lab — replace with CA-signed for production):</span>
+<span class="p">$</span> openssl req -x509 -nodes -days 365 \
+  -newkey rsa:2048 \
+  -keyout ai-defense.key \
+  -out ai-defense.crt \
+  -subj "/CN=${AIDEF_HOST}" \
+  -addext "subjectAltName=DNS:${AIDEF_HOST}"
+
+<span class="c"># Verify cert:</span>
+<span class="p">$</span> openssl x509 -in ai-defense.crt -text -noout | grep -E "Subject:|DNS:|Not After"</div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 2 -->
+<div class="phase-block" id="phase2">
+  <div class="phase-header" data-phase="2">
+    <div class="phase-circle">2</div>
+    <div class="phase-info">
+      <div class="phase-title">SCC Account Setup &amp; AI Defense Activation</div>
+      <div class="phase-subtitle">Generate API key and retrieve the SCC + Helm commands from the AI Defense UI</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.1</span><span class="step-title">Generate an API key in AI Defense</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <p class="sd">The API key authenticates the on-prem connector to your SCC tenant. It is embedded in the Helm install command. Store it securely — treat it like a password.</p>
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense</h4>
+        <ol class="ui-step-list">
+          <li>Navigate to <strong>Administration → API Keys and URLs</strong></li>
+          <li>Click <strong>Generate API Key</strong></li>
+          <li>Give it a descriptive name, e.g. <strong>ai-pod-hybrid-connector</strong></li>
+          <li>Copy the API key value and store it securely — it will not be shown again</li>
+          <li>Note the <strong>Base URL</strong> for your region — this is also used in the Helm command</li>
+        </ol>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">One API key per connector</div>Each hybrid connector deployment should use a unique API key. If you need to redeploy the connector, generate a new API key rather than reusing the old one.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.2</span><span class="step-title">Navigate to Hybrid Deployment and initiate connector creation</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense</h4>
+        <ol class="ui-step-list">
+          <li>From the AI Defense Dashboard, navigate to <strong>Administration → Hybrid Deployment</strong></li>
+          <li>Click <strong>Deploy a Connector</strong></li>
+          <li>Select your deployment platform: <strong>AI PODs (OpenShift)</strong></li>
+          <li>The UI will display two sets of commands: <strong>SCC configuration commands</strong> and a <strong>Helm install command</strong></li>
+          <li><strong>Copy both sets of commands</strong> to a text editor — you will run the SCC commands first, then the Helm command</li>
+          <li>Insert your API key when prompted in the Helm command</li>
+          <li>Keep this browser tab open — you will refresh it to confirm Active status after install</li>
+        </ol>
+      </div>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><div class="callout-title">Critical order: SCC commands MUST run BEFORE Helm</div>The CVD explicitly states this. Running Helm before the SCC configuration will result in connector pods failing with permission errors. The SCC commands create the namespace, service accounts, and security context constraints that the Helm chart expects to already exist.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 3 -->
+<div class="phase-block" id="phase3">
+  <div class="phase-header" data-phase="3">
+    <div class="phase-circle">3</div>
+    <div class="phase-info">
+      <div class="phase-title">Security Context Constraints + Helm Install</div>
+      <div class="phase-subtitle">Configure OCP permissions then deploy the AI Defense hybrid connector via Helm</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.1</span><span class="step-title">Run the SCC configuration commands from the AI Defense UI</span><span class="step-badge sb-cmd">Command — Run First</span></div>
+    <div class="step-body">
+      <p class="sd">The exact SCC commands are generated by the AI Defense UI and are specific to your tenant. The commands from the UI are authoritative — the pattern below shows the general structure of what to expect.</p>
+      <div class="callout purple">
+        <span class="callout-icon">📋</span>
+        <div class="callout-body"><div class="callout-title">Use the commands from the AI Defense UI</div>Copy the exact commands from SCC → Administration → Hybrid Deployment → Deploy a Connector. The commands below show the expected pattern — your tenant-specific commands may differ slightly.</div>
+      </div>
+      <div class="cmd-block"><span class="c"># Pattern of SCC commands provided by AI Defense UI (use exact commands from UI):</span>
+
+<span class="c"># Create the AI Defense namespace:</span>
+<span class="p">$</span> oc new-project ai-defense
+
+<span class="c"># Create service account for AI Defense:</span>
+<span class="p">$</span> oc create serviceaccount ai-defense -n ai-defense
+
+<span class="c"># Create the Security Context Constraint:</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: ai-defense-scc
+allowHostDirVolumePlugin: false
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: false
+allowedCapabilities: []
+defaultAddCapabilities: []
+fsGroup:
+  type: RunAsAny
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+users:
+  - system:serviceaccount:ai-defense:ai-defense
+groups: []
+EOF
+
+<span class="c"># Bind the SCC to the AI Defense service account:</span>
+<span class="p">$</span> oc adm policy add-scc-to-user ai-defense-scc \
+  -z ai-defense -n ai-defense
+
+<span class="c"># Verify SCC was created and bound:</span>
+<span class="p">$</span> oc get scc ai-defense-scc
+<span class="p">$</span> oc describe scc ai-defense-scc | grep -A5 "Users:"
+<span class="g"># system:serviceaccount:ai-defense:ai-defense</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.2</span><span class="step-title">Run the Helm install command from the AI Defense UI</span><span class="step-badge sb-cmd">Command — Run Second</span></div>
+    <div class="step-body">
+      <p class="sd">The Helm command is generated by the AI Defense UI and includes your connector name, API key, and the correct Helm chart repository URL. Use the exact command from the UI — the pattern below shows the expected structure.</p>
+      <div class="cmd-block"><span class="c"># Add the AI Defense Helm repository (URL from AI Defense UI):</span>
+<span class="p">$</span> helm repo add ai-defense &lt;helm-repo-url-from-ui&gt;
+<span class="p">$</span> helm repo update
+
+<span class="c"># Install AI Defense connector (use exact command from AI Defense UI):</span>
+<span class="c"># Pattern — your command will have tenant-specific values:</span>
+<span class="p">$</span> helm install ai-defense-connector ai-defense/ai-defense-connector \
+  --namespace ai-defense \
+  --set global.apiKey=<span class="y">&lt;your-api-key-from-step-2.1&gt;</span> \
+  --set global.baseUrl=<span class="y">&lt;your-regional-base-url&gt;</span> \
+  --set global.connectorName=<span class="y">"ai-pod-hybrid-connector"</span> \
+  --wait --timeout 10m
+
+<span class="c"># Monitor pod startup:</span>
+<span class="p">$</span> oc get pods -n ai-defense -w
+<span class="g"># Expected pods to appear:</span>
+<span class="g"># ai-defense-connector-xxx        Running</span>
+<span class="g"># ai-defense-proxy-service-xxx    Running</span>
+<span class="g"># ai-defense-apigateway-xxx       Running</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Initial deployment takes 3–8 minutes</div>The Helm chart pulls multiple container images and initializes the gRPC connection to the SaaS control plane. The <span class="ic">--wait --timeout 10m</span> flags will hold the command until all pods are ready or the timeout is reached.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.3</span><span class="step-title">Verify connector status shows Active in SCC</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check pods in OCP:</span>
+<span class="p">$</span> oc get pods -n ai-defense
+<span class="g"># All pods Running</span>
+
+<span class="c"># Check services deployed:</span>
+<span class="p">$</span> oc get svc -n ai-defense
+<span class="g"># ai-defense-proxy-service   ClusterIP   10.x.x.x</span>
+<span class="g"># ai-defense-apigateway      ClusterIP   10.x.x.x</span>
+
+<span class="c"># Check Helm release status:</span>
+<span class="p">$</span> helm status ai-defense-connector -n ai-defense
+<span class="g"># STATUS: deployed</span></div>
+      <div class="ui-steps">
+        <h4>Verify in SCC Browser Tab</h4>
+        <ol class="ui-step-list">
+          <li>Refresh the browser tab showing <strong>Administration → Hybrid Deployment</strong></li>
+          <li>The connector status should change from <strong>Pending</strong> to <strong>Active ✓</strong></li>
+          <li>If it stays Pending after 5 minutes, check the troubleshooting section</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 4 -->
+<div class="phase-block" id="phase4">
+  <div class="phase-header" data-phase="4">
+    <div class="phase-circle">4</div>
+    <div class="phase-info">
+      <div class="phase-title">Post-Install Configuration</div>
+      <div class="phase-subtitle">TLS secret, NGINX Ingress route, DNS entry — required before Runtime can be used</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.1</span><span class="step-title">Create the TLS Secret in the ai-defense namespace</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">The <span class="ic">ai-defense</span> namespace was created by the Helm install in Phase 3. Now create the TLS secret in that namespace. The NGINX Ingress route will reference this secret.</p>
+      <div class="cmd-block"><span class="c"># Create TLS secret from the cert/key generated in Phase 1.3:</span>
+<span class="p">$</span> oc create secret tls ai-defense-tls \
+  --cert=ai-defense.crt \
+  --key=ai-defense.key \
+  -n ai-defense
+
+<span class="c"># Verify:</span>
+<span class="p">$</span> oc get secret ai-defense-tls -n ai-defense
+<span class="g"># TYPE: kubernetes.io/tls</span>
+
+<span class="c"># Confirm the cert CN matches your intended subdomain:</span>
+<span class="p">$</span> oc get secret ai-defense-tls -n ai-defense \
+  -o jsonpath='{.data.tls\.crt}' | base64 -d | \
+  openssl x509 -noout -subject -ext subjectAltName</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.2</span><span class="step-title">Deploy the NGINX Ingress route for AI Defense services</span><span class="step-badge sb-config">Config</span></div>
+    <div class="step-body">
+      <p class="sd">This Ingress routes HTTPS traffic from AI applications to the two AI Defense services: the proxy gateway (root path) and the API inspection endpoint. Replace <span class="ic">aidefense.yourdomain.com</span> with your actual subdomain.</p>
+      <div class="yaml-block"><span class="k">apiVersion</span>: <span class="v">networking.k8s.io/v1</span>
+<span class="k">kind</span>: <span class="v">Ingress</span>
+<span class="k">metadata</span>:
+  <span class="k">name</span>: <span class="v">ai-defense-ingress</span>
+  <span class="k">namespace</span>: <span class="v">ai-defense</span>
+  <span class="k">annotations</span>:
+    <span class="k">nginx.org/proxy-connect-timeout</span>: <span class="s">"30s"</span>
+    <span class="k">nginx.org/proxy-read-timeout</span>: <span class="s">"300s"</span>    <span class="c"># Long timeout for AI inference</span>
+    <span class="k">nginx.org/proxy-send-timeout</span>: <span class="s">"300s"</span>
+    <span class="k">nginx.ingress.kubernetes.io/ssl-redirect</span>: <span class="s">"true"</span>
+    <span class="k">nginx.ingress.kubernetes.io/backend-protocol</span>: <span class="s">"HTTPS"</span>
+<span class="k">spec</span>:
+  <span class="k">ingressClassName</span>: <span class="v">nginx</span>
+  <span class="k">tls</span>:
+  - <span class="k">hosts</span>:
+    - <span class="v">aidefense.yourdomain.com</span>
+    <span class="k">secretName</span>: <span class="v">ai-defense-tls</span>
+  <span class="k">rules</span>:
+  - <span class="k">host</span>: <span class="v">aidefense.yourdomain.com</span>
+    <span class="k">http</span>:
+      <span class="k">paths</span>:
+      - <span class="k">path</span>: <span class="v">/api/v1/inspect</span>
+        <span class="k">pathType</span>: <span class="v">Prefix</span>
+        <span class="k">backend</span>:
+          <span class="k">service</span>:
+            <span class="k">name</span>: <span class="v">ai-defense-apigateway</span>
+            <span class="k">port</span>:
+              <span class="k">number</span>: <span class="v">443</span>
+      - <span class="k">path</span>: <span class="v">/</span>
+        <span class="k">pathType</span>: <span class="v">Prefix</span>
+        <span class="k">backend</span>:
+          <span class="k">service</span>:
+            <span class="k">name</span>: <span class="v">ai-defense-proxy-service</span>
+            <span class="k">port</span>:
+              <span class="k">number</span>: <span class="v">443</span></div>
+      <div class="cmd-block"><span class="c"># Apply the Ingress configuration:</span>
+<span class="p">$</span> oc apply -f ai-defense-ingress.yaml
+
+<span class="c"># Verify it was accepted:</span>
+<span class="p">$</span> oc get ingress -n ai-defense
+<span class="p">$</span> oc describe ingress ai-defense-ingress -n ai-defense</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.3</span><span class="step-title">Add DNS A record for the AI Defense subdomain</span><span class="step-badge sb-config">DNS Config</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Get the NGINX Ingress external IP:</span>
+<span class="p">$</span> oc get svc -n nginx-ingress
+<span class="g"># Note EXTERNAL-IP, e.g.: 10.7.1.50</span>
+
+<span class="c"># Add this A record to your internal DNS (ACI environment):</span>
+<span class="y">aidefense.yourdomain.com    IN    A    &lt;NGINX-EXTERNAL-IP&gt;</span>
+
+<span class="c"># Verify DNS propagation (allow 60s after adding record):</span>
+<span class="p">$</span> nslookup aidefense.yourdomain.com
+<span class="g"># Address: &lt;NGINX-EXTERNAL-IP&gt;</span>
+
+<span class="c"># Test HTTPS endpoint reachability:</span>
+<span class="p">$</span> curl -sk https://aidefense.yourdomain.com/api/v1/inspect \
+  -w "\nHTTP: %{http_code}\n"
+<span class="g"># HTTP: 4xx (route works, auth required) — NOT 000 connection refused</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 5 -->
+<div class="phase-block" id="phase5">
+  <div class="phase-header" data-phase="5">
+    <div class="phase-circle">5</div>
+    <div class="phase-info">
+      <div class="phase-title">AI Defense Validation</div>
+      <div class="phase-subtitle">Run an automated security assessment (algorithmic red team) against an AI model on your AI POD</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.1</span><span class="step-title">Confirm your on-prem AI model endpoint is reachable</span><span class="step-badge sb-verify">Prerequisite</span></div>
+    <div class="step-body">
+      <p class="sd">Before running Validation, confirm the model you want to test is accessible at an HTTPS endpoint from within the OCP cluster network. You will need the endpoint URL, request header structure, and payload structure.</p>
+      <div class="cmd-block"><span class="c"># Test model endpoint from jump server (same network as OCP nodes):</span>
+<span class="p">$</span> curl -sk https://&lt;model-endpoint&gt;/health -o /dev/null -w "Model: %{http_code}\n"
+
+<span class="c"># Note down for the Validation setup:</span>
+<span class="c"># 1. Full endpoint URL: https://&lt;model-host&gt;/&lt;path&gt;</span>
+<span class="c"># 2. Request body template (e.g., OpenAI-compatible format):</span>
+<span class="y">{
+  "model": "your-model-name",
+  "messages": [{"role": "user", "content": "{{prompt}}"}],
+  "max_tokens": 1024
+}</span>
+<span class="c"># 3. Path to model response in JSON: e.g., choices.0.message.content</span>
+<span class="c"># 4. Any required HTTP headers (Authorization, Content-Type, etc.)</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.2</span><span class="step-title">Create and run an AI Defense Validation test</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense → Validation</h4>
+        <ol class="ui-step-list">
+          <li>Navigate to <strong>Validation</strong> in the left navigation menu</li>
+          <li>Click <strong>+ Run Validation</strong> (top right button)</li>
+          <li>In the popup, configure the validation run:</li>
+        </ol>
+      </div>
+      <table class="data-table" style="margin:0 0 .75rem 0">
+        <thead><tr><th>Setting</th><th>Value</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Asset Type</strong></td><td>External</td><td>For on-prem AI POD hosted models</td></tr>
+          <tr><td><strong>Test Name</strong></td><td>Your descriptive name</td><td>e.g., "AI POD Model Security Assessment"</td></tr>
+          <tr><td><strong>Target Endpoint</strong></td><td>Your model URL</td><td>Full HTTPS URL including path</td></tr>
+          <tr><td><strong>Request Body Template</strong></td><td>Your model's payload format</td><td>Must include <span class="ic">{{prompt}}</span> placeholder</td></tr>
+          <tr><td><strong>Path to Model Response</strong></td><td>choices.0.message.content</td><td>Default for OpenAI-compatible models</td></tr>
+          <tr><td><strong>API Provider</strong></td><td>None</td><td>For on-prem models</td></tr>
+          <tr><td><strong>HTTP Headers</strong></td><td>As required by model</td><td>Authorization headers if needed</td></tr>
+        </tbody>
+      </table>
+      <div class="ui-steps">
+        <h4>Continue</h4>
+        <ol class="ui-step-list">
+          <li>Click <strong>Submit</strong> to start the validation test</li>
+          <li>The validation run begins immediately — AI Defense sends thousands of adversarial prompts to your model algorithmically</li>
+          <li>Navigate to <strong>Validation</strong> and click the test name to monitor progress</li>
+          <li>Typical duration: 10–45 minutes depending on model response latency and test depth</li>
+        </ol>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">What Validation tests for</div>AI Defense Validation runs algorithmic red teaming covering OWASP Top 10 for LLM, MITRE ATLAS, and Cisco's own AI threat research. It tests for prompt injection, jailbreaking, sensitive data leakage, off-topic responses, and more. The report output is used to configure Runtime protection policies.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.3</span><span class="step-title">Review the Validation report</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense → Validation → [Your Test Name]</h4>
+        <ol class="ui-step-list">
+          <li>Once complete, open the test result to view the full report</li>
+          <li>Review the risk score and breakdown by category (OWASP, MITRE ATLAS)</li>
+          <li>Note which attack categories the model is susceptible to — these inform your Runtime policy configuration in Phase 6</li>
+          <li>Download the report PDF if a customer deliverable is needed</li>
+        </ol>
+      </div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Validation complete</div>A completed Validation report confirms AI Defense can reach and communicate with your model. This also validates that the connector, network path, and model endpoint are all working correctly end-to-end.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 6 -->
+<div class="phase-block" id="phase6">
+  <div class="phase-header" data-phase="6">
+    <div class="phase-circle">6</div>
+    <div class="phase-info">
+      <div class="phase-title">Runtime Protection Configuration</div>
+      <div class="phase-subtitle">Create an application, connection, and policy to protect AI interactions in real time</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.1</span><span class="step-title">Create an AI Application in AI Defense</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <p class="sd">In AI Defense, an "Application" represents the AI application you want to protect. Each application can have multiple connections to different LLM endpoints. The connection type determines how AI Defense intercepts traffic — Gateway (proxy) or API (inspection).</p>
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense → Applications</h4>
+        <ol class="ui-step-list">
+          <li>Click <strong>+ Add Application</strong></li>
+          <li>Fill in:<br><strong>Name:</strong> Descriptive name for your AI application<br><strong>Connection Type:</strong> <strong>Gateway</strong> (recommended for AI POD deployments)<br><strong>Description:</strong> Optional description</li>
+          <li>Click <strong>Continue</strong> to save the Application object</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.2</span><span class="step-title">Add a Connection and configure the AI Model endpoint</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>In the Application view → Add Connection</h4>
+        <ol class="ui-step-list">
+          <li>Click <strong>Add Connection</strong></li>
+          <li>Click <strong>Add or manage endpoint</strong></li>
+          <li>Click <strong>Add Endpoint</strong>:
+            <br>• <strong>Model Provider:</strong> External Model
+            <br>• <strong>URL:</strong> The URL of your on-prem LLM (on the AI POD)
+            <br>• Click <strong>Save</strong> then <strong>Done</strong></li>
+          <li>Select the endpoint just created and give the connection a name</li>
+          <li>Click <strong>Add Connection</strong> to save</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.3</span><span class="step-title">Get the Gateway URL and reconfigure your AI application</span><span class="step-badge sb-ui">SCC UI + App Config</span></div>
+    <div class="step-body">
+      <p class="sd">The Gateway URL is the URL your AI application must use instead of calling the LLM directly. AI Defense sits between the application and the model, inspecting all prompts and responses.</p>
+      <div class="ui-steps">
+        <h4>In the Application view</h4>
+        <ol class="ui-step-list">
+          <li>Click the three dots (<strong>⋮</strong>) next to the connection you just created</li>
+          <li>Select <strong>Connection Guide</strong></li>
+          <li>Copy the <strong>Gateway URL</strong> shown</li>
+          <li><strong>Replace the host</strong> in the Gateway URL with your AI Defense proxy service hostname configured in Phase 4: <span class="ic">aidefense.yourdomain.com</span></li>
+          <li>Update your AI application's LLM endpoint URL to point to this new address</li>
+        </ol>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">How gateway mode works</div>Your AI application sends LLM requests to the AI Defense proxy URL instead of directly to the model. AI Defense inspects the prompt, enforces policy (block/allow/alert), then forwards allowed requests to the actual model. Responses from the model are also inspected before returning to the application.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.4</span><span class="step-title">Create a Runtime Protection Policy</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense → Policies</h4>
+        <ol class="ui-step-list">
+          <li>Click <strong>Create Policy</strong></li>
+          <li>Give the policy a name, e.g. <strong>AI POD Model Protection Policy</strong></li>
+          <li>Configure the guardrail rules based on your Validation report findings from Phase 5. Recommended starting rules:
+            <br>• <strong>Prompt Injection</strong> → Block
+            <br>• <strong>Sensitive Data (PII)</strong> → Block
+            <br>• <strong>Jailbreak Attempts</strong> → Block
+            <br>• <strong>Off-topic Responses</strong> → Alert
+            <br>• <strong>Malicious URLs</strong> → Block</li>
+          <li>Set the enforcement mode: <strong>Block</strong> for high confidence, <strong>Alert</strong> for monitoring</li>
+          <li>Click <strong>Save Policy</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.5</span><span class="step-title">Apply the Policy to the Application Connection</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense → Applications → [Your Application]</h4>
+        <ol class="ui-step-list">
+          <li>Click the three dots next to the connection</li>
+          <li>Select <strong>Assign Policy</strong></li>
+          <li>Select the policy created in Step 6.4</li>
+          <li>Click <strong>Assign</strong></li>
+          <li>The connection now shows the policy name — Runtime protection is active</li>
+        </ol>
+      </div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Runtime protection is now active</div>All prompts and responses flowing through the AI Defense proxy are now being inspected against your policy. Events are visible in <strong>AI Defense → Events</strong> in real time.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 7 -->
+<div class="phase-block" id="phase7">
+  <div class="phase-header" data-phase="7">
+    <div class="phase-circle">7</div>
+    <div class="phase-info">
+      <div class="phase-title">Post-Deployment Verification</div>
+      <div class="phase-subtitle">Confirm all components are healthy using the CVD validation commands</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.1</span><span class="step-title">View all AI Defense pods deployed on the OCP cluster</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># CVD Validation Command — View all AI Defense PODs:</span>
+<span class="p">$</span> oc get pods -n ai-defense -o wide
+
+<span class="c"># Expected output (pod names will vary):</span>
+<span class="g">NAME                                          READY   STATUS    NODE
+ai-defense-connector-xxx                      1/1     Running   worker-node-1
+ai-defense-proxy-service-xxx                  1/1     Running   worker-node-1
+ai-defense-apigateway-xxx                     1/1     Running   worker-node-2
+ai-defense-validation-engine-xxx              1/1     Running   worker-node-1</span>
+
+<span class="c"># All pods must be Running with READY showing 1/1 (or n/n)</span>
+<span class="c"># If any pod is in CrashLoopBackOff or Pending, see troubleshooting section</span>
+
+<span class="c"># View pod events for any issues:</span>
+<span class="p">$</span> oc get events -n ai-defense --sort-by='.lastTimestamp' | tail -20</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.2</span><span class="step-title">View all AI Defense services</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># CVD Validation Command — View all AI Defense services:</span>
+<span class="p">$</span> oc get svc -n ai-defense
+
+<span class="c"># Expected services:</span>
+<span class="g">NAME                       TYPE        CLUSTER-IP     PORT(S)
+ai-defense-proxy-service   ClusterIP   10.x.x.x       443/TCP
+ai-defense-apigateway      ClusterIP   10.x.x.x       443/TCP</span>
+
+<span class="c"># Verify service endpoints have backing pods:</span>
+<span class="p">$</span> oc get endpoints -n ai-defense
+<span class="g"># Both services should show IP:port entries (not &lt;none&gt;)</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.3</span><span class="step-title">View all AI Defense routes and Ingress</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># CVD Validation Command — View all AI Defense routes:</span>
+<span class="p">$</span> oc get ingress -n ai-defense
+<span class="p">$</span> oc get routes -n ai-defense 2>/dev/null  <span class="c"># if using OCP Routes instead of Ingress</span>
+
+<span class="c"># Verify Ingress is routing correctly:</span>
+<span class="p">$</span> oc describe ingress ai-defense-ingress -n ai-defense | grep -A15 "Rules\|TLS"
+
+<span class="c"># End-to-end test from jump server:</span>
+<span class="p">$</span> curl -sk https://aidefense.yourdomain.com/api/v1/inspect \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"test"}]}' \
+  -w "\nHTTP: %{http_code}\n"
+<span class="g"># HTTP: 401 (Unauthorized — expected, confirms routing works)</span>
+<span class="r"># HTTP: 000 (connection refused — DNS or Ingress not working)</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.4</span><span class="step-title">View AI Defense namespace events</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># CVD Validation Command — View AI Defense namespace events:</span>
+<span class="p">$</span> oc get events -n ai-defense --sort-by='.lastTimestamp'
+
+<span class="c"># Look for any Warning events — normal deployment should only show Normal events</span>
+<span class="c"># Common healthy events:</span>
+<span class="g">Normal   Scheduled    pod/ai-defense-connector     Successfully assigned
+Normal   Pulled       pod/ai-defense-connector     Container image already present
+Normal   Created      pod/ai-defense-connector     Created container
+Normal   Started      pod/ai-defense-connector     Started container</span>
+
+<span class="c"># Red flags to investigate:</span>
+<span class="r">Warning  FailedScheduling   Insufficient nvidia.com/gpu   (GPU operator not working)
+Warning  CrashLoopBackOff   Exit code 1 or 2             (Check pod logs)
+Warning  FailedMount        secret "ai-defense-tls"      (TLS secret missing)</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.5</span><span class="step-title">Final state verification summary</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="status-grid">
+        <div class="status-card green">
+          <div class="sc-label">Hybrid Connector</div>
+          <div class="sc-value">✓ Active in SCC</div>
+          <div class="sc-sub">SCC → AI Defense → Administration → Hybrid Deployment</div>
+        </div>
+        <div class="status-card green">
+          <div class="sc-label">OCP Pods</div>
+          <div class="sc-value">✓ All Running</div>
+          <div class="sc-sub">oc get pods -n ai-defense</div>
+        </div>
+        <div class="status-card green">
+          <div class="sc-label">HTTPS Endpoint</div>
+          <div class="sc-value">✓ Returning 4xx</div>
+          <div class="sc-sub">curl https://aidefense.yourdomain.com</div>
+        </div>
+        <div class="status-card blue">
+          <div class="sc-label">Validation</div>
+          <div class="sc-value">Run completed</div>
+          <div class="sc-sub">AI Defense → Validation → [Test Name]</div>
+        </div>
+        <div class="status-card blue">
+          <div class="sc-label">Runtime Policy</div>
+          <div class="sc-value">Assigned to connection</div>
+          <div class="sc-sub">AI Defense → Applications → [App Name]</div>
+        </div>
+        <div class="status-card orange">
+          <div class="sc-label">GPU Resources</div>
+          <div class="sc-value">Schedulable</div>
+          <div class="sc-sub">nvidia.com/gpu in node allocatable</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- Troubleshooting -->
+<div class="phase-block" id="troubleshoot">
+  <div class="phase-header" data-phase="T" style="background:linear-gradient(135deg,#4a1a7a,#7a3ab0)">
+    <div class="phase-circle">T</div>
+    <div class="phase-info">
+      <div class="phase-title">Troubleshooting Reference</div>
+      <div class="phase-subtitle">Common failure scenarios and diagnostic commands</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T1</span><span class="step-title">Connector stuck in Pending — never shows Active in SCC</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check connector pod logs for the connection error:</span>
+<span class="p">$</span> oc get pods -n ai-defense
+<span class="p">$</span> oc logs -n ai-defense &lt;connector-pod-name&gt; --tail=50
+
+<span class="c"># Common causes:</span>
+<span class="r"># 1. Port 443 blocked from OCP nodes to Cisco SCC:</span>
+<span class="p">$</span> oc exec -n ai-defense &lt;connector-pod&gt; -- \
+  curl -sk https://security.cisco.com -o /dev/null -w "%{http_code}"
+<span class="c"># 000 = blocked. Check ACI contract and firewall rules.</span>
+
+<span class="r"># 2. TLS inspection is intercepting the gRPC stream:</span>
+<span class="c"># Add *.security.cisco.com to your firewall inspection bypass list</span>
+
+<span class="r"># 3. Wrong API key used in Helm command:</span>
+<span class="c"># Delete connector in SCC → re-run from Phase 2 with correct API key</span>
+<span class="p">$</span> helm uninstall ai-defense-connector -n ai-defense
+
+<span class="r"># 4. SCC configuration not run before Helm install:</span>
+<span class="c"># Delete Helm release, re-run SCC commands (Phase 3.1), re-run Helm</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T2</span><span class="step-title">Pods in CrashLoopBackOff or Pending — won't schedule</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Get specific pod failure reason:</span>
+<span class="p">$</span> oc describe pod &lt;pod-name&gt; -n ai-defense | tail -30
+<span class="p">$</span> oc logs &lt;pod-name&gt; -n ai-defense --previous --tail=30
+
+<span class="c"># Pending with "Insufficient nvidia.com/gpu":</span>
+<span class="c"># NVIDIA GPU Operator not installed or GPUs not visible</span>
+<span class="p">$</span> oc get pods -n gpu-operator-resources
+<span class="p">$</span> oc describe node &lt;worker&gt; | grep nvidia.com/gpu
+
+<span class="c"># Pending with "0/4 nodes are available: SCC":</span>
+<span class="c"># SCC not applied. Re-run Phase 3.1 SCC commands.</span>
+<span class="p">$</span> oc get scc | grep ai-defense
+<span class="p">$</span> oc describe scc ai-defense-scc | grep Users
+
+<span class="c"># CrashLoopBackOff with exit code 1:</span>
+<span class="c"># Usually a configuration or connectivity issue</span>
+<span class="p">$</span> oc logs &lt;pod-name&gt; -n ai-defense | grep -i "error\|failed\|unable"</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T3</span><span class="step-title">HTTPS endpoint returning connection refused (000)</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Diagnose in order:</span>
+
+<span class="c"># 1. Check DNS resolves to NGINX IP:</span>
+<span class="p">$</span> nslookup aidefense.yourdomain.com
+<span class="c"># Must return the NGINX Ingress EXTERNAL-IP, not 127.0.0.1 or wrong IP</span>
+
+<span class="c"># 2. Check NGINX pods are running:</span>
+<span class="p">$</span> oc get pods -n nginx-ingress
+<span class="p">$</span> oc get svc -n nginx-ingress
+<span class="c"># EXTERNAL-IP must be present (not &lt;pending&gt;)</span>
+
+<span class="c"># 3. Check Ingress was applied:</span>
+<span class="p">$</span> oc get ingress -n ai-defense
+<span class="c"># Must show ai-defense-ingress with the correct host</span>
+
+<span class="c"># 4. Check AI Defense backend services have endpoints:</span>
+<span class="p">$</span> oc get endpoints ai-defense-proxy-service -n ai-defense
+<span class="c"># Must show IP:port, not &lt;none&gt;</span>
+
+<span class="c"># 5. Check TLS secret exists in correct namespace:</span>
+<span class="p">$</span> oc get secret ai-defense-tls -n ai-defense</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T4</span><span class="step-title">Validation run fails or never completes</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check if the connector can reach the model endpoint:</span>
+<span class="p">$</span> oc exec -n ai-defense &lt;connector-pod&gt; -- \
+  curl -sk https://&lt;model-endpoint&gt; -o /dev/null -w "%{http_code}"
+<span class="c"># 000 = model endpoint not reachable from AI Defense connector pod</span>
+<span class="c"># Check ACI contracts — need permit from ai-defense namespace to model network</span>
+
+<span class="c"># Check validation-specific logs:</span>
+<span class="p">$</span> oc get pods -n ai-defense | grep validation
+<span class="p">$</span> oc logs -n ai-defense &lt;validation-pod&gt; --tail=30
+
+<span class="c"># Common Validation issues:</span>
+<span class="r"># - Request body template missing {{prompt}} placeholder</span>
+<span class="r"># - Path to model response incorrect (e.g., model returns 'response.text' not 'choices.0.message.content')</span>
+<span class="r"># - Model endpoint requires auth headers not provided in Validation setup</span>
+<span class="r"># - HTTP endpoint used instead of HTTPS (HTTPS preferred per Cisco docs)</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T5</span><span class="step-title">Runtime: AI application getting TLS certificate errors</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># The AI application is rejecting the AI Defense proxy certificate</span>
+<span class="c"># Check what cert is being served:</span>
+<span class="p">$</span> openssl s_client -connect aidefense.yourdomain.com:443 \
+  -servername aidefense.yourdomain.com &lt; /dev/null 2>/dev/null | \
+  openssl x509 -noout -subject -issuer
+
+<span class="c"># Option A — Add AI Defense cert to AI application trust store:</span>
+<span class="c"># Copy ai-defense.crt to the AI application host and add to trust store</span>
+<span class="p">$</span> sudo cp ai-defense.crt /etc/pki/ca-trust/source/anchors/
+<span class="p">$</span> sudo update-ca-trust  <span class="c"># RHEL/CentOS</span>
+<span class="p">$</span> sudo update-ca-certificates  <span class="c"># Ubuntu/Debian</span>
+
+<span class="c"># Option B — For Python applications (temporary workaround only):</span>
+<span class="c"># requests.post(url, verify='/path/to/ai-defense.crt')</span>
+
+<span class="c"># Option C — Replace self-signed cert with CA-signed cert</span>
+<span class="c"># See TLS Certificate Guide for full replacement procedure</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<footer>
+  <div class="footer-inner">
+    <span>Cisco AI Defense Complete Install Guide · Hybrid Deployment on AI PODs · April 2026</span>
+    <span>OCP 4.18+ · UCS C845A · NVIDIA L40S · ACI Fabric · Cisco SCC</span>
+  </div>
+</footer>
+
+<script>
+const sections = document.querySelectorAll('.phase-block[id]');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navItems.forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute('href') === '#' + current) n.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVN → Cilium Migration Report</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4rem;
+    position: relative;
+  }
+
+  .header-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header-tag::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .header-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Status bar */
+  .status-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 4rem;
+  }
+
+  .status-item {
+    background: var(--surface);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .status-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .status-value {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .status-value.green { color: var(--green); }
+  .status-value.yellow { color: var(--yellow); }
+
+  /* Sections */
+  section {
+    margin-bottom: 4rem;
+  }
+
+  h2 {
+    font-family: var(--sans);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  h2 .section-num {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.1em;
+  }
+
+  h3 {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-bottom: 0.75rem;
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.85rem;
+  }
+
+  p {
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  /* Issue cards */
+  .issue-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .issue-card:hover {
+    border-color: rgba(0,212,255,0.3);
+  }
+
+  .issue-header {
+    padding: 1rem 1.5rem;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .issue-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .issue-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #fff;
+    flex: 1;
+  }
+
+  .severity {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .severity.blocker { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .severity.config { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+  .severity.gap { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+
+  .issue-body {
+    padding: 1.25rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .issue-body.full { grid-template-columns: 1fr; }
+
+  .issue-col-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+  }
+
+  .issue-col-content {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  /* Code blocks */
+  .code-block {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin: 0.5rem 0;
+    word-break: break-all;
+    line-height: 1.6;
+  }
+
+  .code-block.green { color: var(--green); }
+
+  /* Summary table */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 0.87rem;
+  }
+
+  .summary-table thead tr {
+    background: var(--surface2);
+  }
+
+  .summary-table th {
+    padding: 0.9rem 1.25rem;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .summary-table td {
+    padding: 0.85rem 1.25rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .summary-table tr:last-child td { border-bottom: none; }
+
+  .summary-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .check { color: var(--green); margin-right: 0.4rem; }
+  .warn { color: var(--yellow); margin-right: 0.4rem; }
+  .x { color: var(--red); margin-right: 0.4rem; }
+
+  /* Gaps section */
+  .gap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .gap-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .gap-card h4 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .gap-card p {
+    font-size: 0.82rem;
+    margin-bottom: 0;
+    color: var(--text-muted);
+  }
+
+  /* Final state */
+  .final-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .final-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .final-icon {
+    font-size: 1.1rem;
+  }
+
+  .final-text {
+    font-size: 0.84rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  .final-text strong {
+    display: block;
+    color: #fff;
+    font-size: 0.8rem;
+    font-family: var(--mono);
+    margin-bottom: 0.15rem;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 3rem 0;
+  }
+
+  /* Outstanding questions */
+  .questions-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .questions-list li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .q-num {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    margin-top: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-tag">Post-Migration Technical Report</div>
+    <h1>OVN-Kubernetes → Isovalent<br>Enterprise Cilium</h1>
+    <div class="header-meta">
+      <span><span class="dot"></span>Migration Complete</span>
+      <span>Cluster: oslab.oslab</span>
+      <span>Date: April 10, 2026</span>
+      <span>Platform: OpenShift 4.21.5 on VMware ESXi</span>
+      <span>Cilium: v1.14.22-cee.1</span>
+    </div>
+  </header>
+
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="status-label">Previous CNI</span>
+      <span class="status-value">OVN-Kubernetes</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Current CNI</span>
+      <span class="status-value green">Isovalent Cilium</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Nodes</span>
+      <span class="status-value green">4/4 Ready</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">Cluster Operators</span>
+      <span class="status-value green">34/34 Available</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">OVN Pods Remaining</span>
+      <span class="status-value green">0</span>
+    </div>
+    <div class="status-item">
+      <span class="status-label">DNS Resolution</span>
+      <span class="status-value green">Verified</span>
+    </div>
+  </div>
+
+  <!-- Section 1: Overview -->
+  <section>
+    <h2><span class="section-num">01</span> Executive Overview</h2>
+    <p>This report documents the migration of an OpenShift 4.21.5 cluster running on VMware ESXi from OVN-Kubernetes to Isovalent Enterprise for Cilium (v1.14.22-cee.1), performed on April 10, 2026. The migration was guided by the Cisco FlashStack CVD (Cisco Validated Design) document for bare-metal OpenShift — however, the cluster environment is vSphere-based, which introduced several undocumented issues not covered in the CVD.</p>
+    <p>The migration was completed successfully after resolving eight distinct blocking issues. All cluster operators are healthy, all four nodes are Ready, OVN-Kubernetes has been fully removed, and pod networking and DNS resolution have been verified operational.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Section 2: Issues -->
+  <section>
+    <h2><span class="section-num">02</span> Issues Encountered &amp; Resolutions</h2>
+    <p>The following issues were encountered in sequence during the migration. Each required diagnosis and a manual fix not documented in the Cisco CVD.</p>
+
+    <!-- Issue 1 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">01</span>
+        <span class="issue-title">Incorrect OperatorHub Package Name</span>
+        <span class="severity blocker">Blocker</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">The CVD instructs creating a Subscription with <code>name: isovalent</code>. This package does not exist in the <code>certified-operators</code> catalog. The subscription was created but immediately failed with <em>"no operators found in package isovalent"</em>.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Queried the packagemanifest catalog to find the correct name. Package is <code>cilium-enterprise</code>, not <code>isovalent</code>. Additionally the CVD specifies <code>channel: stable</code> — only versioned channels <code>1.10–1.14</code> exist. Used channel <code>1.14</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 2 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">02</span>
+        <span class="issue-title">Hubble UI Missing Required hostname — CiliumConfig Rejected</span>
+        <span class="severity blocker">Blocker</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">The Isovalent Enterprise Helm chart for Hubble UI requires either <code>frontend.server.host</code> or <code>ingress.enabled + ingress.host</code>. The CVD's CiliumConfig example omits this, causing the Helm release to fail on every reconcile with an <em>execution error at configmap.yaml:58</em>.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Disabled the Hubble UI subchart entirely for the migration using the correct subchart key syntax (<code>hubble-ui.enabled: false</code>, <code>hubble-enterprise.enabled: false</code>) to bypass chart validation. Hubble UI can be re-enabled post-migration with the correct hostname.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 3 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">03</span>
+        <span class="issue-title">RHCOS Read-Only Filesystem — CNI Bin Path Blocked</span>
+        <span class="severity blocker">Blocker</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">On RHCOS nodes, <code>/opt/cni</code> is a symlink to <code>/usr/lib/opt/cni</code> which resides on a read-only filesystem overlay. The Cilium init container attempted <code>mkdir /opt/cni</code> and failed with <em>"file exists"</em> because the symlink itself exists but the <code>bin</code> directory inside it could not be created. The CVD makes no mention of this RHCOS filesystem constraint.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Configured Cilium to use the writable CNI path <code>/var/lib/cni/bin</code> via the CiliumConfig spec using the correct subchart prefix: <code>cilium.cni.binPath</code>. This maps to the <code>/var</code> partition which is writable on immutable RHCOS nodes.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 4 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">04</span>
+        <span class="issue-title">Missing SCC Privileges — Cilium DaemonSet Pods Blocked</span>
+        <span class="severity blocker">Blocker</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">OpenShift's Security Context Constraints blocked the Cilium DaemonSet from scheduling. Cilium requires host networking, hostPath volumes, and kernel capabilities (<code>NET_ADMIN</code>, <code>SYS_ADMIN</code>, <code>SYS_MODULE</code>, etc.) which are denied by the <code>restricted-v2</code> SCC. The CVD does not address SCC configuration for OpenShift.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Granted the <code>privileged</code> SCC to both the <code>cilium</code> and <code>cilium-operator</code> service accounts in the <code>isovalent</code> namespace using <code>oc adm policy add-scc-to-user</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 5 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">05</span>
+        <span class="issue-title">Network Operator Rejected Direct Type Change as Unsafe</span>
+        <span class="severity config">Config</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">Patching <code>network.operator cluster</code> with <code>type: Cilium</code> alone triggered the error: <em>"Not applying unsafe configuration change: cannot change default network type when not doing migration."</em> The migration annotation and the <code>network.config</code> object also needed to be updated together.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Applied the migration annotation (<code>networkoperator.openshift.io/ovn-to-cilium-migration: ""</code>), patched <code>network.config cluster</code> with <code>networkType: Cilium</code>, and set <code>spec.migration.networkType: Cilium</code> on the network operator. All three were required together for the operator to accept the change.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 6 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">06</span>
+        <span class="issue-title">OVN DaemonSet Rollout Hung — ovnkube-controller Not Ready</span>
+        <span class="severity config">Config</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">All four <code>ovnkube-node</code> pods showed <code>7/8</code> with the <code>ovnkube-controller</code> container intentionally marking itself not-ready as part of the handoff to Cilium. The network operator's rollout controller was blocking on this, waiting for the DaemonSet to complete an update that would never naturally complete.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Manually scaled down the OVN control plane deployment to 0 replicas and removed OVN node pods from scheduling by patching the DaemonSet with a non-existent nodeSelector. This unblocked the network operator and allowed Cilium to take over fully.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 7 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">07</span>
+        <span class="issue-title">Multus Waiting for OVN Readiness File After OVN Removal</span>
+        <span class="severity blocker">Blocker</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">After OVN was removed, Multus entered <code>CrashLoopBackOff</code> because its daemon config hardcoded <code>readinessIndicatorFile: /host/run/multus/cni/net.d/10-ovn-kubernetes.conf</code>. With OVN gone, this file no longer existed and Multus would never become ready.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Patched the <code>multus-daemon-config</code> ConfigMap to update the <code>readinessIndicatorFile</code> to point to Cilium's config file: <code>/run/multus/cni/net.d/05-cilium.conflist</code>. Restarted the Multus DaemonSet to pick up the new config.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue 8 -->
+    <div class="issue-card">
+      <div class="issue-header">
+        <span class="issue-num">08</span>
+        <span class="issue-title">Existing Pods Retained OVN-Era IPs — DNS Broken After Migration</span>
+        <span class="severity blocker">Blocker</span>
+      </div>
+      <div class="issue-body">
+        <div>
+          <div class="issue-col-label">Root Cause</div>
+          <div class="issue-col-content">After the CNI switch, existing long-running pods (DNS, Keycloak, etc.) retained IP addresses from the old OVN CIDR ranges (<code>10.128–131.x.x</code>). Cilium's IPAM operates in the <code>10.0.x.x/24</code> per-node ranges and had no routes to the old OVN addresses. New pods got Cilium IPs but couldn't reach DNS pods on OVN-era IPs.</div>
+        </div>
+        <div>
+          <div class="issue-col-label">Fix Applied</div>
+          <div class="issue-col-content">Restarted all workload DaemonSets and Deployments with old IPs, starting with the critical <code>dns-default</code> DaemonSet. Once DNS pods received new Cilium IPs, the service endpoint updated automatically and DNS resolution was restored. All workloads were then verified on new <code>10.0.x.x</code> Cilium IPs.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Section 3: CVD Gaps -->
+  <section>
+    <h2><span class="section-num">03</span> Gaps in the Cisco CVD</h2>
+    <p>The Cisco FlashStack CVD was written for bare-metal RHCOS OpenShift. When applied to a VMware ESXi environment, the following critical topics were missing or incorrect.</p>
+
+    <div class="gap-grid">
+      <div class="gap-card">
+        <h4>Wrong Package Name</h4>
+        <p>CVD uses <code>name: isovalent</code> in the Subscription. Correct name is <code>cilium-enterprise</code>. The <code>stable</code> channel also does not exist — only versioned channels <code>1.10–1.14</code>.</p>
+      </div>
+      <div class="gap-card">
+        <h4>Hubble UI Configuration Incomplete</h4>
+        <p>CVD CiliumConfig example enables Hubble UI without the required <code>frontend.server.host</code> field, causing all Helm installs to fail. A working hostname or disabled UI is required.</p>
+      </div>
+      <div class="gap-card">
+        <h4>No OpenShift SCC Guidance</h4>
+        <p>CVD makes no mention of Security Context Constraints. On OpenShift (vs upstream Kubernetes), the <code>privileged</code> SCC must be explicitly granted to Cilium service accounts before any pods will schedule.</p>
+      </div>
+      <div class="gap-card">
+        <h4>RHCOS Read-Only Filesystem Not Addressed</h4>
+        <p>The CVD assumes <code>/opt/cni/bin</code> is writable. On RHCOS, this path is a symlink into a read-only overlay. The <code>cni.binPath</code> must be overridden to <code>/var/lib/cni/bin</code>.</p>
+      </div>
+      <div class="gap-card">
+        <h4>Migration API Sequence Undocumented</h4>
+        <p>The CVD implies a simple type patch on <code>network.operator</code>. In practice, three objects must be updated together: the migration annotation, <code>network.config</code>, and <code>network.operator migration.networkType</code>.</p>
+      </div>
+      <div class="gap-card">
+        <h4>Multus Reconfiguration Not Mentioned</h4>
+        <p>After OVN removal, Multus must be reconfigured to use Cilium's readiness indicator file. The CVD has no guidance on this. Without it, Multus crashes and all pod networking fails.</p>
+      </div>
+      <div class="gap-card">
+        <h4>Post-Migration Pod Restart Required</h4>
+        <p>The CVD does not mention that existing pods retain old CNI IPs after migration and must be restarted to receive Cilium IPs. This is critical for DNS and any long-running stateful workloads.</p>
+      </div>
+      <div class="gap-card">
+        <h4>OVN Stuck Rollout — No Guidance</h4>
+        <p>The CVD provides no guidance for the scenario where OVN's <code>ovnkube-controller</code> marks itself not-ready during migration and blocks the network operator rollout. Manual intervention is required to force OVN removal.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Section 4: Final State -->
+  <section>
+    <h2><span class="section-num">04</span> Final Cluster State</h2>
+    <div class="final-grid">
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>CNI</strong>Isovalent Enterprise Cilium v1.14.22-cee.1</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>OVN-Kubernetes</strong>Fully removed — 0 pods remaining</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>Nodes</strong>4/4 Ready — all roles healthy</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>Cluster Operators</strong>34/34 Available, 0 Degraded</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>DNS Resolution</strong>Verified via busybox pod test</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>Pod Networking</strong>All pods on Cilium 10.0.x.x IPs</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>Multus</strong>Reconfigured to Cilium readiness path</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">✅</span>
+        <div class="final-text"><strong>Keycloak</strong>Restarted on Cilium IP, auth restored</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">⚠️</span>
+        <div class="final-text"><strong>KubeProxy Replacement</strong>Running in hybrid mode — not full eBPF</div>
+      </div>
+      <div class="final-item">
+        <span class="final-icon">⚠️</span>
+        <div class="final-text"><strong>Hubble UI</strong>Disabled — needs hostname config to enable</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Section 5: Support Status -->
+  <section>
+    <h2><span class="section-num">05</span> Red Hat Support Status</h2>
+    <p>A critical question to understand before putting this migration into production context: is this process actually supported by Red Hat?</p>
+
+    <h3>The Short Answer — It's a Grey Area</h3>
+    <p>There are two distinct things to separate here: running Cilium on OpenShift, and the act of migrating to it on a live cluster. Red Hat treats these very differently.</p>
+
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>Red Hat Support Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cilium running on a self-managed OpenShift cluster</td>
+          <td><span class="check">✓</span> <strong>Supported.</strong> Cilium holds Red Hat OpenShift CNI certification. Red Hat will support it and collaborate with Isovalent on issues.</td>
+        </tr>
+        <tr>
+          <td>Live migration from OVN-Kubernetes to Cilium</td>
+          <td><span class="warn">⚠</span> <strong>Not officially documented.</strong> Red Hat provides no migration guidance for switching to a third-party CNI on a running cluster. This is a grey area.</td>
+        </tr>
+        <tr>
+          <td>Migration from OpenShiftSDN to OVN-Kubernetes</td>
+          <td><span class="check">✓</span> <strong>Fully supported.</strong> This is the only CNI migration Red Hat officially documents and supports.</td>
+        </tr>
+        <tr>
+          <td>Third-party CNI on managed OpenShift (ROSA, OSD, ARO)</td>
+          <td><span class="x">✗</span> <strong>Not supported.</strong> Third-party CNIs including Cilium are not permitted on Red Hat managed services by default.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>What This Means Practically</h3>
+    <p>Once Cilium is running, Red Hat will support it — the certification covers Cilium operating within an OpenShift cluster. The unsupported part is the migration procedure itself. If a TAC case were raised mid-migration, Red Hat would likely decline to assist with the cutover steps. Large enterprise customers have performed this migration successfully by taking on the process themselves, which is exactly what was done here.</p>
+    <p>Since you are running Isovalent Enterprise (the Cisco/Red Hat certified version), you have dual support coverage once the migration is complete: Red Hat for OpenShift platform issues, and Isovalent for Cilium-specific issues. This is a better support position than running community Cilium.</p>
+
+    <div class="gap-card" style="margin-top:1rem; border-left-color: #f59e0b;">
+      <h4>Recommended Action</h4>
+      <p>Notify your Red Hat account team that this migration has been performed so it is documented in your account record. This prevents ambiguity if you later raise a TAC case — support engineers will know Cilium is intentionally running as the CNI rather than flagging it as an anomaly.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Section 6: Outstanding items -->
+  <section>
+    <h2><span class="section-num">06</span> Outstanding Items &amp; Recommended Next Steps</h2>
+
+    <h3>Immediate</h3>
+    <ul class="questions-list">
+      <li><span class="q-num">01</span>Enable full kube-proxy replacement. Update CiliumConfig with <code>kubeProxyReplacement: true</code> and set <code>k8sServiceHost</code> / <code>k8sServicePort</code> to the API server address. Current status is hybrid mode (eBPF + iptables fallback).</li>
+      <li><span class="q-num">02</span>Enable Hubble UI with the correct hostname. Add <code>hubble-ui.enabled: true</code> and <code>hubble-ui.frontend.server.host: hubble-ui.apps.oslab.oslab</code> to the CiliumConfig. Create an OpenShift Route to expose it.</li>
+      <li><span class="q-num">03</span>Persist the Multus configmap change. The <code>multus-daemon-config</code> patch may be overwritten by the network operator on cluster upgrades. Consider whether a MachineConfig or operator override is needed to make this durable.</li>
+    </ul>
+
+    <h3>Short Term</h3>
+    <ul class="questions-list">
+      <li><span class="q-num">04</span>Validate all application workloads. Confirm that all namespaces have pods on Cilium IPs and that east-west traffic between services is functioning correctly. Pay particular attention to any services using NodePort or hostNetwork.</li>
+      <li><span class="q-num">05</span>Test Cilium Network Policies. If any OVN-based NetworkPolicy resources were in place, verify they are being enforced by Cilium. Consider migrating to CiliumNetworkPolicy CRDs for richer L7 policy support.</li>
+      <li><span class="q-num">06</span>Validate storage paths. Trident (NetApp) is running in the <code>isovalent</code> namespace — confirm PVC provisioning still works correctly post-migration and that storage traffic is unaffected.</li>
+    </ul>
+
+    <h3>Longer Term</h3>
+    <ul class="questions-list">
+      <li><span class="q-num">07</span>Configure Hubble for observability. Once Hubble UI is enabled, set up flow visibility and consider integrating with Splunk or another observability platform for L3–L7 network telemetry.</li>
+      <li><span class="q-num">08</span>Document the vSphere-specific deviation from the CVD. Create an internal runbook capturing all the fixes applied here so future cluster migrations or rebuilds don't hit the same issues.</li>
+      <li><span class="q-num">09</span>Evaluate ClusterMesh if multi-cluster connectivity is needed. Cilium Enterprise supports ClusterMesh for cross-cluster service discovery — relevant if the ESXi environment hosts multiple OpenShift clusters.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>OVN → Isovalent Cilium Migration Report · oslab.oslab · April 10, 2026</span>
+    <span>OpenShift 4.21.5 · Cilium v1.14.22-cee.1 · VMware ESXi</span>
+  </footer>
+
+</div>
+</body>
+</html>

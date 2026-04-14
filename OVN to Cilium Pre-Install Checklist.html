@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)file:///Users/Scott.Sheldon@gruve.ai/Downloads/cilium-migration-checklist.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVN to Cilium Pre-Install Checklist</title>
+<link href="./OVN to Cilium Pre-Install Checklist_files/css2" rel="stylesheet">
+<style>
+:root {
+  --bg:#faf7f2;--bg2:#f2ede4;--surface:#fff;--border:#e2d9cc;--border2:#d4c9b8;
+  --ink:#1a1612;--ink2:#4a3f35;--ink3:#7a6e64;
+  --accent:#c85a1a;--green:#2d6a3f;--green-bg:#edf7f0;--green-border:#b8ddc4;
+  --yellow:#92600a;--yellow-bg:#fef9ec;--yellow-border:#f0d88a;
+  --red:#9b2020;--red-bg:#fdf0f0;--red-border:#e8b8b8;
+  --blue:#1a4a7a;--blue-bg:#eef4fb;--blue-border:#b8d0e8;
+  --mono:'DM Mono',monospace;--serif:'Fraunces',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:16px;line-height:1.7}
+header{background:var(--ink);color:var(--bg);padding:3rem 0;position:relative;overflow:hidden}
+header::after{content:'CHECKLIST';position:absolute;right:-1rem;top:50%;transform:translateY(-50%);font-family:var(--serif);font-size:8rem;font-weight:800;color:rgba(255,255,255,0.04);pointer-events:none;white-space:nowrap}
+.header-inner,.main,.footer-inner{max-width:900px;margin:0 auto;padding:0 2.5rem}
+.eyebrow{font-family:var(--mono);font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.2em;margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem}
+.eyebrow::before{content:'';display:block;width:1.5rem;height:1px;background:var(--accent)}
+h1{font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.15;color:#fff;margin-bottom:1rem}
+.header-sub{font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,.4);display:flex;gap:2rem;flex-wrap:wrap}
+.progress-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:1.1rem 0;position:sticky;top:0;z-index:50}
+.progress-inner{max-width:900px;margin:0 auto;padding:0 2.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.progress-label{font-family:var(--mono);font-size:.68rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.progress-stats{display:flex;gap:1.25rem}
+.ps{font-family:var(--mono);font-size:.68rem;display:flex;align-items:center;gap:.35rem}
+.pdot{width:7px;height:7px;border-radius:50%}
+.progress-track{flex:1;min-width:160px;height:4px;background:var(--border2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:2px;transition:width .4s ease;width:0%}
+.progress-pct{font-family:var(--mono);font-size:.7rem;color:var(--green);min-width:2.5rem;text-align:right}
+.main{padding:3rem 2.5rem 5rem}
+.intro-box{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:4px;padding:1.4rem 1.5rem;margin-bottom:2.5rem;font-size:.9rem;color:var(--ink2);line-height:1.8}
+.intro-box strong{color:var(--ink)}
+.legend{display:flex;gap:1.25rem;flex-wrap:wrap;margin-bottom:2.5rem;padding:.9rem 1.25rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:.63rem;color:var(--ink3)}
+.li{display:flex;align-items:center;gap:.45rem}
+.lb{width:14px;height:14px;border-radius:3px;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
+.section{margin-bottom:2.75rem}
+.section-header{display:flex;align-items:baseline;gap:.9rem;margin-bottom:1.1rem;padding-bottom:.65rem;border-bottom:2px solid var(--ink)}
+.snum{font-family:var(--mono);font-size:.62rem;color:var(--ink3);background:var(--bg2);border:1px solid var(--border2);padding:.15rem .4rem;border-radius:3px;flex-shrink:0}
+h2{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--ink);flex:1}
+.scount{font-family:var(--mono);font-size:.62rem;color:var(--ink3);flex-shrink:0}
+.check-item{background:var(--surface);border:1px solid var(--border);border-radius:6px;margin-bottom:.65rem;overflow:hidden;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.check-item:hover{border-color:var(--border2);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.check-item.done{border-color:var(--green-border);background:var(--green-bg)}
+.check-item.partial{border-color:var(--yellow-border);background:var(--yellow-bg)}
+.check-row{display:flex;align-items:flex-start;gap:.9rem;padding:.9rem 1.2rem}
+.checkbox{width:20px;height:20px;border:2px solid var(--border2);border-radius:4px;flex-shrink:0;margin-top:.18rem;display:flex;align-items:center;justify-content:center;transition:all .15s;background:var(--bg)}
+.check-item.done .checkbox{background:var(--green);border-color:var(--green);color:#fff}
+.check-item.done .checkbox::after{content:'✓';font-size:12px;font-weight:700}
+.check-item.partial .checkbox{background:var(--yellow);border-color:var(--yellow);color:#fff}
+.check-item.partial .checkbox::after{content:'~';font-size:13px;font-weight:700}
+.check-content{flex:1;min-width:0}
+.check-title{font-family:var(--serif);font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:.2rem;line-height:1.4}
+.check-item.done .check-title{color:var(--green);text-decoration:line-through;text-decoration-color:rgba(45,106,63,.4)}
+.check-desc{font-size:.8rem;color:var(--ink3);line-height:1.6;font-family:var(--serif)}
+.check-tags{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.45rem}
+.tag{font-family:var(--mono);font-size:.58rem;padding:.1rem .38rem;border-radius:3px;text-transform:uppercase;letter-spacing:.07em}
+.tag.critical{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+.tag.vsphere{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+.tag.rhcos{background:#f5f0fb;color:#5a2d8c;border:1px solid #cdb8e8}
+.tag.openshift{background:#fef0e8;color:#8b3a0f;border:1px solid #f0c4a0}
+.tag.pending{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.expand-btn{font-family:var(--mono);font-size:.6rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-top:.4rem;display:inline-flex;align-items:center;gap:.3rem;border:none;background:none;padding:0;cursor:pointer}
+.expand-btn:hover{color:var(--accent)}
+.expand-arrow{display:inline-block;transition:transform .2s;font-style:normal}
+.check-item.expanded .expand-arrow{transform:rotate(90deg)}
+.check-detail{display:none;padding:.25rem 1.2rem 1rem 3rem;border-top:1px dashed var(--border)}
+.check-item.expanded .check-detail{display:block}
+.detail-why{font-size:.83rem;color:var(--ink2);margin-bottom:.75rem;line-height:1.75;font-family:var(--serif)}
+.cmd-block{background:var(--ink);border-radius:4px;padding:.7rem 1rem;font-family:var(--mono);font-size:.74rem;color:#e8e0d4;line-height:1.65;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.cmd-block .p{color:#c85a1a}
+.cmd-block .c{color:#7a6e64;font-style:italic}
+.cmd-block .g{color:#5cb87a}
+.cmd-block .w{color:#e3b341}
+.lesson{background:var(--yellow-bg);border:1px solid var(--yellow-border);border-radius:4px;padding:.6rem .85rem;font-size:.78rem;color:var(--yellow);margin-top:.75rem;font-family:var(--serif);line-height:1.6}
+.lesson-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.2rem}
+.divider{height:1px;background:var(--border);margin:2.5rem 0}
+footer{background:var(--ink);color:rgba(255,255,255,.35);font-family:var(--mono);font-size:.67rem;padding:1.5rem 0;margin-top:4rem}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">OpenShift CNI Migration</div>
+    <h1>OVN-Kubernetes → Cilium<br>Pre-Install Checklist</h1>
+    <div class="header-sub">
+      <span>Platform: OpenShift on VMware ESXi</span>
+      <span>Target: Isovalent Enterprise Cilium</span>
+      <span>Derived from live migration — April 10, 2026</span>
+    </div>
+  </div>
+</header>
+
+<div class="progress-bar">
+  <div class="progress-inner">
+    <span class="progress-label">Progress</span>
+    <div class="progress-stats">
+      <span class="ps"><span class="pdot" style="background:var(--green)"></span><span id="dc">0</span> done</span>
+      <span class="ps"><span class="pdot" style="background:var(--yellow)"></span><span id="wc">3</span> partial</span>
+      <span class="ps"><span class="pdot" style="background:var(--border2)"></span><span id="tc">22</span> pending</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="pf" style="width: 0%;"></div></div>
+    <span class="progress-pct" id="pp">0%</span>
+  </div>
+</div>
+
+<div class="main">
+
+<div class="intro-box"><strong>About this checklist.</strong> Every item here was derived from a live OVN to Isovalent Cilium migration that uncovered undocumented issues not covered by the Cisco FlashStack CVD. Items with a <em>Lesson Learned</em> note represent real blockers we hit during the migration. Click any item row to expand verification commands. Click the checkbox to mark it complete.</div>
+
+<div class="legend">
+  <span class="li"><span class="lb" style="border-color:var(--green);color:var(--green)">✓</span>Complete</span>
+  <span class="li"><span class="lb" style="border-color:var(--yellow);color:var(--yellow)">~</span>Partial</span>
+  <span class="li"><span class="lb" style="border-color:var(--border2)"></span>Pending</span>
+  <span class="li"><span class="tag critical">critical</span>Blocker if missed</span>
+  <span class="li"><span class="tag vsphere">vsphere</span>vSphere-specific</span>
+  <span class="li"><span class="tag rhcos">rhcos</span>RHCOS-specific</span>
+  <span class="li"><span class="tag openshift">openshift</span>OpenShift-specific</span>
+</div>
+
+<!-- Section 1 -->
+<div class="section">
+  <div class="section-header"><span class="snum">01</span><h2>Environment Validation</h2><span class="scount">5 items</span></div>
+
+  <div class="check-item expanded">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">All nodes Ready with no pre-existing conditions</div>
+        <div class="check-desc">Any degraded or NotReady node before migration becomes critical during CNI switchover.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">A pre-existing node issue that might be tolerable under OVN becomes a hard blocker during CNI migration. Every node must be Ready before starting.</div>
+      <div class="cmd-block"><span class="p">$</span> oc get nodes
+<span class="c"># All nodes must show STATUS=Ready</span>
+<span class="p">$</span> oc describe nodes | grep -A5 "Conditions:"</div>
+    </div>
+  </div>
+
+  <div class="check-item expanded">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">All cluster operators Available with 0 Degraded</div>
+        <div class="check-desc">Degraded operators before migration cannot be distinguished from migration-caused issues afterward.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc get co | grep -v "True.*False.*False"
+<span class="c"># Any output = problem to fix before migrating</span></div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">OpenShift version is 4.14 or higher</div>
+        <div class="check-desc">The Cilium OLM operator and network operator migration API require OCP 4.14+.</div>
+        <div class="check-tags"><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc version
+<span class="c"># Server Version must be 4.14.x or higher</span></div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">VMware snapshots taken of all node VMs</div>
+        <div class="check-desc">Hypervisor-level snapshots are the only complete rollback option if migration fails after node reboots.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag vsphere">vsphere</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">Once nodes reboot with Cilium as the CNI, rolling back requires either a VMware snapshot or a full cluster rebuild. Take snapshots of every VM before starting and verify they are usable.</div>
+      <div class="cmd-block"><span class="c"># In vSphere for each node VM:</span>
+<span class="c"># Right-click VM → Snapshots → Take Snapshot</span>
+<span class="c"># Name: pre-cilium-migration-YYYYMMDD</span>
+<span class="c"># ✓ Include VM memory (recommended)</span>
+<span class="c"># ✓ Quiesce guest file system if VMware Tools installed</span></div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Network operator and network config backed up</div>
+        <div class="check-desc">Backup both objects before any changes so you can restore OVN if needed.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc get network.operator cluster -o yaml &gt; ~/network-operator-backup.yaml
+<span class="p">$</span> oc get network.config cluster -o yaml &gt; ~/network-config-backup.yaml</div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 2 -->
+<div class="section">
+  <div class="section-header"><span class="snum">02</span><h2>OperatorHub Catalog Verification</h2><span class="scount">3 items</span></div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Use package name <code>cilium-enterprise</code> — NOT <code>isovalent</code></div>
+        <div class="check-desc">The Cisco CVD incorrectly specifies <code>name: isovalent</code>. The actual package is <code>cilium-enterprise</code>.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">Using the wrong package name causes the OLM Subscription to be created successfully but immediately enter ConstraintsNotSatisfiable. No operator pod will ever appear — the failure is completely silent unless you inspect the subscription status YAML.</div>
+      <div class="cmd-block"><span class="p">$</span> oc get packagemanifest -n openshift-marketplace | grep -i -E "isovalent|cilium"
+<span class="c"># Expected:</span>
+<span class="g">cilium-enterprise    Certified Operators</span></div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>The CVD specifies <code>name: isovalent</code>. This package does not exist. Always verify from the catalog before creating a Subscription.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Use a versioned channel (<code>1.14</code>) — there is no <code>stable</code> channel</div>
+        <div class="check-desc">The CVD specifies <code>channel: stable</code>. This channel does not exist. Available channels are <code>1.10</code> through <code>1.14</code>.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc get packagemanifest cilium-enterprise -n openshift-marketplace \
+  -o jsonpath='{.status.channels[*].name}'
+<span class="c"># Use the highest version shown, e.g.:</span>
+<span class="g">channel: "1.14"</span></div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>Using <code>channel: stable</code> causes the same silent ConstraintsNotSatisfiable failure as the wrong package name.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Certified operators catalog is healthy</div>
+        <div class="check-desc">If the catalog source is unhealthy, OLM cannot resolve any Subscription.</div>
+        <div class="check-tags"><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc get catalogsource -n openshift-marketplace
+<span class="p">$</span> oc get pods -n openshift-marketplace | grep certified</div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 3 -->
+<div class="section">
+  <div class="section-header"><span class="snum">03</span><h2>OpenShift Security &amp; Auth Preparation</h2><span class="scount">3 items</span></div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Grant <code>privileged</code> SCC to Cilium service accounts after operator installs</div>
+        <div class="check-desc">OpenShift's default SCCs block all Cilium pods from scheduling. The CVD does not mention this. Must be applied before creating CiliumConfig.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">Cilium requires hostNetwork, hostPath volumes, and kernel capabilities including NET_ADMIN and SYS_ADMIN — all denied by restricted-v2 SCC. Without the privileged SCC binding, the DaemonSet creates zero pods. The failure only appears in <code>oc describe daemonset</code> Events, not in any pod log.</div>
+      <div class="cmd-block"><span class="c"># Run AFTER operator pod is Running and CSV is Succeeded:</span>
+<span class="p">$</span> oc adm policy add-scc-to-user privileged -z cilium -n isovalent
+<span class="p">$</span> oc adm policy add-scc-to-user privileged -z cilium-operator -n isovalent
+<span class="c"># Verify:</span>
+<span class="p">$</span> oc get rolebinding -n isovalent | grep privileged</div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>The DaemonSet shows DESIRED=4, CURRENT=0 with no pod logs to read. Always check DaemonSet Events when pods fail to appear.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Backup admin account exists that does not depend on Keycloak or OIDC</div>
+        <div class="check-desc">Keycloak and other OIDC providers will be restarted during migration to get Cilium IPs. Without a backup admin you will be locked out.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">Any pod surviving the CNI migration retains an OVN-era IP. Keycloak must be restarted to get a Cilium IP. If your only cluster-admin login routes through Keycloak, you will be locked out the moment Keycloak restarts. An htpasswd-based backup admin with cluster-admin role is essential.</div>
+      <div class="cmd-block"><span class="c"># Create backup admin if not already done:</span>
+<span class="p">$</span> htpasswd -c -B -b localauth.htpasswd backup-admin MySecurePassword123
+<span class="p">$</span> oc create secret generic htpasswd-secret \
+  --from-file=htpasswd=localauth.htpasswd -n openshift-config
+<span class="p">$</span> oc adm policy add-cluster-role-to-user cluster-admin backup-admin
+<span class="c"># Test BEFORE starting migration:</span>
+<span class="p">$</span> oc login -u backup-admin -p MySecurePassword123 https://api.&lt;domain&gt;:6443</div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>We were locked out mid-migration when Keycloak restarted. We recovered using a backup-admin account set up during an earlier Trident install session. Without it, recovery would have required the kubeconfig file or a VMware snapshot revert.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Locate the install-time kubeconfig or kubeadmin credentials as last resort</div>
+        <div class="check-desc">Know where your kubeconfig or kubeadmin password file is before starting. Last resort if all other auth fails.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="c"># Typical locations:</span>
+~/install/auth/kubeconfig
+~/install/auth/kubeadmin-password
+<span class="c"># Test kubeconfig works now:</span>
+<span class="p">$</span> KUBECONFIG=~/install/auth/kubeconfig oc whoami</div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 4 -->
+<div class="section">
+  <div class="section-header"><span class="snum">04</span><h2>RHCOS Filesystem &amp; CNI Path Checks</h2><span class="scount">3 items</span></div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Confirm <code>/opt/cni</code> is a read-only symlink — override to <code>/var/lib/cni/bin</code></div>
+        <div class="check-desc">On RHCOS, <code>/opt/cni</code> symlinks to the immutable OSTree overlay. Cilium's default CNI bin path will fail with a cryptic "file exists" error.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag rhcos">rhcos</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">The Cilium init container tries to create /opt/cni/bin but on RHCOS this path symlinks into /usr/lib/opt/cni — on the read-only OSTree filesystem. The mkdir fails silently producing "file exists". The fix is to set cni.binPath in CiliumConfig using the cilium: subchart prefix.</div>
+      <div class="cmd-block"><span class="c"># Verify on a node:</span>
+<span class="p">$</span> oc debug node/&lt;node&gt; -- chroot /host ls -la /opt/cni
+<span class="w"># Expected on RHCOS: lrwxrwxrwx /opt/cni -&gt; ../../usr/lib/opt/cni</span>
+
+<span class="c"># Required CiliumConfig setting (cilium: subchart prefix is mandatory):</span>
+<span class="g">spec:
+  cilium:
+    cni:
+      binPath: "/var/lib/cni/bin"
+      confPath: "/var/run/multus/cni/net.d"</span></div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>Setting <code>cni.binPath</code> at the top level of the CiliumConfig spec is silently ignored. It must be nested under <code>cilium:</code> because the CNI chart is a Helm subchart named cilium inside the parent cilium-enterprise chart.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Disable Hubble UI in CiliumConfig or provide a valid hostname</div>
+        <div class="check-desc">The Hubble UI Helm subchart requires a hostname. The CVD example omits this, causing every CiliumConfig apply to fail permanently.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">The Hubble UI chart validates that either frontend.server.host or ingress is configured. Without it, the chart errors at template render time and enters a permanent ReleaseFailed loop. To disable you must use the subchart key syntax — setting hubble.ui.enabled: false inside the hubble: block is insufficient.</div>
+      <div class="cmd-block"><span class="c"># Option A — disable for migration (simplest, recommended):</span>
+<span class="g">spec:
+  hubble:
+    enabled: false
+  hubble-ui:            # subchart key — required
+    enabled: false
+  hubble-enterprise:    # subchart key — required
+    enabled: false</span>
+
+<span class="c"># Option B — enable with hostname:</span>
+<span class="p">$</span> oc get ingress.config cluster -o jsonpath='{.spec.domain}'
+<span class="g">spec:
+  hubble-ui:
+    enabled: true
+    frontend:
+      server:
+        host: "hubble-ui.apps.&lt;your-domain&gt;"</span></div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span><code>hubble.ui.enabled: false</code> does NOT disable the Hubble UI subchart. You must use <code>hubble-ui.enabled: false</code> as a top-level key. The CVD has no mention of this requirement.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Confirm <code>/var/lib/cni/bin</code> parent path is writable on all nodes</div>
+        <div class="check-desc">The writable CNI destination must be accessible before Cilium init containers run.</div>
+        <div class="check-tags"><span class="tag rhcos">rhcos</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc debug node/&lt;node&gt; -- chroot /host ls -la /var/lib/cni/
+<span class="c"># Should show: bin/ multus/ networks/ results/</span>
+<span class="c"># If bin/ is missing, Cilium will create it automatically</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 5 -->
+<div class="section">
+  <div class="section-header"><span class="snum">05</span><h2>Network Operator Migration Sequence</h2><span class="scount">4 items</span></div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Apply migration as three separate object changes — not a single patch</div>
+        <div class="check-desc">Patching only <code>network.operator</code> is silently reverted. All three objects must be updated together: annotation, <code>network.config</code>, and the <code>migration</code> field.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">The network operator has a safety gate that rejects CNI type changes without the migration annotation, producing "Not applying unsafe configuration change: cannot change default network type when not doing migration." All three patches must be applied in sequence.</div>
+      <div class="cmd-block"><span class="c"># Step 1 — annotation (unlocks safety gate)</span>
+<span class="p">$</span> oc annotate network.operator cluster \
+  networkoperator.openshift.io/ovn-to-cilium-migration="" --overwrite
+
+<span class="c"># Step 2 — network.config (authoritative desired state)</span>
+<span class="p">$</span> oc patch network.config cluster --type merge \
+  -p '{"spec":{"networkType":"Cilium"}}'
+
+<span class="c"># Step 3 — network.operator migration field</span>
+<span class="p">$</span> oc patch network.operator cluster --type merge \
+  -p '{"spec":{"migration":{"networkType":"Cilium"}}}'</div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>We discovered through trial and error that all three objects must be updated. The CVD implies a single patch is sufficient — it is not.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Expect OVN rollout to hang — be ready to manually force removal</div>
+        <div class="check-desc">The OVN DaemonSet will get stuck with <code>ovnkube-controller=false</code> on all nodes. This is intentional but requires manual unblocking.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">During migration, ovnkube-controller intentionally marks itself not-ready to signal handoff to Cilium. The DaemonSet rollout controller waits for this to complete — creating a deadlock. After ~10 minutes of no progress, manually scale OVN down.</div>
+      <div class="cmd-block"><span class="c"># Check per-container readiness:</span>
+<span class="p">$</span> oc get pods -n openshift-ovn-kubernetes -l app=ovnkube-node \
+  -o jsonpath='{range .items[*]}{.metadata.name}: {range .status.containerStatuses[*]}{.name}={.ready} {end}{"\n"}{end}'
+
+<span class="c"># If ovnkube-controller=false on all nodes after 10+ minutes:</span>
+<span class="p">$</span> oc scale deployment ovnkube-control-plane \
+  -n openshift-ovn-kubernetes --replicas=0
+<span class="p">$</span> oc patch daemonset ovnkube-node -n openshift-ovn-kubernetes \
+  -p '{"spec":{"template":{"spec":{"nodeSelector":{"non-existing":"true"}}}}}'</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Reconfigure Multus readiness indicator immediately after OVN removal</div>
+        <div class="check-desc">After OVN is removed, Multus will CrashLoopBackOff waiting for <code>10-ovn-kubernetes.conf</code> which no longer exists.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">Multus's daemon config hardcodes the OVN readiness indicator file. With OVN gone, Multus crashes on every restart. Without Multus, no new pods can get network interfaces. This must be fixed the moment it is detected.</div>
+      <div class="cmd-block"><span class="c"># Detect — check Multus logs for:</span>
+<span class="c"># "still waiting for readinessindicatorfile @ .../10-ovn-kubernetes.conf"</span>
+<span class="p">$</span> oc logs -n openshift-multus -l app=multus --tail=5
+
+<span class="c"># Fix — patch the ConfigMap and restart:</span>
+<span class="p">$</span> oc patch configmap multus-daemon-config -n openshift-multus \
+  --type merge -p '{
+  "data":{"daemon-config.json":"{\"chrootDir\":\"/hostroot\",\"logToStderr\":true,
+  \"cniConfigDir\":\"/run/multus/cni/net.d\",\"multusConfigFile\":\"auto\",
+  \"readinessIndicatorFile\":\"/run/multus/cni/net.d/05-cilium.conflist\",
+  \"namespaceIsolation\":false,
+  \"globalNamespaces\":\"default,kube-system,openshift-multus\"}"}}'
+<span class="p">$</span> oc rollout restart daemonset/multus -n openshift-multus</div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>Cilium always writes its config as <code>05-cilium.conflist</code>. This patch can be prepared in advance and applied immediately when OVN pods are removed.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Restart all long-running pods to get Cilium IPs — DNS first</div>
+        <div class="check-desc">Any pod surviving the migration retains its OVN-era IP. Cilium cannot route to these addresses. DNS must be restarted first or all other pods will also fail.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">Cilium allocates from a different CIDR range than OVN. Pods that survive without restarting retain old IPs that Cilium has no routes to. DNS breaks first because dns-default pods are long-running. Restart DNS, verify it works, then identify and restart any other surviving pods.</div>
+      <div class="cmd-block"><span class="c"># Step 1 — restart DNS (critical, do this first):</span>
+<span class="p">$</span> oc rollout restart daemonset/dns-default -n openshift-dns
+
+<span class="c"># Step 2 — find any remaining OVN-era pods:</span>
+<span class="p">$</span> oc get pods -A -o wide | grep -E "10\.128\.|10\.129\.|10\.130\.|10\.131\."
+
+<span class="c"># Step 3 — restart affected workloads</span>
+<span class="c"># Step 4 — verify DNS is working:</span>
+<span class="p">$</span> oc run test --image=busybox --rm -it --restart=Never \
+  -- nslookup kubernetes.default.svc.cluster.local
+<span class="g"># Expected: Server: 172.30.0.10 / Address: 172.30.0.1</span></div>
+      <div class="lesson"><span class="lesson-label">Lesson learned</span>Keycloak (OIDC auth) was still on an OVN IP and became unreachable, locking us out. Restart all critical infrastructure pods before verifying application workloads.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 6 -->
+<div class="section">
+  <div class="section-header"><span class="snum">06</span><h2>Post-Migration Verification</h2><span class="scount">4 items</span></div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">All Cilium agent pods are 1/1 Running on every node</div>
+        <div class="check-desc">One Cilium agent pod must be Running on each node before the migration can be considered complete.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc get pods -n isovalent -l k8s-app=cilium -o wide
+<span class="c"># All must be 1/1 Running, one per node</span>
+<span class="p">$</span> oc exec -n isovalent -l k8s-app=cilium -c cilium-agent \
+  -- cilium status 2&gt;&amp;1 | head -10
+<span class="g"># Kubernetes: Ok
+# Cilium: Ok
+# Controller Status: 22/22 healthy</span></div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">OVN-Kubernetes namespace is empty</div>
+        <div class="check-desc">No OVN pods should remain after migration is complete.</div>
+        <div class="check-tags"></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc get pods -n openshift-ovn-kubernetes
+<span class="g"># Expected: No resources found in openshift-ovn-kubernetes namespace.</span></div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">DNS resolution verified from a freshly created pod</div>
+        <div class="check-desc">End-to-end test confirming pod scheduling, Cilium IP assignment, and service routing all work.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc run test --image=busybox --rm -it --restart=Never \
+  -- nslookup kubernetes.default.svc.cluster.local
+<span class="g"># Expected:
+# Server:    172.30.0.10
+# Name:      kubernetes.default.svc.cluster.local
+# Address:   172.30.0.1</span></div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">All cluster operators Available with 0 Degraded</div>
+        <div class="check-desc">The definitive sign the migration completed successfully.</div>
+        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="p">$</span> oc get co | grep -v "True.*False.*False"
+<span class="g"># Should return no output</span>
+<span class="p">$</span> oc get co network
+<span class="g"># AVAILABLE=True PROGRESSING=False DEGRADED=False</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Section 7 -->
+<div class="section">
+  <div class="section-header"><span class="snum">07</span><h2>Outstanding Items — In Progress</h2><span class="scount">3 items</span></div>
+
+  <div class="check-item partial">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Enable full kube-proxy replacement via eBPF</div>
+        <div class="check-desc">Currently in hybrid mode (KubeProxyReplacement: False). Full eBPF service routing is not yet active.</div>
+        <div class="check-tags"><span class="tag pending">pending</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="c"># Check current state:</span>
+<span class="p">$</span> oc exec -n isovalent -l k8s-app=cilium -c cilium-agent \
+  -- cilium status | grep KubeProxy
+<span class="w"># Currently: KubeProxyReplacement: False</span>
+
+<span class="c"># Fix — update CiliumConfig:</span>
+<span class="g">spec:
+  cilium:
+    kubeProxyReplacement: true
+    k8sServiceHost: api.oslab.oslab
+    k8sServicePort: "6443"</span>
+<span class="c"># Also:</span>
+<span class="p">$</span> oc patch network.operator cluster --type merge \
+  -p '{"spec":{"deployKubeProxy":false}}'</div>
+    </div>
+  </div>
+
+  <div class="check-item partial">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Enable and expose Hubble UI</div>
+        <div class="check-desc">Hubble UI was disabled to unblock the migration. Re-enable with a valid hostname and create an OpenShift Route.</div>
+        <div class="check-tags"><span class="tag pending">pending</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="c"># Update CiliumConfig:</span>
+<span class="g">spec:
+  hubble:
+    enabled: true
+    relay:
+      enabled: true
+  hubble-ui:
+    enabled: true
+    frontend:
+      server:
+        host: "hubble-ui.apps.oslab.oslab"
+  hubble-enterprise:
+    enabled: true</span>
+<span class="c"># Expose via Route:</span>
+<span class="p">$</span> oc expose svc/hubble-ui -n isovalent \
+  --hostname=hubble-ui.apps.oslab.oslab</div>
+    </div>
+  </div>
+
+  <div class="check-item partial">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Verify Multus ConfigMap survives cluster upgrades</div>
+        <div class="check-desc">The Multus daemon config patch may be reverted by the network operator during a cluster upgrade, crashing Multus again.</div>
+        <div class="check-tags"><span class="tag pending">pending</span><span class="tag openshift">openshift</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="cmd-block"><span class="c"># After any cluster upgrade, verify the ConfigMap was not reverted:</span>
+<span class="p">$</span> oc get configmap multus-daemon-config -n openshift-multus \
+  -o jsonpath='{.data.daemon-config\.json}' | python3 -m json.tool | grep readiness
+<span class="g"># Must show: 05-cilium.conflist</span>
+<span class="w"># NOT: 10-ovn-kubernetes.conf</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<footer>
+  <div class="footer-inner">
+    <span>OVN → Isovalent Cilium Pre-Install Checklist · Derived from live migration April 10, 2026</span>
+    <span>OpenShift on VMware ESXi · Cilium v1.14.22-cee.1</span>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.check-item').forEach(item => {
+  item.addEventListener('click', function(e) {
+    if (e.target.closest('.checkbox')) {
+      this.classList.toggle('done');
+      if (this.classList.contains('partial') && this.classList.contains('done')) {
+        // keep partial styling but mark done
+      }
+      updateProgress();
+    } else if (!e.target.closest('.expand-btn')) {
+      this.classList.toggle('expanded');
+    }
+  });
+});
+
+document.querySelectorAll('.expand-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    this.closest('.check-item').classList.toggle('expanded');
+  });
+});
+
+function updateProgress() {
+  const all = document.querySelectorAll('.check-item');
+  const done = document.querySelectorAll('.check-item.done');
+  const partial = document.querySelectorAll('.check-item.partial:not(.done)');
+  const todo = all.length - done.length - partial.length;
+  const pct = Math.round((done.length / all.length) * 100);
+  document.getElementById('dc').textContent = done.length;
+  document.getElementById('wc').textContent = partial.length;
+  document.getElementById('tc').textContent = todo;
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('pp').textContent = pct + '%';
+}
+updateProgress();
+</script>
+
+
+</body></html>
