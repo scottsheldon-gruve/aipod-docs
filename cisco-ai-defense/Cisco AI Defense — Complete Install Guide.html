@@ -291,16 +291,81 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
   </div>
 
   <div class="step">
-    <div class="step-header"><span class="step-num">0.3</span><span class="step-title">Confirm Helm 3 and oc CLI are installed on jump server</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-header"><span class="step-num">0.3</span><span class="step-title">Set up the Jump Server / Bastion Host</span><span class="step-badge sb-cmd">Setup</span></div>
     <div class="step-body">
-      <div class="cmd-block"><span class="p">$</span> helm version --short
+      <p class="sd">All install commands in this guide are run from a dedicated jump server (bastion host) that has network access to the OCP cluster API and outbound internet access. The jump server must have the OpenShift CLI (<span class="ic">oc</span>), Kubernetes CLI (<span class="ic">kubectl</span>), and Helm 3 installed before proceeding.</p>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Jump server requirements</div>
+          <ul style="margin:.25rem 0 0 1rem;font-size:.82rem;line-height:1.8">
+            <li><strong>OS:</strong> RHEL 8/9, CentOS Stream 9, or Ubuntu 22.04+ (64-bit)</li>
+            <li><strong>Network:</strong> Can reach OCP API endpoint (port 6443) and outbound internet on port 443</li>
+            <li><strong>Access:</strong> cluster-admin credentials for the OCP cluster</li>
+            <li><strong>Tools required:</strong> <span class="ic">oc</span>, <span class="ic">kubectl</span>, <span class="ic">helm</span> v3, <span class="ic">curl</span>, <span class="ic">openssl</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="cmd-block"><span class="c">## ── Step 1: Install the OpenShift CLI (oc) ──────────────────────────</span>
+<span class="c"># Download the oc binary matching your OCP cluster version (4.18+):</span>
+<span class="p">$</span> OCP_VERSION="4.18"
+<span class="p">$</span> curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-${OCP_VERSION}/openshift-client-linux.tar.gz"
+<span class="p">$</span> tar -xzf openshift-client-linux.tar.gz
+<span class="p">$</span> sudo mv oc kubectl /usr/local/bin/
+<span class="p">$</span> rm openshift-client-linux.tar.gz
+
+<span class="c"># Verify:</span>
+<span class="p">$</span> oc version --client
+<span class="g"># Client Version: 4.18.x</span>
+<span class="p">$</span> kubectl version --client
+<span class="g"># Client Version: v1.31.x</span>
+
+<span class="c">## ── Step 2: Install Helm 3 ───────────────────────────────────────────</span>
+<span class="p">$</span> curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+<span class="c"># Verify:</span>
+<span class="p">$</span> helm version --short
 <span class="g"># v3.x.x</span>
+
+<span class="c">## ── Step 3: Log in to the OCP cluster ───────────────────────────────</span>
+<span class="c"># Obtain the kubeadmin password from the OCP install output, or use your SSO credentials:</span>
+<span class="p">$</span> oc login https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443 \
+  --username=kubeadmin \
+  --password=&lt;kubeadmin-password&gt;
+
+<span class="c"># Or log in using an SSO token from the OCP web console:</span>
+<span class="c"># OCP Console → top-right username → Copy login command → paste here</span>
+
+<span class="c">## ── Step 4: Verify cluster-admin access ─────────────────────────────</span>
 <span class="p">$</span> oc whoami
-<span class="g"># Must return your username</span>
+<span class="g"># kubeadmin  (or your username)</span>
+
 <span class="p">$</span> oc auth can-i '*' '*' --all-namespaces
-<span class="g"># yes (cluster-admin required)</span>
-<span class="c"># Install Helm if missing:</span>
-<span class="p">$</span> curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash</div>
+<span class="g"># yes  ← required. If "no", escalate permissions before proceeding.</span>
+
+<span class="p">$</span> oc get nodes
+<span class="g"># All nodes must show STATUS=Ready</span>
+
+<span class="c">## ── Step 5: Verify network connectivity from jump server ────────────</span>
+<span class="c"># OCP API reachable:</span>
+<span class="p">$</span> curl -sk https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443 -o /dev/null -w "%{http_code}\n"
+<span class="g"># 403 = reachable (auth required, expected)</span>
+
+<span class="c"># Cisco SCC reachable (required for AI Defense cloud connectivity):</span>
+<span class="p">$</span> curl -sk https://security.cisco.com -o /dev/null -w "%{http_code}\n"
+<span class="g"># Any 2xx/3xx/4xx = port 443 is open</span>
+<span class="r"># 000 = blocked — fix before proceeding</span>
+
+<span class="c">## ── Step 6: Verify all tools are ready ──────────────────────────────</span>
+<span class="p">$</span> oc version --client &amp;&amp; kubectl version --client &amp;&amp; helm version --short &amp;&amp; \
+  curl --version | head -1 &amp;&amp; openssl version
+<span class="g"># All must return version strings with no errors</span></div>
+
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Jump server ready</div>When all six steps complete without errors, your jump server is ready. All subsequent phases assume commands are run from this host.</div>
+      </div>
     </div>
   </div>
 

@@ -734,26 +734,31 @@ devicePlugin:
     <div class="check-row">
       <div class="checkbox"></div>
       <div class="check-content">
-        <div class="check-title">Helm CLI installed on jump server with cluster access</div>
-        <div class="check-desc">The AI Defense connector is deployed via Helm charts provided by the AI Defense UI. Helm 3.x must be installed on the jump server that manages the OCP cluster.</div>
-        <div class="check-tags"><span class="tag critical">critical</span></div>
+        <div class="check-title">Jump server / bastion host set up with oc, kubectl, and Helm 3</div>
+        <div class="check-desc">All install commands run from a jump server with network access to the OCP API (port 6443) and outbound internet (port 443). The OpenShift CLI (oc), Kubernetes CLI (kubectl), and Helm 3 must all be installed and verified before starting.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span></div>
         <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
       </div>
     </div>
     <div class="check-detail">
-      <div class="cmd-block"><span class="c"># Install Helm 3 on jump server:</span>
+      <div class="detail-why">All AI Defense install commands run from the jump server. It must have network access to the OCP API (port 6443) and outbound internet on port 443. See Phase 0 step 0.3 of the install guide for full setup instructions.</div>
+      <div class="cmd-block"><span class="c"># Install oc and kubectl (OCP 4.18+):</span>
+<span class="p">$</span> curl -LO "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.18/openshift-client-linux.tar.gz"
+<span class="p">$</span> tar -xzf openshift-client-linux.tar.gz &amp;&amp; sudo mv oc kubectl /usr/local/bin/
+
+<span class="c"># Install Helm 3:</span>
 <span class="p">$</span> curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-<span class="c"># Verify Helm and cluster access together:</span>
-<span class="p">$</span> helm version
-<span class="c"># Must show: version.BuildInfo{Version:"v3.x.x"...}</span>
+<span class="c"># Log in to the OCP cluster:</span>
+<span class="p">$</span> oc login https://api.&lt;cluster-name&gt;.&lt;domain&gt;:6443 --username=kubeadmin
 
-<span class="p">$</span> helm list -A
-<span class="c"># Must not error — confirms Helm can talk to the cluster</span>
-
-<span class="c"># Also confirm oc CLI is available and logged in:</span>
+<span class="c"># Verify all three tools and cluster-admin access:</span>
 <span class="p">$</span> oc whoami
-<span class="p">$</span> oc get nodes</div>
+<span class="p">$</span> oc auth can-i '*' '*' --all-namespaces
+<span class="g"># yes</span>
+<span class="p">$</span> kubectl version --client
+<span class="p">$</span> helm version --short
+<span class="g"># v3.x.x</span></div>
     </div>
   </div>
 </div>
