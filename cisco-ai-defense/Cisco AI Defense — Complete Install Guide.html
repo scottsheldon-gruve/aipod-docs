@@ -1122,36 +1122,116 @@ EOF
   </div>
 
   <div class="step">
-    <div class="step-header"><span class="step-num">5.2</span><span class="step-title">Create and run an AI Defense Validation test</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-header"><span class="step-num">5.2</span><span class="step-title">Choose how you will validate</span><span class="step-badge sb-info">Overview</span></div>
     <div class="step-body">
+      <p class="sd">AI Defense provides three options for running automated red teaming. Choose the path that matches your deployment:</p>
+      <table class="data-table">
+        <thead><tr><th>Option</th><th>Use when</th><th>Step</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Validate a discovered model</strong></td><td>The model was uncovered via AI Cloud Visibility / CSP integration</td><td>5.3</td></tr>
+          <tr><td><strong>Validate an AI application</strong></td><td>You have a custom LLM application with a specific inference endpoint</td><td>5.4</td></tr>
+          <tr><td><strong>Validate an external model</strong></td><td>Any model exposing an API endpoint, without a registered application</td><td>5.5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.3</span><span class="step-title">Option A — Validate a discovered model</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <p class="sd">These are models uncovered via AI Cloud Visibility. AI Defense automatically populates the relevant model information.</p>
+      <div class="ui-steps">
+        <h4>Steps in SCC → AI Defense → Assets</h4>
+        <ol class="ui-step-list">
+          <li>Navigate to the <strong>AI Assets</strong> page and select the <strong>Cloud Visibility</strong> tab</li>
+          <li>Find the model you want to validate and click <strong>Validate</strong></li>
+          <li>AI Defense will automatically populate the relevant information associated with the model — review and click <strong>Run Submit</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.4</span><span class="step-title">Option B — Validate an AI application</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <p class="sd">AI applications are LLMs (foundation or open-weight models) to which your team has applied specific changes to make them use-case specific. AI Defense lets you test those changes to ensure they have not made your model more susceptible to risks.</p>
+
+      <div class="ui-steps">
+        <h4>Step 1 — Create the Application</h4>
+        <ol class="ui-step-list">
+          <li>Click <strong>Applications</strong> in the left navigation pane, then click <strong>Add Application</strong> (top right)</li>
+          <li>Enter a <strong>Name</strong> for the application</li>
+          <li>Set <strong>Connection type</strong> to <strong>Gateway</strong> — this enables endpoint setup and allows Validation to run on those connections</li>
+          <li>Optionally enter a <strong>Description</strong>, then click <strong>Continue</strong></li>
+        </ol>
+      </div>
+
+      <div class="ui-steps">
+        <h4>Step 2 — Add a Connection and Endpoint</h4>
+        <ol class="ui-step-list">
+          <li>On the Connections page, click <strong>Add connection</strong></li>
+          <li>In the right-hand drawer, enter a memorable <strong>name</strong> for the connection</li>
+          <li>Click <strong>+ Add or manage endpoint</strong>, then <strong>+ Add endpoint</strong></li>
+          <li>Enter the domain where your application is hosted (e.g. <span class="ic">http://www.fireworks.ai</span>)</li>
+          <li>Select the <strong>Model Provider</strong> that matches your API spec. This is important if you want AI Defense to enforce policies. If you only want to use the API and policy enforcement does not matter, select <strong>OpenAI</strong></li>
+          <li>Click <strong>Save</strong> then <strong>Done</strong></li>
+          <li>In the drawer, select your newly created endpoint from the <strong>Endpoint</strong> dropdown and click <strong>Add connection</strong></li>
+          <li>The connection will appear with status <strong>Pending</strong></li>
+        </ol>
+      </div>
+
+      <div class="ui-steps">
+        <h4>Step 3 — Run Validation</h4>
+        <ol class="ui-step-list">
+          <li>Navigate to <strong>Validation: Application</strong></li>
+          <li>Enter a memorable <strong>Test name</strong></li>
+          <li>Under <strong>Application</strong>, select the application configured above</li>
+          <li>Under <strong>Endpoint</strong>, select the connection to scan</li>
+          <li>Enter the <strong>inference API path</strong> if applicable (e.g. <span class="ic">/v1/chat/completions</span>)</li>
+          <li>Verify the <strong>Target</strong> matches your API endpoint path</li>
+          <li>Leave <strong>API Provider</strong> as <strong>None</strong> — a custom template will be used</li>
+          <li>Enter the <strong>Request Body Template</strong> — the JSON payload sent to the inference API. Must include a <span class="ic">{{prompt}}</span> placeholder where AI Defense will insert test prompts</li>
+          <li>Enter the <strong>Path to model response</strong> — a JSON path specifying where the response text is in the HTTP response (see "Format the response path" in this guide)</li>
+          <li>Enter any required <strong>HTTP headers</strong> (e.g. Authorization values)</li>
+          <li>Click <strong>Run Submit</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.5</span><span class="step-title">Option C — Validate an external model</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-body">
+      <p class="sd">An external model is any model that exposes an API endpoint. Use this path when you don't have a registered AI application in AI Defense.</p>
       <div class="ui-steps">
         <h4>In SCC → AI Defense → Validation</h4>
         <ol class="ui-step-list">
-          <li>Navigate to <strong>Validation</strong> in the left navigation menu</li>
-          <li>Click <strong>+ Run Validation</strong> (top right button)</li>
-          <li>In the popup, configure the validation run:</li>
+          <li>Navigate to the <strong>Validation</strong> tab</li>
+          <li>Click <strong>Run Validation</strong> (top right) and select <strong>External</strong></li>
+          <li>Enter a memorable <strong>Test name</strong> and optional description for the vulnerability scan</li>
+          <li>Set <strong>Target</strong> to the fully qualified URL of the external model endpoint (e.g. <span class="ic">https://sample.ngrok-free.app/chat/gpt-4</span>)</li>
+          <li>Leave <strong>API Provider</strong> as <strong>None</strong> — a custom template will be used</li>
+          <li>Enter the <strong>Request Body Template</strong> — the JSON payload sent to the inference API. Must include a <span class="ic">{{prompt}}</span> placeholder. Example: <span class="ic">{"message": "{{prompt}}"}</span></li>
+          <li>Enter the <strong>Path to model response</strong> — a JSON path specifying where the response text appears in the HTTP response (e.g. <span class="ic">response</span> or <span class="ic">choices.0.message.content</span> for OpenAI-compatible models)</li>
+          <li>Enter any required <strong>HTTP headers</strong> (Authorization values). Leave blank if not required.</li>
+          <li>Click <strong>Run Submit</strong></li>
         </ol>
       </div>
-      <table class="data-table" style="margin:0 0 .75rem 0">
+      <table class="data-table" style="margin:.75rem 0">
         <thead><tr><th>Setting</th><th>Value</th><th>Notes</th></tr></thead>
         <tbody>
           <tr><td><strong>Asset Type</strong></td><td>External</td><td>For on-prem AI POD hosted models</td></tr>
           <tr><td><strong>Test Name</strong></td><td>Your descriptive name</td><td>e.g., "AI POD Model Security Assessment"</td></tr>
           <tr><td><strong>Target Endpoint</strong></td><td>Your model URL</td><td>Full HTTPS URL including path</td></tr>
           <tr><td><strong>Request Body Template</strong></td><td>Your model's payload format</td><td>Must include <span class="ic">{{prompt}}</span> placeholder</td></tr>
-          <tr><td><strong>Path to Model Response</strong></td><td>choices.0.message.content</td><td>Default for OpenAI-compatible models</td></tr>
-          <tr><td><strong>API Provider</strong></td><td>None</td><td>For on-prem models</td></tr>
+          <tr><td><strong>Path to model response</strong></td><td><span class="ic">choices.0.message.content</span></td><td>Default for OpenAI-compatible models</td></tr>
+          <tr><td><strong>API Provider</strong></td><td>None</td><td>For on-prem / custom models</td></tr>
           <tr><td><strong>HTTP Headers</strong></td><td>As required by model</td><td>Authorization headers if needed</td></tr>
         </tbody>
       </table>
-      <div class="ui-steps">
-        <h4>Continue</h4>
-        <ol class="ui-step-list">
-          <li>Click <strong>Submit</strong> to start the validation test</li>
-          <li>The validation run begins immediately — AI Defense sends thousands of adversarial prompts to your model algorithmically</li>
-          <li>Navigate to <strong>Validation</strong> and click the test name to monitor progress</li>
-          <li>Typical duration: 10–45 minutes depending on model response latency and test depth</li>
-        </ol>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Validation duration</div>The validation run begins immediately — AI Defense sends thousands of adversarial prompts algorithmically. Navigate to <strong>Validation</strong> and click the test name to monitor progress. Typical duration: 10–45 minutes depending on model response latency and test depth.</div>
       </div>
       <div class="callout info">
         <span class="callout-icon">ℹ</span>
@@ -1161,7 +1241,7 @@ EOF
   </div>
 
   <div class="step">
-    <div class="step-header"><span class="step-num">5.3</span><span class="step-title">Review the Validation report</span><span class="step-badge sb-ui">SCC UI</span></div>
+    <div class="step-header"><span class="step-num">5.6</span><span class="step-title">Review the Validation report</span><span class="step-badge sb-ui">SCC UI</span></div>
     <div class="step-body">
       <div class="ui-steps">
         <h4>In SCC → AI Defense → Validation → [Your Test Name]</h4>
