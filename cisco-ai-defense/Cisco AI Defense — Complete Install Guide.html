@@ -80,7 +80,7 @@ p.sd{font-size:.84rem;color:var(--ink2);line-height:1.8;margin-bottom:.85rem}
 /* Code blocks */
 .cmd-block{background:#001428;border-radius:5px;padding:.8rem 1.1rem;font-family:var(--mono);font-size:.73rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
 .cmd-block .p{color:#7dd4f0}
-.cmd-block .c{color:#2a4a6a;font-style:italic}
+.cmd-block .c{color:#6899bb;font-style:italic}
 .cmd-block .g{color:#5cb87a}
 .cmd-block .w{color:#f0c850}
 .cmd-block .r{color:#f08070}
@@ -93,7 +93,7 @@ p.sd{font-size:.84rem;color:var(--ink2);line-height:1.8;margin-bottom:.85rem}
 .yaml-block .k{color:#7dd4f0}
 .yaml-block .v{color:#a0e0a0}
 .yaml-block .s{color:#ffd780}
-.yaml-block .c{color:#2a4a6a;font-style:italic}
+.yaml-block .c{color:#6899bb;font-style:italic}
 
 /* UI Steps */
 .ui-steps{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:6px;padding:1rem 1.25rem;margin:.65rem 0}
@@ -457,6 +457,69 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
   </div>
 </div>
 
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.6</span><span class="step-title">Validate GPU nodes — labels, allocatable resources, and smoke test</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">Before deploying AI Defense, confirm that GPU worker nodes are visible, labeled, and able to schedule GPU workloads. Do not proceed if any check fails.</p>
+      <div class="cmd-block"><span class="c"># Check node labels for GPU presence:</span>
+<span class="p">$</span> oc get nodes -L nvidia.com/gpu.present,nvidia.com/gpu.count
+
+<span class="c"># Check allocatable GPU resources per node:</span>
+<span class="p">$</span> oc get nodes -o json | jq '.items[] | {name: .metadata.name, allocatable: .status.allocatable["nvidia.com/gpu"]}'
+
+<span class="c"># Check GPU Operator pods are Running:</span>
+<span class="p">$</span> oc get pods -n gpu-operator -o wide</div>
+      <p class="sd" style="margin-top:.65rem">Run a GPU smoke test to confirm a container can request and access a GPU:</p>
+      <div class="cmd-block"><span class="c"># Create a test pod requesting 1 GPU and run nvidia-smi:</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-test
+spec:
+  restartPolicy: Never
+  containers:
+  - name: cuda-test
+    image: registry.access.redhat.com/ubi8/ubi:latest
+    command: ["nvidia-smi"]
+    resources:
+      limits:
+        nvidia.com/gpu: 1
+EOF
+
+<span class="c"># Watch until Completed, then check logs:</span>
+<span class="p">$</span> oc get pod gpu-test -w
+<span class="p">$</span> oc logs gpu-test
+<span class="g"># Expected: nvidia-smi table showing H100 NVL, Driver 580.x, ~95830MiB HBM memory</span>
+
+<span class="c"># Cleanup:</span>
+<span class="p">$</span> oc delete pod gpu-test</div>
+      <div class="callout ok">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Validated on Gruve AI POD-1</div>nvidia-smi confirmed NVIDIA H100 NVL with Driver Version 580.105.08 and 95830MiB of HBM2e memory available. All GPU Operator pods were Running before proceeding.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.7</span><span class="step-title">Validate Cilium CNI — all pods Running including GPU worker nodes</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">AI Defense pods rely on Cilium for pod-to-pod networking. Confirm Cilium is healthy on all nodes before deployment, especially any newly added GPU worker nodes.</p>
+      <div class="cmd-block"><span class="c"># Check all Cilium pods are Running across all nodes:</span>
+<span class="p">$</span> oc get pods -n cilium -o wide
+
+<span class="c"># Confirm the Cilium DaemonSet shows all nodes scheduled and ready:</span>
+<span class="p">$</span> oc get ds cilium -n cilium
+<span class="g"># Expected: DESIRED == CURRENT == READY == UP-TO-DATE == AVAILABLE</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">New GPU worker nodes must have Cilium Running before proceeding</div>If GPU worker nodes were recently added to the cluster, wait for the Cilium DaemonSet to reach Running state on them before installing AI Defense. Missing Cilium on a worker will cause AI Defense pods to fail network policy enforcement.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <!-- Phase 1 -->
 <div class="phase-block" id="phase1">
   <div class="phase-header" data-phase="1">
@@ -745,6 +808,33 @@ EOF
       <div class="callout warn">
         <span class="callout-icon">⚠</span>
         <div class="callout-body"><div class="callout-title">Run these before the Helm install</div>These SCC bindings must exist before Phase 3 Helm deployment. If the Helm install runs first, the AI Defense pods will start in a <span class="ic">CreateContainerConfigError</span> state due to SCC violations.</div>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">After install: also grant anyuid to the default service account for Triton pods</div>The Triton GPU model containers (<span class="ic">modernbert-pi-tox-triton-trt</span>, <span class="ic">modernbert-privacy-triton-trt</span>, <span class="ic">pi-mmbert-v2-triton-trt</span>) run under the <span class="ic">default</span> service account and require <span class="ic">anyuid</span> to create model symlinks at startup. Run this after the Helm install completes — see T9 if the Triton pods are in CrashLoopBackOff:<br><br><code style="font-family:var(--mono);font-size:.8em">oc adm policy add-scc-to-user anyuid -z default -n ai-defense-onprem</code></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.6</span><span class="step-title">Label GPU worker nodes with node_group=dps</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">AI Defense uses the <span class="ic">node_group=dps</span> label to identify which nodes should host its GPU workloads. Without this label, AI Defense pods may attempt to schedule on control plane nodes (which have no GPUs) and fail. Apply the label to all GPU worker nodes before running the Helm install.</p>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">What "dps" means</div><strong>dps</strong> stands for <strong>Data Protection Service</strong> — the internal name for the AI Defense data plane component. This label is a required node selector in the AI Defense Helm chart and is not optional.</div>
+      </div>
+      <div class="cmd-block"><span class="c"># Apply to all GPU worker nodes (substitute your actual node names):</span>
+<span class="p">$</span> oc label node &lt;gpu-worker-1&gt; node_group=dps --overwrite
+<span class="p">$</span> oc label node &lt;gpu-worker-2&gt; node_group=dps --overwrite
+
+<span class="c"># Verify labels were applied:</span>
+<span class="p">$</span> oc get node &lt;gpu-worker-1&gt; -o jsonpath='{.metadata.labels.node_group}{"\n"}'
+<span class="p">$</span> oc get node &lt;gpu-worker-2&gt; -o jsonpath='{.metadata.labels.node_group}{"\n"}'
+<span class="g"># Expected output: dps (on each line)</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">Labels are not persistent across node rebuilds</div>If a GPU worker node is rebuilt or a new worker is added, <span class="ic">node_group=dps</span> must be re-applied. Consider adding this label to a MachineConfig to make it permanent across reboots and rebuilds.</div>
       </div>
     </div>
   </div>
@@ -1710,6 +1800,62 @@ YAML
       </div>
     </div>
   </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.8</span><span class="step-title">Validate GPU allocation, runtime pods, and Triton model servers</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">After all pods are Running, confirm that GPU resources are correctly allocated to the Triton model servers and that all runtime protection components are healthy.</p>
+      <div class="cmd-block"><span class="c"># Verify GPU allocation — should show 4 Triton pods each with nvidia.com/gpu: 1</span>
+<span class="p">$</span> oc get pods -n ai-defense-onprem -o json | jq '.items[] | select(.spec.containers[].resources.limits."nvidia.com/gpu" != null) | {name: .metadata.name, gpu: .spec.containers[].resources.limits."nvidia.com/gpu"}'
+
+<span class="c"># Validate runtime protection pods are Running:</span>
+<span class="p">$</span> oc get pods -n ai-defense-onprem | grep -E "firewall|detection-server|modernbert|pi-mmbert|triton"
+<span class="g"># Expected: all 6 pods 1/1 Running</span>
+
+<span class="c"># Validate AI Validation Service pods:</span>
+<span class="p">$</span> oc get pods -n ai-defense-onprem | grep -E "generative-validation|gemma"
+<span class="g"># Expected: both pods 1/1 Running</span>
+
+<span class="c"># Quick no-error check — this should return nothing if all pods are healthy:</span>
+<span class="p">$</span> oc get pods -n ai-defense-onprem | grep -v Running
+<span class="g"># Expected: only the header line (NAME READY STATUS ...) — no pod lines</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">H100 GPU: set TORCH_CUDA_ARCH_LIST if Gemma pod is in CrashLoopBackOff</div>The <span class="ic">triton-gemma-3-4b-it</span> pod needs <span class="ic">TORCH_CUDA_ARCH_LIST=9.0</span> set for H100 (Hopper architecture, compute capability 9.0). If the pod is crashing, see T10. This env var survives pod restarts but may be reset by a Helm upgrade — re-verify after any upgrade.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.9</span><span class="step-title">Post-install operational notes</span><span class="step-badge sb-info">Reference</span></div>
+    <div class="step-body">
+      <table class="data-table">
+        <thead><tr><th>Topic</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Accessing AI Defense</strong></td>
+            <td>There is no standalone browser UI for on-prem components. Management is via <strong>https://security.cisco.com</strong> (SCC portal). The AI application proxy endpoint is <span class="ic">https://&lt;ai-defense-hostname&gt;/</span> and the API inspection endpoint is <span class="ic">https://&lt;ai-defense-hostname&gt;/api/v1/inspect</span>.</td>
+          </tr>
+          <tr>
+            <td><strong>Node label persistence</strong></td>
+            <td>Both <span class="ic">node_group=dps</span> and <span class="ic">lvms-nvme=true</span> must be re-applied if GPU worker nodes are rebuilt or new workers added. Consider adding them to a MachineConfig to make them permanent.</td>
+          </tr>
+          <tr>
+            <td><strong>Gemma env var after upgrade</strong></td>
+            <td>The <span class="ic">TORCH_CUDA_ARCH_LIST=9.0</span> env var on <span class="ic">triton-gemma-3-4b-it</span> persists across pod restarts but may be overwritten by a Helm upgrade. After any upgrade, verify and re-apply: <span class="ic">oc set env deploy/triton-gemma-3-4b-it -n ai-defense-onprem TORCH_CUDA_ARCH_LIST=9.0</span></td>
+          </tr>
+          <tr>
+            <td><strong>Upgrading</strong></td>
+            <td>Download a fresh installation script from SCC → Administration → Hybrid Deployments → your connector → Setup guide. Re-run with <span class="ic">--apikey &lt;key&gt;</span>. The script uses <span class="ic">helm upgrade --install</span> and handles both fresh installs and upgrades.</td>
+          </tr>
+          <tr>
+            <td><strong>Uninstalling</strong></td>
+            <td><span class="ic">helm uninstall ai-defense-onpremises -n ai-defense-onprem</span> followed by <span class="ic">oc delete namespace ai-defense-onprem</span>. Node labels must be removed manually if desired.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <div class="divider"></div>
@@ -1930,6 +2076,97 @@ YAML
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T9</span><span class="step-title">Triton GPU pods in CrashLoopBackOff — Permission denied creating model symlink</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <p class="sd"><strong>Symptom:</strong> After Helm install, the following pods are in CrashLoopBackOff:</p>
+      <div class="cmd-block"><span class="r">modernbert-pi-tox-triton-trt    0/1   CrashLoopBackOff</span>
+<span class="r">modernbert-privacy-triton-trt   0/1   CrashLoopBackOff</span>
+<span class="r">pi-mmbert-v2-triton-trt         0/1   CrashLoopBackOff</span></div>
+      <p class="sd"><strong>Root Cause:</strong> Triton model containers attempt to create a symlink at <span class="ic">/models/classification/1/model.plan</span> during startup. OpenShift's default <span class="ic">restricted-v2</span> SCC blocks this because the <span class="ic">default</span> service account was not granted <span class="ic">anyuid</span>.</p>
+      <div class="cmd-block"><span class="c"># Confirm the error in pod logs:</span>
+<span class="p">$</span> oc logs modernbert-pi-tox-triton-trt-&lt;pod-id&gt; -n ai-defense-onprem
+<span class="r"># ln: failed to create symbolic link '/models/classification/1/model.plan': Permission denied</span>
+
+<span class="c"># Confirm the pod is running under restricted-v2:</span>
+<span class="p">$</span> oc get pod modernbert-pi-tox-triton-trt-&lt;pod-id&gt; -n ai-defense-onprem \
+  -o jsonpath='{.metadata.annotations.openshift\.io/scc}{"\n"}'
+<span class="r"># restricted-v2   ← too restrictive, needs anyuid</span></div>
+      <p class="sd"><strong>Resolution:</strong> Grant <span class="ic">anyuid</span> to the <span class="ic">default</span> service account in the <span class="ic">ai-defense-onprem</span> namespace, then delete the crashing pods so they restart with the new permissions:</p>
+      <div class="cmd-block"><span class="c"># Grant anyuid to the default service account in the ai-defense-onprem namespace:</span>
+<span class="p">$</span> oc adm policy add-scc-to-user anyuid -z default -n ai-defense-onprem
+
+<span class="c"># Delete crashing pods to force restart with new SCC:</span>
+<span class="p">$</span> oc delete pod modernbert-pi-tox-triton-trt-&lt;pod-id&gt; -n ai-defense-onprem
+<span class="p">$</span> oc delete pod modernbert-privacy-triton-trt-&lt;pod-id&gt; -n ai-defense-onprem
+<span class="p">$</span> oc delete pod pi-mmbert-v2-triton-trt-&lt;pod-id&gt; -n ai-defense-onprem
+
+<span class="c"># Verify pods come back Running:</span>
+<span class="p">$</span> oc get pods -n ai-defense-onprem | grep triton
+<span class="g"># All should show 1/1 Running after restart</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">This is in addition to the three service accounts in step 1.5</div>Step 1.5 grants <span class="ic">anyuid</span> to <span class="ic">pii-analyzer-serviceaccount</span>, <span class="ic">rde-operator</span>, and <span class="ic">ai-defense-orchestrator</span>. The <span class="ic">default</span> service account requires a separate grant specifically in the <span class="ic">ai-defense-onprem</span> namespace after the Helm install creates it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T10</span><span class="step-title">triton-gemma-3-4b-it in CrashLoopBackOff — failed to load all models (H100)</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <p class="sd"><strong>Symptom:</strong> The Gemma Triton pod crashes on H100 GPU nodes with a model load failure:</p>
+      <div class="cmd-block"><span class="r">triton-gemma-3-4b-it   0/1   CrashLoopBackOff</span>
+
+<span class="c"># Error in pod logs:</span>
+<span class="p">$</span> oc logs triton-gemma-3-4b-it-&lt;pod-id&gt; -n ai-defense-onprem
+<span class="r"># error: creating server: Internal - failed to load all models</span></div>
+      <p class="sd"><strong>Root Cause:</strong> The Gemma Triton container requires <span class="ic">TORCH_CUDA_ARCH_LIST=9.0</span> to be set for NVIDIA H100 GPUs (Hopper architecture, compute capability 9.0). Without it, PyTorch cannot correctly target the GPU architecture for model compilation.</p>
+      <p class="sd"><strong>Resolution:</strong> Set the environment variable on the deployment. This change is stored in the Deployment object and persists across pod restarts:</p>
+      <div class="cmd-block"><span class="c"># Set the required env var for H100 (Hopper, compute capability 9.0):</span>
+<span class="p">$</span> oc set env deploy/triton-gemma-3-4b-it -n ai-defense-onprem TORCH_CUDA_ARCH_LIST=9.0
+
+<span class="c"># Restart the deployment to pick up the change:</span>
+<span class="p">$</span> oc rollout restart deploy/triton-gemma-3-4b-it -n ai-defense-onprem
+
+<span class="c"># Verify it is Running:</span>
+<span class="p">$</span> oc rollout status deploy/triton-gemma-3-4b-it -n ai-defense-onprem
+<span class="g"># deployment "triton-gemma-3-4b-it" successfully rolled out</span>
+
+<span class="c"># Confirm the env var is set (re-verify after any Helm upgrade):</span>
+<span class="p">$</span> oc get deploy triton-gemma-3-4b-it -n ai-defense-onprem \
+  -o jsonpath='{.spec.template.spec.containers[0].env}' | jq .</div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">Re-apply after every Helm upgrade</div><span class="ic">TORCH_CUDA_ARCH_LIST=9.0</span> is stored in the Deployment object and survives pod restarts. However, a Helm upgrade may overwrite the Deployment spec and remove this variable. Re-apply it after any AI Defense upgrade and verify with the <span class="ic">oc get deploy ... -o jsonpath</span> command above.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T11</span><span class="step-title">AI Defense endpoint returns "Application is not available" — DNS pointing to wrong IP</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <p class="sd"><strong>Symptom:</strong> <span class="ic">curl https://&lt;ai-defense-hostname&gt;</span> or browser access returns <em>"Application is not available"</em> even though the routes and pods are healthy.</p>
+      <p class="sd"><strong>Root Cause:</strong> The DNS A record for the AI Defense hostname is pointing to the wrong IP — not the OCP Ingress VIP. Diagnose with:</p>
+      <div class="cmd-block"><span class="c"># Check what IP the DNS name resolves to:</span>
+<span class="p">$</span> dig &lt;ai-defense-hostname&gt;
+<span class="r"># If the A record points to an unexpected IP, that is the problem</span>
+
+<span class="c"># Get the correct OCP Ingress VIP:</span>
+<span class="p">$</span> oc get svc -n openshift-ingress
+<span class="g"># The EXTERNAL-IP on the router-default LoadBalancer service is the correct Ingress VIP</span></div>
+      <p class="sd"><strong>Resolution:</strong> Update the DNS A record to point to the correct OCP Ingress VIP on your internal DNS server.</p>
+      <div class="cmd-block"><span class="c"># Temporary workaround — add to /etc/hosts on jump server (Linux/Mac):</span>
+<span class="p">$</span> echo "&lt;ocp-ingress-vip&gt; &lt;ai-defense-hostname&gt;" | sudo tee -a /etc/hosts
+
+<span class="c"># Windows: add to C:\Windows\System32\drivers\etc\hosts:</span>
+<span class="c"># &lt;ocp-ingress-vip&gt;  &lt;ai-defense-hostname&gt;</span>
+
+<span class="c"># Verify the endpoint responds after DNS fix:</span>
+<span class="p">$</span> curl -k https://&lt;ai-defense-hostname&gt;/api/v1/inspect/health
+<span class="g"># Expected: HTTP 200 or JSON health response</span></div>
     </div>
   </div>
 </div>
