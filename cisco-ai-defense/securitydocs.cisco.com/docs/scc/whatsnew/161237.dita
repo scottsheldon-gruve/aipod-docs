@@ -1,0 +1,4879 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>2026.1.1 Release, January 6, 2026</title>
+
+    <base href="">
+    <link rel="canonical" href="161237.dita">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../../../Content/img/favicon.png"/>
+    <link rel="stylesheet" href="../../../Content/css/output.css?v=1011713472">
+
+    <script src="../../../Content/vendor/htmx.1.9.10.min.js"></script>
+    <script src="../../../Content/js/scripts.js?v=1386221188"></script>
+
+    <script>
+        htmx.config.refreshOnHistoryMiss = true;
+    </script>
+
+    
+
+        <link rel="stylesheet" type="text/css" href="../../../IGX%20Dev%20Test%20Assets/css/style-override.css"/>
+</head>
+<body>
+<div class="flex h-full flex-col">
+
+
+
+
+<header class=" bg-gradient-to-r from-ship-grey to-cinder p-4 text-sm">
+    <div class="container-fluid mx-auto">
+        <div class="flex items-center">
+
+            <div class="flex items-center gap-4">
+                <a href="https://www.cisco.com/" target="_blank" title="LogoLink">
+<img alt="Cisco" class="max-h-6" src="../../../Site%20images%20for%20Docs%20portal/Initial%20site%20images/Temp_Cisco-logo.png" />
+</a>
+
+                <a href="../../../index.html" title="Security Help Center">
+<img alt="" class="max-h-6" src="../../../index.html" />
+</a>
+
+            </div>
+
+            <div class="ml-auto flex items-center gap-4">
+
+                    <a class="group relative text-white" href="../../../index.html#" title="Do you need help?">
+
+            <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 18C12.8284 18 13.5 17.3284 13.5 16.5C13.5 15.6716 12.8284 15 12 15C11.1716 15 10.5 15.6716 10.5 16.5C10.5 17.3284 11.1716 18 12 18Z" fill="#F7F7F7"/>
+<path d="M12.7316 6.44706C12.0042 6.30236 11.2502 6.37662 10.5649 6.66045C9.87971 6.94428 9.29404 7.42493 8.88199 8.04161C8.46993 8.6583 8.25 9.38332 8.25 10.125C8.25 10.7463 8.75368 11.25 9.375 11.25C9.99632 11.25 10.5 10.7463 10.5 10.125C10.5 9.82833 10.588 9.53832 10.7528 9.29165C10.9176 9.04497 11.1519 8.85271 11.426 8.73918C11.7001 8.62565 12.0017 8.59595 12.2926 8.65382C12.5836 8.7117 12.8509 8.85456 13.0607 9.06434C13.2704 9.27412 13.4133 9.54139 13.4712 9.83237C13.5291 10.1233 13.4994 10.4249 13.3858 10.699C13.2723 10.9731 13.08 11.2074 12.8334 11.3722C12.5867 11.537 12.2967 11.625 12 11.625C11.3787 11.625 10.875 12.1287 10.875 12.75C10.875 13.3713 11.3787 13.875 12 13.875C12.7417 13.875 13.4667 13.6551 14.0834 13.243C14.7001 12.831 15.1807 12.2453 15.4645 11.5601C15.7484 10.8748 15.8226 10.1208 15.6779 9.39341C15.5333 8.66598 15.1761 7.9978 14.6517 7.47335C14.1272 6.9489 13.459 6.59175 12.7316 6.44706Z" fill="#F7F7F7"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.875 12C1.875 6.40812 6.40812 1.875 12 1.875C17.5919 1.875 22.125 6.40812 22.125 12C22.125 17.5919 17.5919 22.125 12 22.125C6.40812 22.125 1.875 17.5919 1.875 12ZM12 4.125C7.65076 4.125 4.125 7.65076 4.125 12C4.125 16.3492 7.65076 19.875 12 19.875C16.3492 19.875 19.875 16.3492 19.875 12C19.875 7.65076 16.3492 4.125 12 4.125Z" fill="#F7F7F7"/>
+</svg>
+
+            </i>
+
+
+                        <div class="absolute right-0 top-full hidden w-60 pt-1 group-hover:block">
+                            <div class="rounded border border-mercury bg-white p-3 text-xs font-normal text-black">
+                                <p class="zDocsSearchBoxTipTitle css-cinqea">How search works in the Security Help Center:</p>
+<ul>
+<li class="css-cinqea">The most relevant topics (based on weighting and matching to search terms) are listed first in the search results by default</li>
+<li class="css-cinqea">Common Boolean operations are supported</li>
+<li class="css-cinqea">Use double quotes to find a phrase (&ldquo;specific phrase&rdquo;)</li>
+<li class="css-cinqea">Apply facets on the Search Results page to further scope search results by category</li>
+</ul>
+                            </div>
+                        </div>
+
+                    </a>
+                    <span class="inline-block h-5 w-px bg-white"></span>
+
+                <div class="flex items-center ml-auto gap-4">
+                        <a class="text-white" href="../../../index.html#" data-collapse="user-dropdown">Login</a>
+                        <div
+                            class="hidden absolute border-1 top-10 mt-4 mb-5 ml-5 mr-0 right-0 min-w-72 pt-4 pl-4 pr-3 group z-30"
+                            data-parent="user-dropdown">
+                            <div class="top-[-1px] right-5 absolute text-apple text-xl">
+
+
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-solid"></use>
+    </svg>
+</i>
+
+                            </div>
+                            <div class="card pt-3 pr-4 pl-4 rounded-md border-apple border-4 shadow-2xl "
+                                 data-dropdown="user-dropdown">
+                                <p class="mb-5 [overflow-wrap:anywhere]"><strong>Log In to the Cisco Security
+                                        Documentation Portal</strong></p>
+                                <form action="https://securitydocs.cisco.com/saml/SingleSignOn" id="login-form" name="Login"
+                                      method="post">
+                                    <div class="flex flex-row mb-6 justify-between align-middle items-center">
+                                        <label for="account" class="text-jet-grey w-1/3">I am a Cisco...</label>
+                                        <select name="account" id="account"
+                                                class="bg-white focus:ring-cornflower ring-2 w-2/3 text-ship-grey text-lg">
+                                            <option value="customer">Customer</option>
+                                            <option value="employee">Employee</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-row justify-end gap-2 mb-2">
+
+                                        <button type="button"
+                                                class="button w-full sm:w-auto border-0 hover:bg-white hover:text-ship-grey transition-all"
+                                                data-cancel=user-dropdown-cancel>
+                                            Cancel
+
+                                        </button>
+
+
+                                        <button type="button" id="login-form-submit"
+                                                class="button w-full sm:w-auto bg-primary border-primary text-white hover:bg-white hover:text-primary transition-all">
+                                            Proceed to SSO Login
+
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+    <main class="flex grow flex-col">
+
+
+
+            <section class="px-4 py-10 h-full">
+        <div class="lg:container lg:mx-auto lg:max-w-screen-xl h-full">
+
+
+
+
+<div class="-mt-4 mb-6 flex flex-wrap items-center">
+    <div class="flex-1 text-sm">
+        <a class="whitespace-nowrap font-semibold text-jet-grey" href="../../../doc-portal-search-page" title="Search"><span class="mr-1"><i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-left"></use>
+    </svg>
+</i></span>Search</a>
+    </div>
+    <div class="ml-auto flex items-center gap-5">
+        <a class="text-primary" title="Email"
+           href="mailto:?body=http://securitydocs.cisco.com/docs/scc/whatsnew/161237.dita">
+            <i>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.5625 4.375C1.5625 3.85723 1.98223 3.4375 2.5 3.4375H17.5C18.0178 3.4375 18.4375 3.85723 18.4375 4.375V15C18.4375 15.4144 18.2729 15.8118 17.9799 16.1049C17.6868 16.3979 17.2894 16.5625 16.875 16.5625H3.125C2.7106 16.5625 2.31317 16.3979 2.02015 16.1049C1.72712 15.8118 1.5625 15.4144 1.5625 15V4.375ZM3.4375 5.3125V14.6875H16.5625V5.3125H3.4375Z" fill="#1D69CC"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.80892 3.74151C2.15879 3.35984 2.75182 3.33406 3.1335 3.68392L10 9.97822L16.8665 3.68392C17.2482 3.33406 17.8412 3.35984 18.1911 3.74151C18.541 4.12319 18.5152 4.71622 18.1335 5.06609L10.6335 11.9411C10.2751 12.2696 9.72494 12.2696 9.36651 11.9411L1.86651 5.06609C1.48484 4.71622 1.45906 4.12319 1.80892 3.74151Z" fill="#1D69CC"/>
+</svg>
+
+            </i>
+        </a>
+
+    </div>
+</div>
+
+            <div class="mb-2 rounded-md bg-white px-8 py-6 shadow-lg h-full">
+                <div class="grid-cols-[80px_auto] lg:grid lg:grid-cols-[300px_auto] h-full">
+                    <div class="lg:mr-8 lg:border-r-2 lg:border-mercury">
+
+
+
+<div class="absolute mt-1 lg:relative lg:flex lg:h-full lg:flex-col">
+    <div class="mb-4 flex lg:hidden">
+        <button type="button" title="Collapse" data-collapse="doc-side">
+
+                        <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.625 6C2.625 5.37868 3.12868 4.875 3.75 4.875H20.25C20.8713 4.875 21.375 5.37868 21.375 6C21.375 6.62132 20.8713 7.125 20.25 7.125H3.75C3.12868 7.125 2.625 6.62132 2.625 6Z" fill="#7E868F"/>
+<path d="M2.625 12C2.625 11.3787 3.12868 10.875 3.75 10.875H20.25C20.8713 10.875 21.375 11.3787 21.375 12C21.375 12.6213 20.8713 13.125 20.25 13.125H3.75C3.12868 13.125 2.625 12.6213 2.625 12Z" fill="#7E868F"/>
+<path d="M3.75 16.875C3.12868 16.875 2.625 17.3787 2.625 18C2.625 18.6213 3.12868 19.125 3.75 19.125H20.25C20.8713 19.125 21.375 18.6213 21.375 18C21.375 17.3787 20.8713 16.875 20.25 16.875H3.75Z" fill="#7E868F"/>
+</svg>
+
+            </i>
+
+
+            <a class="mx-1 hidden text-sm font-normal text-ship-grey lg:inline-block">Collapse</a>
+        </button>
+    </div>
+    <div
+        class="border-1 absolute -left-4 z-10 hidden min-w-72 rounded-md border-mercury bg-white p-4 shadow-md lg:static lg:block lg:min-w-0 lg:rounded-none lg:border-0 lg:p-0 lg:shadow-none"
+        data-type="doc-side">
+
+            <p>
+                    <strong><a href="https://securitydocs.cisco.com/docs/scc/whatsnew/106342.ditamap" class="text-ship-grey">What&#39;s New in Security Cloud Control</a></strong>
+            </p>
+
+            <div class="overflow-y-auto">
+                <ul class="m-0 list-none border-t border-mercury text-xs" id="toc-scrollable">
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="https://securitydocs.cisco.com/docs/scc/whatsnew/106881.dita">
+                                    Welcome to Cisco Security Cloud Control
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1990161043"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/106191.dita">
+                Overview of Cisco Security Cloud Control
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1990164304"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/106192.dita">
+                Products and Solutions Supported by Security Cloud Control
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            data-selection-within='true'
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="https://securitydocs.cisco.com/docs/scc/whatsnew/161231.dita">
+                                    New Features in 2026
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        data-selection-within='true'
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2007544891"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161233.dita">
+                AI Defense
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 border-r-4 border-r-primary text-primary">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        data-selection-within='true'
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-primary"
+               data-anchor-id="2007540535"
+               data-selected='true'
+               href="161237.dita">
+                2026.1.1 Release, January 6, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2007541494"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161236.dita">
+                AI Defense Adopts New AI Threat Taxonomy
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2007542581"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161235.dita">
+                AI Defense MCP Server Catalog
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2007535092"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161234.dita">
+                AI Defense Hybrid Deployment on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="901758268"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168343.dita">
+                Mesh Policy Engine
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="372916529"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168296.dita">
+                Capabilities of Mesh Policy Engine
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2007531264"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161238.dita">
+                Multi-Organizations
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="840190723"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169136.dita">
+                March 27, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="856427907"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169226.dita">
+                Support for Cisco XDR
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2120559103"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161240.dita">
+                January 30, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2007538753"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161239.dita">
+                Managed Service Provider Multi-Organization View
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="856426948"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169227.dita">
+                Cisco SASE Management
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="856428994"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169225.dita">
+                March 27, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="856421505"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169224.dita">
+                SASE Management with Common Objects
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="713951433"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168364.dita">
+                Secure Workload
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2125420368"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161616.dita">
+                Security Cloud Control Firewall Management
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="856431304"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169223.dita">
+                March 27, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="840189508"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169137.dita">
+                Firewall MSP Portal Now Integrated into Security Cloud Control
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="902023194"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168648.dita">
+                March 13, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="902005211"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168647.dita">
+                New Smart Licensing Dashboard
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="902004252"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168646.dita">
+                New Smart Licensing Dashboard for MSSP Portal
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2125419281"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161615.dita">
+                January 30, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2125426770"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161614.dita">
+                Multitenant Device Upgrades in MSSP Portal
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2007400056"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161634.dita">
+                Security Cloud Control Platform
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="840195382"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169139.dita">
+                March 26, 2027
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="840196597"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/169138.dita">
+                Switch from Google Authenticator to Duo MFA
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="983085245"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168650.dita">
+                March 19, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="902015705"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168649.dita">
+                In-Product Announcements
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2007402102"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161632.dita">
+                February 19, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2007395700"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161630.dita">
+                Talos Threat Intelligence Now Embedded in Security Cloud Control
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2120564546"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161243.dita">
+                January 29, 2026
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2120565505"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161242.dita">
+                Security Cloud Control API
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2120566592"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/161241.dita">
+                Security Cloud Control User Interface Changes
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="https://securitydocs.cisco.com/docs/scc/whatsnew/108317.dita">
+                                    New Features in 2025
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="209629036"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/167261.dita">
+                AI Defense
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="983160819"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168854.dita">
+                2025.12.1 Release, December 9, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="846228422"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/160235.dita">
+                New AI Runtime batch event retrieval API
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="846229509"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/160236.dita">
+                Better reporting of AI Runtime events
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="983153586"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168855.dita">
+                AI Defense MCP server catalog
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="983148279"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168858.dita">
+                2025.11.1 Release, November 12, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="983158773"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168856.dita">
+                Support for runtime protection of Japanese content
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="983159988"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168857.dita">
+                Support for validation of Japanese language models
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="682002013"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168324.dita">
+                AI Defense release, July 23, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="682006369"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168320.dita">
+                Azure AI Services Support
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="682007328"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168321.dita">
+                Runtime Updates in July 2025
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="682013730"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168323.dita">
+                Validation Updates in July 2025
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="682012771"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168322.dita">
+                User Activity Log Added
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="209631082"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/167263.dita">
+                Multicloud Defense
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="374066511"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/158792.dita">
+                November 6, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="374068821"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/158794.dita">
+                Multicloud Defense Updates in Security Cloud Control
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="623664187"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129987.dita">
+                July 31, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="623664754"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129988.dita">
+                Multicloud Defense Updates in Security Cloud Control
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1021683138"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108512.dita">
+                June 6, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1021687494"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108516.dita">
+                Multicloud Defense Controller Updates
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="209630123"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/167262.dita">
+                Secure Access
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1734956102"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/107885.dita">
+                May 23, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="675038815"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108320.dita">
+                Five new AI Assistant skills for Secure Access
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="209640881"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/167264.dita">
+                Secure Workload
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="623901723"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129688.dita">
+                Secure Workload Video Overview
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="209633392"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/167265.dita">
+                Security Cloud Control Firewall Management
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1014782279"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168317.dita">
+                December 12, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1014783238"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168316.dita">
+                Updates to Cloud-Delivered Firewall Management Center
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1014788681"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168315.dita">
+                Introducing Security Insights in AIOps
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1014789640"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168314.dita">
+                December 04, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1014777923"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168313.dita">
+                New Health Dashboard for MSSP Portal
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="901765629"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168340.dita">
+                November 20, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600928909"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168339.dita">
+                Updates to Cloud-Delivered Firewall Management Center
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="982844048"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168358.dita">
+                November 14, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="982832859"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168357.dita">
+                MSSP Device Upgrades Using Public APIs
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="982833818"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168356.dita">
+                November 06, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="982840220"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168354.dita">
+                Security Cloud Control Now Manages Catalyst SD-WAN NGFW features
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="982839261"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168355.dita">
+                Introducing Tiered Subscription Model for Cisco Security Analytics and Logging
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="713955789"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168360.dita">
+                October 23, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="982843089"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168359.dita">
+                CLI Support for Firewall Threat Defense Devices Managed by Cloud-Delivered Firewall Management Center
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="713963150"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168363.dita">
+                September 18, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="713962191"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168362.dita">
+                Introducing New AIOps Capabilities
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="713956748"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168361.dita">
+                Introducing Device Health Metrics for Secure Firewall ASA Devices
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1014785284"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168310.dita">
+                August 21, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1014784325"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168311.dita">
+                Security Cloud Control Firewall Management Now Manages Catalyst SD-WAN NGFW Features
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1014778882"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168312.dita">
+                Security Cloud Control Firewall Management Notifications in Microsoft Teams
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="933722274"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168309.dita">
+                August 14, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="933723233"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168308.dita">
+                Updates to Cloud-Delivered Firewall Management Center
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="600931778"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168334.dita">
+                July 23, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600936134"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168330.dita">
+                Security Cloud Control Firewall Management Video
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="681999144"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168329.dita">
+                MSSP Portal: Enhanced Pagination and Sorting of Security Devices
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600943495"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168333.dita">
+                Updates to Security Cloud Control Firewall Manager APIs
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600942536"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168332.dita">
+                Updates to the Event Log Search Feature
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600937093"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168331.dita">
+                Updates to the Cloud-Delivered Firewall Management Center Device Backups
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="681998185"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168328.dita">
+                July 3, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="682008415"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168326.dita">
+                Updates to Cloud-Delivered Firewall Management Center
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="682009374"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168327.dita">
+                Updates to Firewall Migration Tool
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="682002972"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168325.dita">
+                Enhanced Event Searching with Sample Filters
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="600927950"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168338.dita">
+                June 12, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600932737"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168335.dita">
+                Cisco Security Cloud Control Integrated Platform is Now Available
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600939139"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168337.dita">
+                Simplified Site-to-Site VPN Wizard
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="600938180"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168336.dita">
+                New Widgets in Storage Utilization Dashboard
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="209634479"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/167266.dita">
+                Security Cloud Control Platform
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1014793468"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168318.dita">
+                December 17, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1014792509"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168319.dita">
+                New Support for the United Arab Emirates (UAE) Cloud Region
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="902007521"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168641.dita">
+                December 04, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="526457752"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/160181.dita">
+                Limited Use Cisco Duo Licenses
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="902003165"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168645.dita">
+                October 29, 2024
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="902010654"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168644.dita">
+                Enabling Cisco Multicloud Defense in Security Cloud Control Organization
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="902009567"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168643.dita">
+                Activating Trial on a Paid Subscription
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="902008608"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168642.dita">
+                October 15 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="115239650"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/154979.dita">
+                Resend Activation Email to New Users
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="767357961"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/140126.dita">
+                September 24, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="902083351"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168845.dita">
+                Import users from a CSV file
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="902088538"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168846.dita">
+                Retain user roles on product deactivation
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="679653824"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/139914.dita">
+                September 23, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="679654783"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/139915.dita">
+                Security Cloud Control Multi-Organizations
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="902090584"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168844.dita">
+                September 4, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="385203953"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/136462.dita">
+                Choose your background theme
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="623662141"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129985.dita">
+                August 6, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="623662972"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129986.dita">
+                New Organization Details Page
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="902085397"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/168843.dita">
+                July 23, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="623910994"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129687.dita">
+                Immediate Updates to User Privileges
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="940542252"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108705.dita">
+                July 3, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="940549613"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108706.dita">
+                Give us your feedback!
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1021685448"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108514.dita">
+                June 25, 2025
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1021686279"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108517.dita">
+                Simplified Access Management Menu
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1863814848"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/130157.dita">
+                Universal Zero Trust Network Access in Firewall Management and Secure Access
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="https://securitydocs.cisco.com/docs/scc/whatsnew/107889.dita">
+                                    Additional Documentation and Support
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="675030631"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108328.dita">
+                Security Cloud Control Documentation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="675039774"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108321.dita">
+                AI Defense Documentation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="675032413"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108322.dita">
+                Security Cloud Control Firewall Management Documentation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="675044130"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108325.dita">
+                Multicloud Defense Documentation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="675036769"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108326.dita">
+                Secure Access Documentation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="675037728"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/108327.dita">
+                Secure Workload Documentation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="735410323"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/140168.dita">
+                Browsers Supported by Security Cloud Control
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="294262726"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/95915.dita">
+                Cisco Support Access to your Organization
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="764254207"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129800.dita">
+                Enable Cisco Support Access
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="623657785"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/129981.dita">
+                Disable Cisco Support Access
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1734951059"
+               
+               href="https://securitydocs.cisco.com/docs/scc/whatsnew/107888.dita">
+                Cisco Customer Support
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                </ul>
+            </div>
+    </div>
+</div>
+
+                    </div>
+
+                    <div class="flex flex-col h-full" id="content-column">
+
+
+
+<form class="relative mb-4 flex ml-10 lg:ml-0"
+      onsubmit='event.preventDefault()'
+      action='../../../doc-portal-search-page'
+      hx-get="/api/hypermedia/in-book/suggestions"
+      hx-swap="outerHTML"
+      hx-target="#search-suggestions"
+      hx-trigger="keyup delay:300ms from:#in-book-search"
+      id="complex-article-search">
+
+    <input type="hidden" name="bookMapPath" value="/docs/scc/whatsnew/106342.ditamap">
+
+    <select title="search-type"
+            name="search-type"
+            hx-get="/api/hypermedia/complex-article/search-select"
+            hx-trigger="change"
+            hx-swap="outerHTML"
+            hx-target="#complex-article-search"
+            hx-on:htmx:config-request="configureSearchSuggestRequest(event, '/docs/scc/whatsnew/106342.ditamap')"
+            class="border-primary font-semibold px-0.5 rounded-r-none text-primary w-auto min-w-24 cursor-pointer hover:bg-primary hover:text-white transition-all p-1.5">
+
+            <option class="font-semibold text-black bg-white"
+                    selected='Book'
+                    value="Book">
+                Book
+            </option>
+            <option class="font-semibold text-black bg-white"
+                    
+                    value="Site">
+                Site
+            </option>
+
+    </select>
+    <label class="flex-1">
+        <span class="sr-only">Search</span>
+        <input id="in-book-search" name="term" class="rounded-l-none border-l-0" type="text" placeholder="Search this book">
+    </label>
+    <div class="hidden" id="search-suggestions"></div>
+</form>
+
+
+<div class="bg-white-smoke mb-4 pt-4">
+    <div class="flex flex-wrap gap-x-6 gap-y-2 pb-4 px-6 sm:gap-x-10 xl:gap-x-12">
+
+        
+        
+        
+        
+        
+        
+        
+
+    </div>
+</div>
+
+                        <div class="md:h-6 lg:h-12"></div>
+
+                        <div class="px-6 flex md:gap-24 md:flex-row flex-col justify-between">
+<p class="mb-6 text-sm">
+            <a class="font-normal text-ship-grey" href="https://securitydocs.cisco.com/docs/scc/whatsnew/161231.dita">New Features in 2026</a>
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>            <a class="font-normal text-ship-grey" href="https://securitydocs.cisco.com/docs/scc/whatsnew/161233.dita">AI Defense</a>
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>            <a class="font-normal text-ship-grey" href="161237.dita">2026.1.1 Release, January 6, 2026</a>
+</p>
+                            <p class="text-xs m-0 min-w-max md:mb-0 mb-5">Last
+                                updated:  Mar 30, 2026</p>
+                        </div>
+
+                        <div class="px-6 grow" id="igx-dita-content">
+                            
+                        </div>
+
+
+<div class="grid grid-cols-2 bg-white-smoke">
+    <a class="py-4 pl-16 pr-4 "
+       href="https://securitydocs.cisco.com/docs/scc/whatsnew/161233.dita">
+        <span class="relative mb-1 block text-sm">
+            <span class="absolute -left-8 -top-1">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-left"></use>
+    </svg>
+</i>
+            </span>
+            Previous topic
+        </span>
+        <span class="text-xs font-semibold text-baltic-sea">
+            AI Defense
+        </span>
+    </a>
+
+    <a class="py-4 pl-4 pr-16 text-right "
+       href="https://securitydocs.cisco.com/docs/scc/whatsnew/161236.dita">
+        <span class="relative mb-1 block text-sm">
+            Next topic
+            <span class="absolute -right-8 -top-1">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-right"></use>
+    </svg>
+</i>
+            </span>
+        </span>
+        <span class="text-xs font-semibold text-baltic-sea">
+            AI Defense Adopts New AI Threat Taxonomy
+        </span>
+    </a>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    </main>
+
+
+
+
+<footer class="px-4 py-5 text-xs">
+    <div class="lg:container lg:mx-auto">
+        <div class="flex">
+            &copy; 2026 Cisco System, Inc.
+            <div class="ml-auto flex gap-4">
+
+<a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank" title="Privacy policy">Privacy policy</a><a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank" title="Terms of Service">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</div>
+
+
+
+    <script>
+        function expandToc() {
+                lockTocHeight();
+
+            const buttons = [...document.querySelectorAll("button[data-selection-within]")];
+            buttons.forEach(b => b.click());
+
+                scrollSelectedTocLinkToTop();
+        }
+
+        function lockTocHeight() {
+            const tocColumn = document.getElementById("toc-scrollable");
+            const contentColumn = document.getElementById("content-column");
+
+            const contentHeight = contentColumn.clientHeight;
+
+            tocColumn.style.height = `${contentHeight}px`;
+        }
+
+        function scrollSelectedTocLinkToTop() {
+            const tocColumn = document.getElementById("toc-scrollable");
+            const selected = tocColumn.querySelector("[data-selected='true']");
+            selected.scrollIntoView({behavior: "smooth", block: "start", container: "nearest"});
+        }
+
+        const ditaDiv = document.getElementById("igx-dita-content");
+        ditaDiv.attachShadow({mode: "open"});
+
+        const style = document.createElement("style");
+        style.innerHTML = `@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700;100..700&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+
+/*!
+ * This file is part of the DITA Open Toolkit project.
+ *
+ * Copyright 2004, 2005 IBM Corporation
+ *
+ * See the accompanying LICENSE file for applicable license.
+ */
+ 
+.codeblock {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    overflow-x: auto;
+    white-space: pre;
+    margin-top: .5em;
+    margin-bottom: .5em;    
+    padding-top: .25em;
+    padding-bottom: .25em;
+    background-color: rgb(246, 248, 250);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%; /* Default to prevent overflow if no other max-width applies */    
+}
+
+.codeph {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+code {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+.kwd {
+    font-weight: bold;
+}
+
+.parmname {
+    font-weight: bold;
+}
+
+.var {
+    font-style: italic;
+}
+
+.filepath {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+div.tasklabel {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.wintitle {
+    font-weight: bold;
+}
+
+.numcharref {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.parameterentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.textentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlatt {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlelement {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlnsname {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlpi {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.frame-top {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
+.frame-bottom {
+    border-top: 0;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-topbot {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-all {
+    border: solid 1px;
+}
+
+.frame-sides {
+    border-top: 0;
+    border-left: solid 1px;
+    border-right: solid 1px;
+    border-bottom: 0;
+}
+
+.frame-none {
+    border: 0;
+}
+
+.scale-50 {
+    font-size: 50%;
+}
+
+.scale-60 {
+    font-size: 60%;
+}
+
+.scale-70 {
+    font-size: 70%;
+}
+
+.scale-80 {
+    font-size: 80%;
+}
+
+.scale-90 {
+    font-size: 90%;
+}
+
+.scale-100 {
+    font-size: 100%;
+}
+
+.scale-110 {
+    font-size: 110%;
+}
+
+.scale-120 {
+    font-size: 120%;
+}
+
+.scale-140 {
+    font-size: 140%;
+}
+
+.scale-160 {
+    font-size: 160%;
+}
+
+.scale-180 {
+    font-size: 180%;
+}
+
+.scale-200 {
+    font-size: 200%;
+}
+
+.expanse-page,
+.expanse-spread {
+    width: 100%;
+}
+
+.fig {
+    /* Default of italics to set apart figure captions */
+    /* Use @frame to create frames on figures */
+}
+
+.figcap {
+    font-style: italic;
+}
+
+.figdesc {
+    font-style: normal;
+}
+
+.figborder {
+    border-color: Silver;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figsides {
+    border-color: Silver;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figtop {
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+.figbottom {
+    border-bottom: 2px solid;
+    border-color: Silver;
+}
+
+.figtopbot {
+    border-bottom: 2px solid;
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+/* Align images based on @align on topic/image */
+div.imageleft {
+    text-align: left;
+}
+
+div.imagecenter {
+    text-align: center;
+}
+
+div.imageright {
+    text-align: right;
+}
+
+div.imagejustify {
+    text-align: justify;
+}
+
+/* Set heading sizes, getting smaller for deeper nesting */
+/*.topictitle1 {*/
+/*    font-size: 1.34em;*/
+/*    margin-bottom: 0.1em;*/
+/*    margin-top: 0;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.17em;
+    margin-bottom: 0.45em;
+    margin-top: 1pc;
+}
+
+.topictitle3 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-bottom: 0.17em;
+    margin-top: 1pc;
+}
+
+.topictitle4 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-top: 0.83em;
+}
+
+.topictitle5 {
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+.topictitle6 {
+    font-size: 1.17em;
+    font-style: italic;
+}
+
+.sectiontitle {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 1em;
+}
+
+.section {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.example {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+/* Most link groups are created with <div>. Ensure they have space before and after. */
+.ullinks {
+    list-style-type: none;
+}
+
+.ulchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.olchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.sublinklist {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.relconcepts strong {
+    line-height: 2em;
+}
+
+.relconcepts {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.reltasks strong {
+    line-height: 2em;
+}
+
+.reltasks {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relref strong {
+    line-height: 2em;
+}
+
+.relref {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relinfo {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.breadcrumb {
+    font-size: smaller;
+    margin-bottom: 1em;
+}
+
+/* Simple lists do not get a bullet */
+ul.simple {
+    list-style-type: none;
+}
+
+/* Default of bold for definition list terms */
+.dlterm {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+/* Use CSS to expand lists with @compact="no" */
+.dltermexpand {
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+*[compact="yes"] > li {
+    margin-top: 0;
+}
+
+*[compact="no"] > li {
+    margin-top: 0.53em;
+}
+
+.liexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.sliexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.dlexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.ddexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.stepexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.substepexpand {
+    margin-bottom: .25em;
+    margin-top: .25em;
+}
+
+dt.prereq {
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    margin-left: 20px;
+}
+
+/* All note formats have the same default presentation */
+.note {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.note .notetitle,
+.note .notelisttitle,
+.note .note__title {
+    font-weight: bold;
+}
+
+/* Various basic phrase styles */
+.bold {
+    font-weight: bold;
+}
+
+.bolditalic {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.uicontrol {
+    font-weight: bold;
+}
+
+.defkwd {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.shortcut {
+    text-decoration: underline;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table .desc {
+    display: block;
+    font-style: italic;
+}
+
+.cellrowborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.row-nocellborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-top: 0;
+}
+
+.cell-norowborder {
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.nocellnorowborder {
+    border: 0;
+}
+
+.firstcol {
+    font-weight: bold;
+}
+
+.table--pgwide-1 {
+    width: 100%;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-justify {
+    text-align: justify;
+}
+
+.align-char {
+    text-align: char;
+}
+
+.valign-top {
+    vertical-align: top;
+}
+
+.valign-bottom {
+    vertical-align: bottom;
+}
+
+.valign-middle {
+    vertical-align: middle;
+}
+
+.colsep-0 {
+    border-right: 0;
+}
+
+.colsep-1 {
+    border-right: 1px solid;
+}
+
+.rowsep-0 {
+    border-bottom: 0;
+}
+
+.rowsep-1 {
+    border-bottom: 1px solid;
+}
+
+.stentry {
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.stentry:last-child {
+    border-right: 0;
+}
+
+.strow:last-child .stentry {
+    border-bottom: 0;
+}
+
+/* Add space for top level topics */
+.nested0 {
+    margin-top: 1em;
+}
+
+/* div with class=p is used for paragraphs that contain blocks, to keep the XHTML valid */
+.p {
+    margin-top: 1em;
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 0.5em;
+}
+
+main {
+    display: block;
+    padding-bottom: 0.5em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+main > article {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.book-heading {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #666666;
+    font-size: 1.6em;
+    line-height: 1.6em;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    margin-right: .25em;
+    margin-top: .55em;
+}
+
+/*h1.topictitle1 {*/
+/*    padding-bottom: 0em;*/
+/*    border-bottom: solid 1pt #c6c7ca;*/
+/*}*/
+
+p,
+.p,
+td,
+th {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+td,
+th {
+    padding: 5px;
+    border: 1px solid #c6c7ca;
+}
+
+td p:first-child,
+td .p:first-child,
+th p:first-child,
+th .p:first-child {
+    margin-top: 0px;
+}
+
+td p:last-child,
+td .p:last-child,
+th p:last-child,
+th .p:last-child {
+    margin-bottom: 0px;
+}
+
+td.nocellnorowborder,
+th.nocellnorowborder {
+    border: solid 1px #c6c7ca;
+}
+
+table {
+    margin-top: 0.5em;
+    margin-bottom: calc(0.5em * 2);
+    border-color: #808080;
+    width: 90%;
+}
+
+td {
+    vertical-align: top;
+}
+
+th {
+    font-weight: bold;
+    text-align: left;
+}
+
+.stentry {
+    border: solid 1px #c6c7ca !important;
+}
+
+.olh_note td{
+    border: 0px solid #c6c7ca;
+}
+
+table.stepTable {
+    margin-bottom: 0em;
+}
+
+table.stepTable td {
+    border: 0px solid #c6c7ca;
+}
+table.stepTable td:first-child {
+    width: 5%;
+}
+
+.footnote {
+    vertical-align: top;
+}
+
+.table__footnotes {
+    font-size: .8em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.2em;
+}
+
+.steps:not(.notable) > thead > tr > th,
+.steps:not(.notable) > thead > tr > td,
+.steps:not(.notable) > tbody > tr > th,
+.steps:not(.notable) > tbody > tr > td {
+    border: solid 1px #c6c7ca;
+}
+
+.steps.notable:not(.summary_steps) {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.steps td:first-of-type {
+    width: 4em;
+    white-space: nowrap;
+}
+
+.steps th,
+.steps td {
+    text-align: left;
+    vertical-align: top;
+    padding: 3px;
+}
+
+.steps.summary_steps {
+    padding-left: 40px;
+    list-style-type: none;
+    counter-reset: summary-steps-counter;
+}
+
+.steps.summary_steps .choices {
+    padding-left: calc(40px * 2);
+}
+
+.steps.summary_steps > li:before {
+    content: counter(summary-steps-counter) ".";
+    counter-increment: summary-steps-counter;
+    float: left;
+    clear: both;
+    margin-right: 5px;
+    width: 2em;
+    font-weight: bold;
+}
+
+.choption {
+    font-weight: normal;
+}
+
+sup {
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0.55em;
+}
+
+.tabletitle {
+    font-weight: bold;
+}
+
+.cmdname {
+    font-weight: bold;
+}
+
+caption {
+    text-align: left;
+    padding-bottom: 0.5em;
+    font-weight: bold;
+}
+
+pre {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    margin-bottom: 0em;
+    margin-top: 0em;
+    line-height: 1.2em;
+}
+
+pre.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.codeblock .b {
+    background-color: yellow;
+}
+
+figure {
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+}
+
+figcaption,
+.figcap {
+    font-style: normal;
+    font-weight: bold;
+    padding-bottom: 0.5em;
+}
+
+.faq_minitoc {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 0.5em;
+}
+
+.ullinks {
+    list-style-type: disc;
+    padding-left: 30px;
+    margin-left: 0px;
+}
+
+.ulchildlink,
+.olchildlink {
+    margin-top: 0.5em;
+    margin-bottom: 0em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild,
+.sublinklist {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+/*.topictitle1 {*/
+/*    font-size: 1.5em;*/
+/*    color: #336666;*/
+/*    font-weight: bold;*/
+/*    margin-top: 1em;*/
+/*    margin-bottom: 0.5em;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.4em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle3 {
+    font-size: 1.2em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle4 {
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.sectiontitle {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: #373C42;
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.sectiontitle--inline {
+    padding-right: 0.5em;
+}
+
+.section_rel_title {
+    margin-top: 1em;
+    margin-bottom: -1em;
+    color: black;
+    font-weight: bold;
+}
+
+.section_synblk_title {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: black;
+    font-weight: bold;
+}
+
+.synblk *,
+.synph * {
+    font-family: inherit;
+}
+
+.synblk .importance--default,
+.synph .importance--default {
+    text-decoration: underline;
+}
+
+.table td,
+.table th {
+    border-left: solid 1px #c6c7ca;
+    border-right: solid 1px #c6c7ca;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+    text-align: left;
+}
+
+table.note {
+    width: auto;
+    max-width: 90%;
+}
+
+.note--table.note td {
+    vertical-align: middle;
+}
+
+.note--table.note td[role=heading] {
+    font-weight: bold;
+}
+
+.note--table.note--note td[role=heading] div {
+    background-image: url("../template_images/note.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--caution td[role=heading] div {
+    background-image: url("../template_images/caut.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--tip td[role=heading] div {
+    background-image: url("../template_images/tip.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--fastpath td[role=heading] div {
+    background-image: url("../template_images/timesave.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 31px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--warning td[role=heading] div {
+    background-image: url("../template_images/warn.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note .note__content {
+    padding: 0.5em 0px 0.5em 0px;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.note--compact {
+    margin: 0px;
+}
+
+.note--compact td {
+    padding: 0.5em 0px 0.5em 0px;
+    border-style: none;
+}
+
+.note--compact td[role=heading] {
+    font-weight: bold;
+    width: 1em;
+    padding: 0.5em 1em 0px 0px;
+}
+
+.note--compact td[role=heading] div {
+    background-image: none;
+}
+
+.heading {
+    font-size: 1.25em;
+    color: #373C42;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.userinput {
+    font-weight: bold;
+}
+
+.related_commands td,
+.related_commands th {
+    border: solid 1px #c6c7ca;
+}
+
+/*h1.topictitle1 {*/
+/*    color: #373C42;*/
+/*    font-weight: normal;*/
+/*    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;*/
+/*    border-bottom-style: none;*/
+/*}*/
+
+h2.topictitle2 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h3.topictitle3 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h4.topictitle4 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+a {
+    color: #326CD1;
+}
+
+p.p {
+    margin-bottom: .5em;
+    color: #000000;
+}
+
+ul {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+ol {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+li p.p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.steps td:first-child {
+    padding-right: 1em;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .summary_steps {
+        display: none;
+    }
+
+    .steps {
+        border-top: solid 1px #c6c7ca;
+        border-bottom: solid 1px #c6c7ca;
+    }
+
+    .steps thead {
+        display: none;
+    }
+
+    .steps > tbody > tr > td,
+    .steps > tbody > tr > th {
+        border-style: none !important;
+    }
+
+    .step--command,
+    .step--purpose {
+        display: table-row;
+    }
+}
+
+figure img.scale {
+    cursor: zoom-in;
+    max-width: 100%;
+}
+
+figure img.scale.expanded {
+    max-width: 98% !important;
+    max-height: 98% !important;
+    z-index: 1001;
+    position: absolute;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: zoom-out;
+}
+
+#scale-background {
+    z-index: 1000;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.5;
+    cursor: zoom-out;
+}
+
+#scale-background.hidden {
+    display: none;
+}
+
+nav[role=toc] {
+    font-size: inherit;
+}
+
+nav[role=toc] > div {
+    left: 0;
+    padding-right: 0;
+}
+
+nav[role=toc] ul {
+    margin-left: 0px;
+    padding-left: 0;
+    margin-top: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    overflow-y: auto;
+    height: calc(100% - 26px);
+}
+
+nav[role=toc] li {
+    display: block;
+    margin-left: 2px;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    display: block;
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: -20px;
+    margin-bottom: 0;
+    padding-top: 3px;
+    padding-right: 0;
+    padding-left: 20px;
+    padding-bottom: 3px;
+}
+
+nav[role=toc] li > a:hover,
+nav[role=toc] li > a:focus,
+nav[role=toc] li > span.title:hover,
+nav[role=toc] li > span.title:focus {
+    text-decoration: none;
+}
+
+nav[role=toc] li.active > a {
+    background-color: #d3dfea;
+    color: black;
+    text-shadow: 0 -1px 0 transparent;
+}
+
+nav[role=toc] li.expanded > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-down.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-right.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > ul {
+    display: none;
+}
+
+nav[role=toc] #toc-controls {
+    background-color: #373c42;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 24px;
+    padding: 5px;
+    display: flex;
+    justify-content: flex-end;
+    background-image: url("../template_images/Cisco Secure - linear - 1C White.png");
+    background: url("../template_images/Cisco Secure - linear - 1C White.png"), linear-gradient(90deg, #373c42, #0f1214);
+    /* it will use gradient if supported */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+nav[role=toc] .icon {
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+nav[role=toc] .icon svg .st0,
+nav[role=toc] .icon svg .st1 {
+    stroke: grey;
+}
+
+nav[role=toc] .icon:hover svg .st0,
+nav[role=toc] .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+nav[role=toc] {
+    background-color: white;
+    box-shadow: 1px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    flex: 1 1 30%;
+    height: calc(100% - 24px - (2 * 7px) - 0px);
+    min-width: 230px;
+    font-size: 75%;
+}
+
+nav[role=toc] ul {
+    padding-left: 14px;
+}
+
+nav[role=toc] > ul {
+    margin-left: 0;
+    padding-left: 24px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    text-decoration: none;
+    padding-top: 2px;
+    color: #000000;
+}
+
+nav[role=toc] li > a:hover {
+    color: #38669e;
+}
+
+nav[role=toc] li.active > a,
+nav[role=toc] li.active > a:hover {
+    background-color: #d3dfea;
+    color: black;
+}
+
+nav[role=toc] li.active > span.controller {
+    color: #e1eaf4;
+}
+
+#toggle-toc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+    height: 100%;
+    background-color: #FAFAFA;
+    width: 15px;
+    cursor: pointer;
+}
+
+#toggle-toc:hover {
+    background-color: #EEEEEE;
+}
+
+#toggle-toc svg {
+    width: 7px;
+    opacity: 0.3;
+    padding: 2px;
+}
+
+#toggle-toc svg:hover {
+    opacity: 0.5;
+}
+
+nav[role=toc].hidden {
+    display: none;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #toggle-toc {
+        display: none;
+    }
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#search {
+    display: flex;
+    flex-direction: column;
+    opacity: 0.75;
+    height: calc(100% - 24px);
+    flex: 0 0 300px;
+    max-width: 300px;
+    z-index: 1;
+    transition: ease 0.5s;
+}
+
+#search.hidden {
+    flex: 0 0 0px;
+    transition: ease 0.5s;
+}
+
+#search.hidden #close-icon {
+    opacity: 0;
+}
+
+#search-input {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    display: block;
+    transition: ease 0.5s;
+    height: 40px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #search-input.hidden {
+        left: 0;
+    }
+}
+
+#search-input input,
+#search-input input:focus,
+#search-input input:hover {
+    width: calc(300px - 45px);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: 0;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 8px;
+    transition: ease 0.5s;
+}
+
+@media (max-width: 1660px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 200px;
+    }
+}
+
+@media (max-width: 1430px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 110px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 0px;
+        margin: 8px 0px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:focus:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:hover:not(:focus):not(.has-results) + #close-icon {
+        display: none;
+    }
+}
+
+#search-input div.icon {
+    display: inline-block;
+    width: calc(1em + 3px);
+    position: relative;
+    top: 3px;
+}
+
+#search-input div.icon--left {
+    left: 8px;
+    margin-right: 4px;
+}
+
+#search-input div.icon--right {
+    right: 8px;
+    margin-left: 4px;
+}
+
+#search-input div.icon svg {
+    width: 1em;
+    height: 1em;
+}
+
+#search-results {
+    position: relative;
+    top: 40px;
+    height: calc(100% - 40px);
+    background-color: #fafafa;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.search-result {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    animation: fade-in-keyframes 0.5s;
+}
+
+span.highlight {
+    background-color: yellow;
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+nav#breadcrumbs {
+    font-size: 75%;
+    margin-top: 6px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav#breadcrumbs .home svg {
+    height: 1em;
+    width: 1em;
+}
+
+#navigate-back,
+#navigate-forward {
+    width: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+}
+
+#navigate-back.disabled,
+#navigate-forward.disabled {
+    opacity: 0.3;
+}
+
+#navigate-back.disabled .icon:hover,
+#navigate-forward.disabled .icon:hover {
+    cursor: default;
+}
+
+#navigate-back .icon svg,
+#navigate-forward .icon svg {
+    transform: scale(1, 1);
+    width: 15px;
+}
+
+#navigate-back .icon svg .st0,
+#navigate-back .icon svg .st1,
+#navigate-forward .icon svg .st0,
+#navigate-forward .icon svg .st1 {
+    stroke: grey;
+}
+
+#navigate-back .icon:hover,
+#navigate-forward .icon:hover {
+    cursor: pointer;
+}
+
+#navigate-back .icon:hover svg .st0,
+#navigate-back .icon:hover svg .st1,
+#navigate-forward .icon:hover svg .st0,
+#navigate-forward .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+#navigate-forward {
+    margin-right: 20px;
+}
+
+#navigate-back {
+    padding-left: 30px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #navigate-back {
+        padding-left: 10px;
+    }
+
+    #navigate-forward {
+        margin-right: 10px;
+    }
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+
+main[role=main] {
+    flex: 1 1 100%;
+    height: calc(100% - 24px);
+    overflow-y: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-right: -51px;
+}
+
+main[role=main] > article {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fade-in-keyframes 0.5s;
+    border-bottom: none;
+}
+
+footer {
+    font-size: 75%;
+    border-top: solid 1px #ccc;
+    line-height: 24px;
+    height: 24px;
+    clear: both;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding-left: 8px;
+    background-color: #fafafa;
+}
+
+.mobile {
+    display: none;
+}
+
+img {
+    display: inline;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .mobile {
+        display: initial;
+    }
+}
+
+.desktop {
+    display: initial;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .desktop {
+        display: none;
+    }
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+
+    html,
+    body {
+        font-size: initial;
+    }
+
+    main[role=main] {
+        padding-right: 40px;
+    }
+
+    main[role=main] figure img {
+        max-width: 100%;
+    }
+
+    nav[role=toc] {
+        display: none;
+    }
+
+    body {
+        flex-wrap: wrap;
+    }
+
+    main[role=main] {
+        flex: 1 1 calc(100% - 40px - 45px);
+    }
+
+    #search {
+        flex: 0 0 100%;
+        order: -1;
+        max-width: 100%;
+        width: 100%;
+        opacity: 1;
+    }
+
+    #search.hidden {
+        display: block;
+        position: absolute;
+        right: 0px;
+        width: auto;
+        height: auto;
+    }
+
+    #search.hidden #search-input {
+        height: auto;
+    }
+
+    #search.hidden #search-input input {
+        width: 0px;
+        margin: 8px 0px;
+    }
+
+    #search.hidden #search-input input + #close-icon {
+        display: none;
+    }
+
+    #search.hidden #search-results {
+        height: auto;
+        display: none;
+    }
+
+    #search-input {
+        position: initial;
+        height: auto;
+    }
+
+    #search-input input,
+    #search-input input:focus,
+    #search-input input:hover {
+        width: calc(100% - 5em);
+    }
+
+    #search-results {
+        position: initial;
+        height: auto;
+    }
+}
+
+@media only screen and (orientation: portrait) and (max-device-width: 768px) {
+    body {
+        -webkit-text-size-adjust: 100%;
+        font-size: 3em;
+    }
+
+    footer {
+        font-size: x-large;
+        line-height: calc(24px * 2);
+        height: calc(24px * 2);
+    }
+}
+
+main[role=main] a,
+main[role=main] a:hover {
+    text-decoration: none;
+}
+
+nav[role=toc] li a:hover {
+    text-decoration: underline;
+}
+
+.substeps {
+    list-style-type: lower-alpha;
+}
+
+.type-a {
+    list-style-type: lower-alpha;
+}
+
+.type-i {
+    list-style-type: lower-roman;
+}
+
+@media screen and (min-width: 1024px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(45vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1108px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(50vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1192px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(53vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1276px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(55vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1360px) {
+  .codeblock {
+    /*width: calc(77vw - 290px);  */
+    max-width: calc(52vw);
+    /*max-width: 760px;*/
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .codeblock {
+    /*width: calc(75vw - 315px);  */
+    max-width: calc(50vw);
+    /*max-width: 770px;*/
+  }
+}
+
+@media screen and (min-width: 1536px) {
+  .codeblock {
+    /*width: 780px;  */
+    max-width: 760px;
+  }
+}`;
+        const ditaContentDiv = document.createElement("div");
+        ditaContentDiv.innerHTML = `<article id="ai-defense-2026-01-01-release" class="topic concept">
+<h1 class="title topictitle1">2026.1.1 Release, January 6, 2026</h1>
+<div class="body conbody">
+<p class="p">These are the new features and improvements provided in the AI Defense 2026.1.1 release on January 6, 2026.</p>
+</div>
+</article>
+`;
+
+        ditaDiv.shadowRoot.appendChild(style);
+        ditaDiv.shadowRoot.appendChild(ditaContentDiv);
+        
+        expandToc();
+    </script>
+
+<script src="../../../Content/vendor/print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
+        integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

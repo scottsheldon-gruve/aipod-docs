@@ -1,0 +1,3406 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Search</title>
+
+    <base href="">
+    <link rel="canonical" href="doc-portal-search-page">
+
+    <link rel="shortcut icon" type="image/x-icon" href="Content/img/favicon.png"/>
+    <link rel="stylesheet" href="Content/css/output.css?v=1011713472">
+
+    <script src="Content/vendor/htmx.1.9.10.min.js"></script>
+    <script src="Content/js/scripts.js?v=1386221188"></script>
+
+    <script>
+        htmx.config.refreshOnHistoryMiss = true;
+    </script>
+
+    
+    <meta name="robots" content="noindex, nofollow"/>
+
+
+        <link rel="stylesheet" type="text/css" href="IGX%20Dev%20Test%20Assets/css/style-override.css"/>
+</head>
+<body>
+<div class="flex h-full flex-col">
+
+
+
+
+<header class=" bg-gradient-to-r from-ship-grey to-cinder p-4 text-sm">
+    <div class="container-fluid mx-auto">
+        <div class="flex items-center">
+
+            <div class="flex items-center gap-4">
+                <a href="https://www.cisco.com/" target="_blank" title="LogoLink">
+<img alt="Cisco" class="max-h-6" src="Site%20images%20for%20Docs%20portal/Initial%20site%20images/Temp_Cisco-logo.png" />
+</a>
+
+                <a href="index.html" title="Security Help Center">
+<img alt="" class="max-h-6" src="index.html" />
+</a>
+
+            </div>
+
+            <div class="ml-auto flex items-center gap-4">
+
+                    <a class="group relative text-white" href="index.html#" title="Do you need help?">
+
+            <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 18C12.8284 18 13.5 17.3284 13.5 16.5C13.5 15.6716 12.8284 15 12 15C11.1716 15 10.5 15.6716 10.5 16.5C10.5 17.3284 11.1716 18 12 18Z" fill="#F7F7F7"/>
+<path d="M12.7316 6.44706C12.0042 6.30236 11.2502 6.37662 10.5649 6.66045C9.87971 6.94428 9.29404 7.42493 8.88199 8.04161C8.46993 8.6583 8.25 9.38332 8.25 10.125C8.25 10.7463 8.75368 11.25 9.375 11.25C9.99632 11.25 10.5 10.7463 10.5 10.125C10.5 9.82833 10.588 9.53832 10.7528 9.29165C10.9176 9.04497 11.1519 8.85271 11.426 8.73918C11.7001 8.62565 12.0017 8.59595 12.2926 8.65382C12.5836 8.7117 12.8509 8.85456 13.0607 9.06434C13.2704 9.27412 13.4133 9.54139 13.4712 9.83237C13.5291 10.1233 13.4994 10.4249 13.3858 10.699C13.2723 10.9731 13.08 11.2074 12.8334 11.3722C12.5867 11.537 12.2967 11.625 12 11.625C11.3787 11.625 10.875 12.1287 10.875 12.75C10.875 13.3713 11.3787 13.875 12 13.875C12.7417 13.875 13.4667 13.6551 14.0834 13.243C14.7001 12.831 15.1807 12.2453 15.4645 11.5601C15.7484 10.8748 15.8226 10.1208 15.6779 9.39341C15.5333 8.66598 15.1761 7.9978 14.6517 7.47335C14.1272 6.9489 13.459 6.59175 12.7316 6.44706Z" fill="#F7F7F7"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.875 12C1.875 6.40812 6.40812 1.875 12 1.875C17.5919 1.875 22.125 6.40812 22.125 12C22.125 17.5919 17.5919 22.125 12 22.125C6.40812 22.125 1.875 17.5919 1.875 12ZM12 4.125C7.65076 4.125 4.125 7.65076 4.125 12C4.125 16.3492 7.65076 19.875 12 19.875C16.3492 19.875 19.875 16.3492 19.875 12C19.875 7.65076 16.3492 4.125 12 4.125Z" fill="#F7F7F7"/>
+</svg>
+
+            </i>
+
+
+                        <div class="absolute right-0 top-full hidden w-60 pt-1 group-hover:block">
+                            <div class="rounded border border-mercury bg-white p-3 text-xs font-normal text-black">
+                                <p class="zDocsSearchBoxTipTitle css-cinqea">How search works in the Security Help Center:</p>
+<ul>
+<li class="css-cinqea">The most relevant topics (based on weighting and matching to search terms) are listed first in the search results by default</li>
+<li class="css-cinqea">Common Boolean operations are supported</li>
+<li class="css-cinqea">Use double quotes to find a phrase (&ldquo;specific phrase&rdquo;)</li>
+<li class="css-cinqea">Apply facets on the Search Results page to further scope search results by category</li>
+</ul>
+                            </div>
+                        </div>
+
+                    </a>
+                    <span class="inline-block h-5 w-px bg-white"></span>
+
+                <div class="flex items-center ml-auto gap-4">
+                        <a class="text-white" href="index.html#" data-collapse="user-dropdown">Login</a>
+                        <div
+                            class="hidden absolute border-1 top-10 mt-4 mb-5 ml-5 mr-0 right-0 min-w-72 pt-4 pl-4 pr-3 group z-30"
+                            data-parent="user-dropdown">
+                            <div class="top-[-1px] right-5 absolute text-apple text-xl">
+
+
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-solid"></use>
+    </svg>
+</i>
+
+                            </div>
+                            <div class="card pt-3 pr-4 pl-4 rounded-md border-apple border-4 shadow-2xl "
+                                 data-dropdown="user-dropdown">
+                                <p class="mb-5 [overflow-wrap:anywhere]"><strong>Log In to the Cisco Security
+                                        Documentation Portal</strong></p>
+                                <form action="https://securitydocs.cisco.com/saml/SingleSignOn" id="login-form" name="Login"
+                                      method="post">
+                                    <div class="flex flex-row mb-6 justify-between align-middle items-center">
+                                        <label for="account" class="text-jet-grey w-1/3">I am a Cisco...</label>
+                                        <select name="account" id="account"
+                                                class="bg-white focus:ring-cornflower ring-2 w-2/3 text-ship-grey text-lg">
+                                            <option value="customer">Customer</option>
+                                            <option value="employee">Employee</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-row justify-end gap-2 mb-2">
+
+                                        <button type="button"
+                                                class="button w-full sm:w-auto border-0 hover:bg-white hover:text-ship-grey transition-all"
+                                                data-cancel=user-dropdown-cancel>
+                                            Cancel
+
+                                        </button>
+
+
+                                        <button type="button" id="login-form-submit"
+                                                class="button w-full sm:w-auto bg-primary border-primary text-white hover:bg-white hover:text-primary transition-all">
+                                            Proceed to SSO Login
+
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+    <main class="flex flex-1 flex-col">
+
+
+
+
+<section
+    class="relative px-4 py-10 text-white lg:container lg:mx-auto lg:mt-6 transition-all">
+    <div class="absolute inset-0 bg-right-bottom bg-cover overflow-hidden lg:rounded-xl"
+         style="background-image: url('Content/img/blue_background.jpg')">
+    </div>
+    <div class="relative z-10 lg:container lg:mx-auto">
+
+            <p class="mb-10 flex text-sm">
+                <a class="font-semibold text-mercury" href="index.html" title="Security Help Center"><span class='mr-1'><i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-left"></use>
+    </svg>
+</i></span>Security Help Center</a>
+            </p>
+
+        <h1 class="text-center">Search</h1>
+
+        <form class="relative mb-4 max-w-4xl mx-auto"
+              method="get"
+              action="doc-portal-search-page"
+              onsubmit="htmx.trigger('#search-input', 'htmx:abort')">
+            <label class="block">
+                <span class="sr-only">Search</span>
+                <input class="bg-white border-regent-grey px-14 py-4 rounded-lg text-regent-grey focus:text-black"
+                       type="text"
+                       name="term"
+                       value=""
+                       autocomplete="false"
+                       id="search-input"
+                       hx-trigger="keyup changed delay:300ms"
+                       hx-target="#search-suggestions"
+                       hx-swap="outerHTML"
+                       hx-get="/api/hypermedia/search/suggestions"
+                       onchange="searchSuggest()"
+                       onkeyup="searchSuggest()"
+                       placeholder="Search Cisco Security documentation..."/>
+            </label>
+            <button
+                class="absolute left-1 top-1.5 flex h-11 w-11 items-center justify-center rounded-full text-lg text-regent-grey"
+                type="submit"
+                aria-label="Submit search">
+
+            <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.8747 4.125C7.1468 4.125 4.12473 7.14708 4.12473 10.875C4.12473 14.6029 7.1468 17.625 10.8747 17.625C14.6026 17.625 17.6247 14.6029 17.6247 10.875C17.6247 7.14708 14.6026 4.125 10.8747 4.125ZM1.87473 10.875C1.87473 5.90444 5.90416 1.875 10.8747 1.875C15.8453 1.875 19.8747 5.90444 19.8747 10.875C19.8747 15.8456 15.8453 19.875 10.8747 19.875C5.90416 19.875 1.87473 15.8456 1.87473 10.875Z" fill="#7E868F"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.6474 15.6483C16.0867 15.209 16.799 15.209 17.2384 15.6483L21.7947 20.2046C22.234 20.6439 22.234 21.3562 21.7947 21.7956C21.3553 22.2349 20.643 22.2349 20.2037 21.7956L15.6474 17.2393C15.208 16.7999 15.208 16.0876 15.6474 15.6483Z" fill="#7E868F"/>
+</svg>
+
+            </i>
+
+            </button>
+            <button
+                class="invisible absolute right-1 top-1.5 flex h-11 w-11 items-center justify-center rounded-full text-xl leading-none"
+                type="button"
+                id="search-input-clear"
+                onclick="clearInputAndAbortSuggestions()"
+                aria-label="Close suggestions">
+
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-xmark-circle"></use>
+    </svg>
+</i>
+
+            </button>
+
+        <div class="hidden absolute left-0 top-full w-full"
+             id="search-suggestions">
+            <ul class="ml-0 list-none rounded-lg border-2 border-regent-grey bg-white py-2">
+
+
+            </ul>
+        </div>
+
+
+        </form>
+    </div>
+</section>
+        
+
+<section class="px-4 py-10"
+         id="search"
+         hx-get="/doc-portal-search-page"
+         hx-trigger="igx:search-update"
+         hx-swap="outerHTML"
+         hx-target="this"
+         hx-push-url="true"
+         hx-on:htmx:config-request="configureSearchRequest(event, '')"
+         hx-sync="this:replace">
+    <div class="lg:container lg:mx-auto">
+
+        <div data-tab-set>
+
+            <div class="flex gap-6 mb-5">
+
+                    <button class="flex gap-2 py-2 items-center border-b-2 text-sm border-apple" type="button"
+                            data-tab-button="internal-content" aria-selected="true">
+                        <span>Cisco Security Help Results</span>
+                        <span
+                            class="bg-mercury rounded-full px-2 py-0.5 text-xs">24782</span>
+                    </button>
+
+                    <button class="flex gap-2 py-2 items-center border-b-2 text-sm border-transparent opacity-60"
+                            type="button" data-tab-button="external-content" aria-selected="false">
+                        <span>Additional Related Results</span>
+                        <span
+                            class="bg-mercury rounded-full px-2 py-0.5 text-xs">242</span>
+                    </button>
+            </div>
+
+            <div data-tab-content="internal-content">
+                <div class="gap-4 md:grid md:grid-cols-[300px_auto]">
+
+
+
+<form class="relative mb-4"
+      id="search-filters">
+    <button
+        class="flex w-full justify-between rounded-md border-2 border-mercury bg-white px-5 py-3 font-bold text-primary md:hidden"
+        onclick="this.nextElementSibling.classList.toggle('hidden')"
+        type="button">
+        Filters
+        <span>
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-plus"></use>
+    </svg>
+</i>
+        </span>
+    </button>
+    <ul class="border-1 absolute m-0 hidden w-full list-none overflow-hidden rounded-md border-mercury shadow-md md:static md:block md:rounded-none md:border-0 md:shadow-none">
+
+            <li class="relative mb-0 border-b-2 border-white-smoke bg-white">
+                <span class="block py-4 pl-6 pr-14 font-bold">
+                    Software
+                </span>
+                <button
+                    class="absolute right-2 top-2 rounded-full p-2 text-lg leading-none "
+                    type="button"
+                    title="Toggle Software category list"
+                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+                <ul class="m-0 list-none pb-1 pl-6 hidden">
+
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="492"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                AI Defense
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="49"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Amazon Web Services VPC
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="493"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Hypershield
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="50"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                IOS
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="52"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Meraki
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="39"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Multicloud Defense
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="494"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Access
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="44"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall ASA
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="48"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall FXOS
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="46"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Migration Tool
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="47"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Threat Defense
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="495"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Workload
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="806"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Umbrella
+                            </label>
+
+                        </li>
+                </ul>
+            </li>
+            <li class="relative mb-0 border-b-2 border-white-smoke bg-white">
+                <span class="block py-4 pl-6 pr-14 font-bold">
+                    Device
+                </span>
+                <button
+                    class="absolute right-2 top-2 rounded-full p-2 text-lg leading-none "
+                    type="button"
+                    title="Toggle Device category list"
+                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+                <ul class="m-0 list-none pb-1 pl-6 hidden">
+
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="57"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Firepower 1010
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="58"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Firepower 1100
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Firepower 1100 category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="139"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 1120
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="140"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 1140
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="141"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 1150
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="59"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Firepower 2100
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Firepower 2100 category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="142"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 2110 
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="143"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 2120 
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="144"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 2130 
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="145"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 2140 
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="60"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Firepower 4100
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Firepower 4100 category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="146"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 4112 
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="147"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 4115 
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="148"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 4125 
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="149"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower 4145 
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="61"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Firepower 9300
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="54"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Firepower Management Center Chassis
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Firepower Management Center Chassis category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="150"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower Management Center 1600
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="151"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower Management Center 2600
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="152"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Firepower Management Center 4600
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="62"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                ISA 3000
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="483"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall 200
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall 200 category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="484"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 220
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="485"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 240
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="486"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 260
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="63"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall 3100
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall 3100 category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="153"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 3105
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="154"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 3110
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="155"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 3120
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="156"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 3130
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="157"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 3140
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="64"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall 4200
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall 4200 category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="158"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 4215
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="159"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 4225
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="160"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 4245
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="487"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall 6100
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall 6100 category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="488"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 6120
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="489"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 6130
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="490"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 6160
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="491"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall 6170
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="65"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall ASA Virtual
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall ASA Virtual category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="161"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Alibaba
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="162"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    AWS
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="163"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Azure
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="164"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    GCP
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="166"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Hyper-V
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="165"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    HyperFlex
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="167"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    KVM
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="168"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Nutanix
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="169"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    OCI
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="170"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    OpenStack
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="171"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Rackspace
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="172"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    VMware
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="55"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Management Center Chassis
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall Management Center Chassis category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="206"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall Management Center 1700
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="207"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall Management Center 2700
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="208"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Secure Firewall Management Center 4700
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="56"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Management Center Virtual
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall Management Center Virtual category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="194"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Alibaba
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="196"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    AWS
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="195"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Azure
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="192"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    GCP
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="191"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    HyperFlex
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="186"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    KVM
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="188"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Nutanix
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="185"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    OCI
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="190"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    OpenStack
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="187"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    VMware
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="66"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Threat Defense Virtual
+                            </label>
+
+                                <button
+                                    class="absolute right-2 top-0 rounded-full p-2 text-lg leading-none "
+                                    type="button"
+                                    title="Toggle Secure Firewall Threat Defense Virtual category list"
+                                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                </button>
+                                <ul class="m-0 mb-4 ml-7 list-none hidden">
+                                    <li class="mb-1 p-0 text-xs">
+                                        <strong>Model</strong>
+                                    </li>
+
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="184"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Alibaba
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="182"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    AWS
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="181"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Azure
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="183"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    GCP
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="177"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    HyperFlex
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="176"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    KVM
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="179"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    Nutanix
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="178"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    OCI
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="180"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    OpenStack
+                                                </span>
+                                            </label>
+                                        </li>
+                                        <li class="mb-1 p-0 text-xs">
+                                            <label class="flex items-start py-0.5">
+                                                <input class="mr-2 mt-0.5"
+                                                       type="checkbox"
+                                                       name="cat"
+                                                       value="173"
+                                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                                       >
+                                                <span class="label-text">
+                                                    VMware
+                                                </span>
+                                            </label>
+                                        </li>
+                                </ul>
+                        </li>
+                </ul>
+            </li>
+            <li class="relative mb-0 border-b-2 border-white-smoke bg-white">
+                <span class="block py-4 pl-6 pr-14 font-bold">
+                    Manager
+                </span>
+                <button
+                    class="absolute right-2 top-2 rounded-full p-2 text-lg leading-none "
+                    type="button"
+                    title="Toggle Manager category list"
+                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+                <ul class="m-0 list-none pb-1 pl-6 hidden">
+
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="40"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Cloud-delivered Firewall Management Center
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="38"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Firewall in Security Cloud Control
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="41"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall ASDM
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="42"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Chassis Manager
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="43"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Device Manager
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="45"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Secure Firewall Management Center
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="481"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Security Cloud Control
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="482"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Security Cloud Control for Government
+                            </label>
+
+                        </li>
+                </ul>
+            </li>
+            <li class="relative mb-0 border-b-2 border-white-smoke bg-white">
+                <span class="block py-4 pl-6 pr-14 font-bold">
+                    Activity
+                </span>
+                <button
+                    class="absolute right-2 top-2 rounded-full p-2 text-lg leading-none "
+                    type="button"
+                    title="Toggle Activity category list"
+                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+                <ul class="m-0 list-none pb-1 pl-6 hidden">
+
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="68"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Alert
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="69"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Analyze
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="70"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Audit
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="71"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Back Up
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="72"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Cloud Deployment
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="73"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Cluster Deployment
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="74"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Configure
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="75"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Get Started
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="76"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                High Availability Deployment
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="77"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Hybrid Deployment
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="78"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Install
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="79"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Integrate
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="80"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                License
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="81"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Log
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="82"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Maintain
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="83"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Manage
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="84"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Migrate
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="85"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Monitor
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="86"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Multi-Instance Deployment
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="88"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                On-Premises Deployment
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="87"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Onboard
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="89"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Physical Deployment
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="90"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Plan
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="91"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Program
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="92"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Quarantine
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="508"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Reimage
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="93"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Report
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="94"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Restore
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="95"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Search
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="96"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Troubleshoot
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="97"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Upgrade
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="98"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Virtual Deployment
+                            </label>
+
+                        </li>
+                </ul>
+            </li>
+            <li class="relative mb-0 border-b-2 border-white-smoke bg-white">
+                <span class="block py-4 pl-6 pr-14 font-bold">
+                    Information Type
+                </span>
+                <button
+                    class="absolute right-2 top-2 rounded-full p-2 text-lg leading-none "
+                    type="button"
+                    title="Toggle Information Type category list"
+                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+                <ul class="m-0 list-none pb-1 pl-6 hidden">
+
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="100"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Administration
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="101"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Command Reference
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="102"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Compatibility
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="103"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Configuration
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="104"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Configuration Example
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="105"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Design
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="106"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Error and System Messages
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="107"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                FAQ
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="108"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Getting Started
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="109"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Hardening
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="110"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Installation
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="111"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Integration
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="112"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Licensing
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="113"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                MIBs
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="114"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Migration
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="115"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Programming
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="116"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Regulatory Compliance and Safety Information
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="509"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Reimage
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="117"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Release Notes
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="118"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Roadmap
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="119"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Security Advisory
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="120"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Technical Reference
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="121"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Troubleshooting
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="122"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Upgrade
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="123"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Use Case
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="124"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                User Guide
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="510"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                Video
+                            </label>
+
+                        </li>
+                </ul>
+            </li>
+            <li class="relative mb-0 border-b-2 border-white-smoke bg-white">
+                <span class="block py-4 pl-6 pr-14 font-bold">
+                    Version
+                </span>
+                <button
+                    class="absolute right-2 top-2 rounded-full p-2 text-lg leading-none "
+                    type="button"
+                    title="Toggle Version category list"
+                    onclick="toggleChildCategoryList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+                <ul class="m-0 list-none pb-1 pl-6 hidden">
+
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="505"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                10.0
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="261"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                2.12
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="262"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                2.13
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="263"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                2.14
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="264"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                2.16
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="496"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                2.17
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="503"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                3.10
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="609"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                3.10.1.2
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="610"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                3.10.1.5
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="499"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                3.6
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="500"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                3.7
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="501"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                3.8
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="502"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                3.9
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="265"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                4.0
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="258"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.18
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="259"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.19
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="266"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.2
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="260"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.20
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="270"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.22
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="497"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.23
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="267"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.3
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="268"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.4
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="269"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.6
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="504"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                7.7
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="271"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                9.18
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="272"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                9.19
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="273"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                9.20
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="274"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                9.22
+                            </label>
+
+                        </li>
+                        <li class="relative mb-2 pr-14 text-sm">
+                            <label class="flex items-start py-2">
+                                <input class="mr-3 mt-1"
+                                       type="checkbox"
+                                       name="cat"
+                                       value="498"
+                                       onclick="eventDispatch(this.form, 'igx:search-update')"
+                                       >
+                                9.23
+                            </label>
+
+                        </li>
+                </ul>
+            </li>
+    </ul>
+</form>
+
+                    <div id="search-results">
+
+
+
+<form class="flex items-center"
+      id="search-tags">
+
+    <div class="flex-grow">
+            <p id="search-count-internal-results">
+                <strong>Results</strong> 1-10 out of 24782
+            </p>
+        <div class="flex items-end hidden">
+            <div class="flex items-end mb-4">
+                <div class="flex flex-wrap gap-2">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="ml-auto mt-auto min-w-max">
+        <label class="block mb-4">
+            <span class="sr-only">Select sorting option</span>
+            <select name="sort"
+                    onchange="eventDispatch(this.form, 'igx:search-update')">
+                    <option value="Relevance"
+                            selected>
+                        Sort by: Relevance
+                    </option>
+                    <option value="Publish Date"
+                            >
+                        Sort by: Publish Date
+                    </option>
+            </select>
+        </label>
+    </div>
+</form>
+
+
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/scc-fw/ftd/manage/52468.dita" target="_blank">Managing Cisco Secure Firewall Threat Defense with Cloud-Delivered Firewall Management Center</a>
+        </p>
+
+            <p class="line-clamp-2">
+                The Cloud-Delivered Firewall Management Center is a software-as-a-service (SaaS) product that manages Secure Firewall Threat Defense devices and is delivered via Security Cloud Control. The Cloud-Delivered Firewall Management Center offers many of the same functions as an on-premises Secure Firewall Management Center.The Cloud-Delivered Firewall Management Center has the same appearance and behavior as an on-premises Secure Firewall Management Center and uses the same FMC API. As a SaaS product, the Security Cloud Control operations team is responsible for deploying and maintaining Cloud-Delivered Firewall Management Center software. As new features are introduced, the Security Cloud Control operations team updates your Security Cloud Control tenant's Cloud-Delivered Firewall Management Center for you.A migration wizard is available to help you migrate your Secure Firewall Threat Defense devices from your on-premises Secure Firewall Management Center to the Cloud-Delivered Firewall Management Center. The devices must have Threat Defense software Version 7.0.3 or a later 7.0.x release, or Version 7.2 or later installed to be migrated. Threat Defense 7.1 releases are not supported.Onboarding Secure Firewall Threat Defense devices is carried out in Security Cloud Control using familiar processes such as onboarding a device with its serial number or using a CLI command that includes a registration key. Once the device is onboarded, it is visible both in Security Cloud Control and in the Cloud-Delivered Firewall Management Center, however, you configure the device in the Cloud-Delivered Firewall Management Center. In Security Cloud Control, you can view device-specific information such as version, configuration status, connectivity, health status, and node status. When you click on the health status from Security Cloud Control, you are taken to the respective device's health monitoring page in the Cloud-Delivered Firewall Management Center user interface.Security Cloud Control provides high availability support for the threat defense devices that it manages through the data interface. This feature is supported for devices running software version 7.2 or later.You can analyze syslog events generated by your onboarded threat defense devices using Security Analytics and Logging (SaaS) or Security Analytics and Logging (On-Premises). The SaaS version stores events in the cloud and you view the events in Security Cloud Control. The on-premises version stores events in an on-premises Secure Network Analytics appliance and analysis is done in the on-premises Secure Firewall Management Center. In both cases, just as with an on-premises FMC today, you can still send logs to a log collector of your choice directly from the sensors. The license for Cloud-Delivered Firewall Management Center is a per-device-managed license and there is no license required for the Cloud-Delivered Firewall Management Center itself. Existing Secure Firewall Threat Defense devices re-use their existing smart licenses and new Secure Firewall Threat Defense devices provision new smart licenses for each feature implemented on the FTD. Existing customers can continue to use Security Cloud Control for managing other device types like, the Secure Firewall ASA, Meraki, Cisco IOS devices, Umbrella, and AWS virtual private clouds. If you use Security Cloud Control to manage a Secure Firewall Threat Defense device configured for local management with Firepower Device Manager, you can continue to manage them with Security Cloud Control as well.To learn how to have a Cloud-Delivered Firewall Management Center provisioned on your tenant, see Enable Cloud-delivered Firewall Management Center on Your Security Cloud Control Tenant. Learn more about the Firewall Management Center features we support in Cloud-Delivered Firewall Management Center
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Sep 22, 2025</li>
+                    <li class="mr-8">
+                        <strong class="mr-1">Product</strong> Secure Firewall Threat Defense
+                    </li>
+                    <li class="mr-8">
+                        <strong class="mr-1">Version</strong> 7.6
+                    </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/csa/olh/120805.dita" target="_blank">UEFI Secure Boot Environment for Resource Connector Images</a>
+        </p>
+
+            <p class="line-clamp-2">
+                The Secure Access Resource Connector images for AWS support UEFI Secure Boot, which provides a trusted boot environment for the connector instance.Requirements for the UEFI Secure Boot EnvironmentIf you choose an AWS instance type that is not recommended by Cisco Secure Access, we can not guarantee that your Resource Connector instance can boot in AWS. Review the AWS documentation to verify whether your instance type supports UEFI Secure Boot.You can deploy Resource Connector images with UEFI Secure Boot on these architectures:Intel x86_64AMD64We recommend that you redeploy your Resource Connector instances with the UEFI Secure Boot environment.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Nov 24, 2025</li>
+                    <li class="mr-8">
+                        <strong class="mr-1">Product</strong> Secure Access
+                    </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/csa/gov/olh/139326.dita" target="_blank">Allow Outbound Network Access to Secure Access</a>
+        </p>
+
+            <p class="line-clamp-2">
+                The Cisco AD Connector server requires outbound access to certain URLs. If you use a transparent HTTP web proxy, ensure that the following URLs on port 80/443 are excluded from the proxy, and not subject to authentication:443 (TCP) to devices.api.secureaccessfed.cisco to sync the AD Users and Groups.Access to additional URLs on port 80/443 (TCP) for Windows to perform Certificate Revocation List and Code-Signing checks. For a complete list of ports, see AD Connector Communication Flow and Troubleshooting.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Nov 24, 2025</li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/csa/gov/olh/139331.dita" target="_blank">Configure a Connector Server</a>
+        </p>
+
+            <p class="line-clamp-2">
+                You must configure a server that is a member of the AD domain with the following environment:Windows Server 2012, 2012 R2, 2016, 2019 or 2022 with the latest service packs and 100MB free hard disk drive space..NET Framework 4.5 or newer.If a local anti-virus application is running, allow the CiscoAuditClient.exe and CiscoAuditService.exe processes.You may deploy the Cisco AD Connector directly on the domain controller. In this case, the domain controller must meet all prerequisites. Only one Cisco AD Connector is required to provision users and groups from an AD domain. For redundancy, add an optional second connector.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Nov 24, 2025</li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/csa/gov/olh/139338.dita" target="_blank">Prerequisites</a>
+        </p>
+
+            <p class="line-clamp-2">
+                Full Admin user role. For more information, see Manage Accounts.Configure a Connector Server.Allow Outbound Network Access to Secure Access.Create the Connector Account. Full Admin user role. For more information, see Manage Accounts.Configure a Connector Server.Allow Outbound Network Access to Secure Access.Create the Connector Account. Full Admin user role. For more information, see Manage Accounts.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Nov 24, 2025</li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/csa/gov/olh/139335.dita" target="_blank">Create the Connector Account</a>
+        </p>
+
+            <p class="line-clamp-2">
+                When you deploy the Cisco AD Connector, you must create a new user account in the AD domain. This account must have these attributes:Set the account name (sAMAccountName) to Cisco_Connector. You can sign in with a custom username that has the required permissions.Select Password never expires.Passwords must not include backslashes, quotations (single or double), greater-than or less-than chevron brackets ( ), or colons.Assign Read and Replicating Directory Changes permissions.Alternately, you can make the Cisco AD Connector account a member of the built-in Enterprise Read-only Domain Controllers group, which automatically assigns these permissions. The Cisco AD Connector does an initial synchronization of the AD structure to Secure Access. After the sync, it detects changes to the AD structure and communicates these changes only. The detection of the changes requires the Replicating Directory Changes permission. The Cisco AD Connector can not function without this permission. The Replicating Directory Changes permission is different from the Replicating Directory Changes All permission, which enables retrieval of password hashes. The Cisco AD Connector does not read password hashes and thus does not require the Replicating Directory Changes All permission.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Nov 24, 2025</li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/csa/olh/120777.dita" target="_blank">SSH Key Generation</a>
+        </p>
+
+            <p class="line-clamp-2">
+                To troubleshoot a resource connector, Secure Access requires an SSH key pair. Use the SSH key pair to log in to your resource connector instance. The username is acadmin.(Recommended) Generate an SSH key pair using a standard tool such as ssh-keygen. When you configure the resource connector, add your public key.Supported SSH public key types are ssh-rsa and ssh-ed25519.For keys of type ssh-rsa, we recommend the key length of 2048 bits or 4096 bits.Save your SSH key in your location environment.You can not set up the SSH login after you deploy the connector.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Dec 01, 2025</li>
+                    <li class="mr-8">
+                        <strong class="mr-1">Product</strong> Secure Access
+                    </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/umbrella-sig/olh/151568.dita" target="_blank">Network Tunnel Configuration</a>
+        </p>
+
+            <p class="line-clamp-2">
+                Before you configure a network tunnel in a device, view the IPsec tunnel parameters supported by Umbrella. For more information, see Supported IPsec Parameters.When you set up a network tunnel, configure the tunnel with an Umbrella head-end data center to connect the network tunnel to Umbrella. For more information see, Connect to Cisco Umbrella Through Tunnel.Umbrella provides various instructions to set up a tunnel in a network device. For more information, see Network Tunnel Configuration.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Dec 05, 2025</li>
+                    <li class="mr-8">
+                        <strong class="mr-1">Product</strong> Umbrella
+                    </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/umbrella-sig/olh/151607.dita" target="_blank">Requirements for Downloading PAC Files to User Devices</a>
+        </p>
+
+            <p class="line-clamp-2">
+                To download the Umbrella PAC file or custom PAC files on a user device in the organization, the device must either:Connect to Umbrella on a Registered Network or Network Tunnel, orDeploy the Cisco Secure Client with the Umbrella Roaming Security module on the user device. To download the Umbrella PAC file or custom PAC files on a user device in the organization, the device must either:
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Dec 08, 2025</li>
+                    <li class="mr-8">
+                        <strong class="mr-1">Product</strong> Umbrella
+                    </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://securitydocs.cisco.com/docs/umbrella-sig/olh/151269.dita" target="_blank">File Inspection—DNS and Web Policies</a>
+        </p>
+
+            <p class="line-clamp-2">
+                When File Inspection is enabled for either the DNS or Web policy, File Inspection scans files through Cisco Advanced Malware Protection (AMP) and Umbrella's antivirus. See Enable File Inspection for DNS Policies and Enable File Inspection for the Web Policy. When File Inspection is enabled for either the DNS or Web policy, File Inspection scans files through Cisco Advanced Malware Protection (AMP) and Umbrella's antivirus. See Enable File Inspection for DNS Policies and Enable File Inspection for the Web Policy.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">Dec 08, 2025</li>
+                    <li class="mr-8">
+                        <strong class="mr-1">Product</strong> Umbrella
+                    </li>
+
+        </ul>
+
+    </div>
+
+
+    <div id="search-load-more-772a8fdd19b2">
+        <div class="h-5"></div>
+        <p class="text-center">
+            <button type="button"
+                    class="button"
+                    hx-get="/api/hypermedia/search/additional-results?&page=2&source=HeadlessSearchSource"
+                    hx-target="#search-load-more-772a8fdd19b2"
+                    hx-swap="outerHTML"
+                    hx-push-url="false">
+                Load more results
+
+                <span class="ml-2">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-down"></use>
+    </svg>
+</i>
+                </span>
+            </button>
+        </p>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden" data-tab-content="external-content">
+                <div class="flex gap-4 items-center justify-between">
+                    <div class="">
+                            <p id="search-count-external-results">
+                                <strong>Results</strong> 1-10 out of 242
+                            </p>
+                    </div>
+                </div>
+
+
+
+
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com" target="_blank">Cisco Secure Essentials</a>
+        </p>
+
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/secure-workload" target="_blank">Cisco Secure Workload</a>
+        </p>
+
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/secure-workload
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/ciscosecure-multicloud-defense" target="_blank">Cisco Secure Multicloud Defense</a>
+        </p>
+
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/ciscosecure-multicloud-defense
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/secure-firewall" target="_blank">Cisco Secure Firewall</a>
+        </p>
+
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/secure-firewall
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/login?redirect_uri=" target="_blank">ReadMe</a>
+        </p>
+
+            <p class="line-clamp-2">
+                Create beautiful product and API documentation with our developer friendly platform.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/login?redirect_uri=
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/secure-firewall/docs/whats-new-in-100" target="_blank">What&#39;s New in 10.0</a>
+        </p>
+
+            <p class="line-clamp-2">
+                This document provides an overview of new features and notable improvements in the 10.0 release. Features that have a dedicated document on this site are linked below, and more will be added. Version 10.0 is a feature-rich release that expands on many of the improvements in version 7.6 while adding ...
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/secure-firewall/docs/whats-new-in-100
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/ciscosecure-multicloud-defense/docs/cisco-multicloud-defense-architecture-guide" target="_blank">Cisco Multicloud Defense Architecture Guide</a>
+        </p>
+
+            <p class="line-clamp-2">
+                Overview The Cisco Multicloud Defense Architecture Guide provides Reference Architecture diagrams of how the Cisco Multicloud Defense solution is deployed within each Cloud Provider and for each security use-case. These diagrams describe the architectural deployment scenarios available to address di...
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/ciscosecure-multicloud-defense/docs/cisco-multicloud-defense-architecture-guide
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/ciscosecure-multicloud-defense/docs/cisco-multicloud-defense-white-paper" target="_blank">Cisco Multicloud Defense White Paper</a>
+        </p>
+
+            <p class="line-clamp-2">
+                Abstract Applications and workloads are no longer limited to the data center. Today, organizations also deploy workloads and applications to public and private cloud environments, oftentimes more than one cloud, for greater agility, flexibility, and scale. As organizations continue to expand their m...
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/ciscosecure-multicloud-defense/docs/cisco-multicloud-defense-white-paper
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/ciscosecure-multicloud-defense/docs" target="_blank">Cisco Multicloud Defense White Paper</a>
+        </p>
+
+            <p class="line-clamp-2">
+                Abstract Applications and workloads are no longer limited to the data center. Today, organizations also deploy workloads and applications to public and private cloud environments, oftentimes more than one cloud, for greater agility, flexibility, and scale. As organizations continue to expand their m...
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/ciscosecure-multicloud-defense/docs
+                </li>
+
+        </ul>
+
+    </div>
+    <div class="card mb-4 border-2 border-mercury px-6 pt-4 shadow-none">
+        <p class="mb-2 text-lg" hx-target="body">
+            <a href="https://secure.cisco.com/login?redirect_uri=/secure-workload" target="_blank">ReadMe</a>
+        </p>
+
+            <p class="line-clamp-2">
+                Create beautiful product and API documentation with our developer friendly platform.
+            </p>
+
+        <ul class="m-0 flex list-none text-xs">
+
+                <li class="mr-8">
+                    https://secure.cisco.com/login?redirect_uri=/secure-workload
+                </li>
+
+        </ul>
+
+    </div>
+
+
+    <div id="search-load-more-b02d1b0b942a">
+        <div class="h-5"></div>
+        <p class="text-center">
+            <button type="button"
+                    class="button"
+                    hx-get="/api/hypermedia/search/additional-results?&page=2&source=HtmlSiteSource"
+                    hx-target="#search-load-more-b02d1b0b942a"
+                    hx-swap="outerHTML"
+                    hx-push-url="false">
+                Load more results
+
+                <span class="ml-2">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-down"></use>
+    </svg>
+</i>
+                </span>
+            </button>
+        </p>
+    </div>
+
+            </div>
+
+            <script>
+                tabs();
+            </script>
+
+        </div>
+
+    </div>
+</section>
+
+
+
+            <hr class="mb-0 mt-auto"/>
+
+    </main>
+
+
+
+
+<footer class="px-4 py-5 text-xs">
+    <div class="lg:container lg:mx-auto">
+        <div class="flex">
+            &copy; 2026 Cisco System, Inc.
+            <div class="ml-auto flex gap-4">
+
+<a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank" title="Privacy policy">Privacy policy</a><a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank" title="Terms of Service">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</div>
+
+<script src="Content/vendor/print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
+        integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

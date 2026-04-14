@@ -1,0 +1,4071 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Integrate with AWS Bedrock using legacy IDs</title>
+
+    <base href="">
+    <link rel="canonical" href="169298.dita">
+
+    <link rel="shortcut icon" type="image/x-icon" href="../../../Content/img/favicon.png"/>
+    <link rel="stylesheet" href="../../../Content/css/output.css?v=1011713472">
+
+    <script src="../../../Content/vendor/htmx.1.9.10.min.js"></script>
+    <script src="../../../Content/js/scripts.js?v=1386221188"></script>
+
+    <script>
+        htmx.config.refreshOnHistoryMiss = true;
+    </script>
+
+    
+
+        <link rel="stylesheet" type="text/css" href="../../../IGX%20Dev%20Test%20Assets/css/style-override.css"/>
+</head>
+<body>
+<div class="flex h-full flex-col">
+
+
+
+
+<header class=" bg-gradient-to-r from-ship-grey to-cinder p-4 text-sm">
+    <div class="container-fluid mx-auto">
+        <div class="flex items-center">
+
+            <div class="flex items-center gap-4">
+                <a href="https://www.cisco.com/" target="_blank" title="LogoLink">
+<img alt="Cisco" class="max-h-6" src="../../../Site%20images%20for%20Docs%20portal/Initial%20site%20images/Temp_Cisco-logo.png" />
+</a>
+
+                <a href="../../../index.html" title="Security Help Center">
+<img alt="" class="max-h-6" src="../../../index.html" />
+</a>
+
+            </div>
+
+            <div class="ml-auto flex items-center gap-4">
+
+                    <a class="group relative text-white" href="../../../index.html#" title="Do you need help?">
+
+            <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 18C12.8284 18 13.5 17.3284 13.5 16.5C13.5 15.6716 12.8284 15 12 15C11.1716 15 10.5 15.6716 10.5 16.5C10.5 17.3284 11.1716 18 12 18Z" fill="#F7F7F7"/>
+<path d="M12.7316 6.44706C12.0042 6.30236 11.2502 6.37662 10.5649 6.66045C9.87971 6.94428 9.29404 7.42493 8.88199 8.04161C8.46993 8.6583 8.25 9.38332 8.25 10.125C8.25 10.7463 8.75368 11.25 9.375 11.25C9.99632 11.25 10.5 10.7463 10.5 10.125C10.5 9.82833 10.588 9.53832 10.7528 9.29165C10.9176 9.04497 11.1519 8.85271 11.426 8.73918C11.7001 8.62565 12.0017 8.59595 12.2926 8.65382C12.5836 8.7117 12.8509 8.85456 13.0607 9.06434C13.2704 9.27412 13.4133 9.54139 13.4712 9.83237C13.5291 10.1233 13.4994 10.4249 13.3858 10.699C13.2723 10.9731 13.08 11.2074 12.8334 11.3722C12.5867 11.537 12.2967 11.625 12 11.625C11.3787 11.625 10.875 12.1287 10.875 12.75C10.875 13.3713 11.3787 13.875 12 13.875C12.7417 13.875 13.4667 13.6551 14.0834 13.243C14.7001 12.831 15.1807 12.2453 15.4645 11.5601C15.7484 10.8748 15.8226 10.1208 15.6779 9.39341C15.5333 8.66598 15.1761 7.9978 14.6517 7.47335C14.1272 6.9489 13.459 6.59175 12.7316 6.44706Z" fill="#F7F7F7"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.875 12C1.875 6.40812 6.40812 1.875 12 1.875C17.5919 1.875 22.125 6.40812 22.125 12C22.125 17.5919 17.5919 22.125 12 22.125C6.40812 22.125 1.875 17.5919 1.875 12ZM12 4.125C7.65076 4.125 4.125 7.65076 4.125 12C4.125 16.3492 7.65076 19.875 12 19.875C16.3492 19.875 19.875 16.3492 19.875 12C19.875 7.65076 16.3492 4.125 12 4.125Z" fill="#F7F7F7"/>
+</svg>
+
+            </i>
+
+
+                        <div class="absolute right-0 top-full hidden w-60 pt-1 group-hover:block">
+                            <div class="rounded border border-mercury bg-white p-3 text-xs font-normal text-black">
+                                <p class="zDocsSearchBoxTipTitle css-cinqea">How search works in the Security Help Center:</p>
+<ul>
+<li class="css-cinqea">The most relevant topics (based on weighting and matching to search terms) are listed first in the search results by default</li>
+<li class="css-cinqea">Common Boolean operations are supported</li>
+<li class="css-cinqea">Use double quotes to find a phrase (&ldquo;specific phrase&rdquo;)</li>
+<li class="css-cinqea">Apply facets on the Search Results page to further scope search results by category</li>
+</ul>
+                            </div>
+                        </div>
+
+                    </a>
+                    <span class="inline-block h-5 w-px bg-white"></span>
+
+                <div class="flex items-center ml-auto gap-4">
+                        <a class="text-white" href="../../../index.html#" data-collapse="user-dropdown">Login</a>
+                        <div
+                            class="hidden absolute border-1 top-10 mt-4 mb-5 ml-5 mr-0 right-0 min-w-72 pt-4 pl-4 pr-3 group z-30"
+                            data-parent="user-dropdown">
+                            <div class="top-[-1px] right-5 absolute text-apple text-xl">
+
+
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-solid"></use>
+    </svg>
+</i>
+
+                            </div>
+                            <div class="card pt-3 pr-4 pl-4 rounded-md border-apple border-4 shadow-2xl "
+                                 data-dropdown="user-dropdown">
+                                <p class="mb-5 [overflow-wrap:anywhere]"><strong>Log In to the Cisco Security
+                                        Documentation Portal</strong></p>
+                                <form action="https://securitydocs.cisco.com/saml/SingleSignOn" id="login-form" name="Login"
+                                      method="post">
+                                    <div class="flex flex-row mb-6 justify-between align-middle items-center">
+                                        <label for="account" class="text-jet-grey w-1/3">I am a Cisco...</label>
+                                        <select name="account" id="account"
+                                                class="bg-white focus:ring-cornflower ring-2 w-2/3 text-ship-grey text-lg">
+                                            <option value="customer">Customer</option>
+                                            <option value="employee">Employee</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-row justify-end gap-2 mb-2">
+
+                                        <button type="button"
+                                                class="button w-full sm:w-auto border-0 hover:bg-white hover:text-ship-grey transition-all"
+                                                data-cancel=user-dropdown-cancel>
+                                            Cancel
+
+                                        </button>
+
+
+                                        <button type="button" id="login-form-submit"
+                                                class="button w-full sm:w-auto bg-primary border-primary text-white hover:bg-white hover:text-primary transition-all">
+                                            Proceed to SSO Login
+
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+    <main class="flex grow flex-col">
+
+
+
+            <section class="px-4 py-10 h-full">
+        <div class="lg:container lg:mx-auto lg:max-w-screen-xl h-full">
+
+
+
+
+<div class="-mt-4 mb-6 flex flex-wrap items-center">
+    <div class="flex-1 text-sm">
+        <a class="whitespace-nowrap font-semibold text-jet-grey" href="../../../doc-portal-search-page" title="Search"><span class="mr-1"><i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-left"></use>
+    </svg>
+</i></span>Search</a>
+    </div>
+    <div class="ml-auto flex items-center gap-5">
+        <a class="text-primary" title="Email"
+           href="mailto:?body=http://securitydocs.cisco.com/docs/ai-def/user/169298.dita">
+            <i>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.5625 4.375C1.5625 3.85723 1.98223 3.4375 2.5 3.4375H17.5C18.0178 3.4375 18.4375 3.85723 18.4375 4.375V15C18.4375 15.4144 18.2729 15.8118 17.9799 16.1049C17.6868 16.3979 17.2894 16.5625 16.875 16.5625H3.125C2.7106 16.5625 2.31317 16.3979 2.02015 16.1049C1.72712 15.8118 1.5625 15.4144 1.5625 15V4.375ZM3.4375 5.3125V14.6875H16.5625V5.3125H3.4375Z" fill="#1D69CC"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.80892 3.74151C2.15879 3.35984 2.75182 3.33406 3.1335 3.68392L10 9.97822L16.8665 3.68392C17.2482 3.33406 17.8412 3.35984 18.1911 3.74151C18.541 4.12319 18.5152 4.71622 18.1335 5.06609L10.6335 11.9411C10.2751 12.2696 9.72494 12.2696 9.36651 11.9411L1.86651 5.06609C1.48484 4.71622 1.45906 4.12319 1.80892 3.74151Z" fill="#1D69CC"/>
+</svg>
+
+            </i>
+        </a>
+
+    </div>
+</div>
+
+            <div class="mb-2 rounded-md bg-white px-8 py-6 shadow-lg h-full">
+                <div class="grid-cols-[80px_auto] lg:grid lg:grid-cols-[300px_auto] h-full">
+                    <div class="lg:mr-8 lg:border-r-2 lg:border-mercury">
+
+
+
+<div class="absolute mt-1 lg:relative lg:flex lg:h-full lg:flex-col">
+    <div class="mb-4 flex lg:hidden">
+        <button type="button" title="Collapse" data-collapse="doc-side">
+
+                        <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.625 6C2.625 5.37868 3.12868 4.875 3.75 4.875H20.25C20.8713 4.875 21.375 5.37868 21.375 6C21.375 6.62132 20.8713 7.125 20.25 7.125H3.75C3.12868 7.125 2.625 6.62132 2.625 6Z" fill="#7E868F"/>
+<path d="M2.625 12C2.625 11.3787 3.12868 10.875 3.75 10.875H20.25C20.8713 10.875 21.375 11.3787 21.375 12C21.375 12.6213 20.8713 13.125 20.25 13.125H3.75C3.12868 13.125 2.625 12.6213 2.625 12Z" fill="#7E868F"/>
+<path d="M3.75 16.875C3.12868 16.875 2.625 17.3787 2.625 18C2.625 18.6213 3.12868 19.125 3.75 19.125H20.25C20.8713 19.125 21.375 18.6213 21.375 18C21.375 17.3787 20.8713 16.875 20.25 16.875H3.75Z" fill="#7E868F"/>
+</svg>
+
+            </i>
+
+
+            <a class="mx-1 hidden text-sm font-normal text-ship-grey lg:inline-block">Collapse</a>
+        </button>
+    </div>
+    <div
+        class="border-1 absolute -left-4 z-10 hidden min-w-72 rounded-md border-mercury bg-white p-4 shadow-md lg:static lg:block lg:min-w-0 lg:rounded-none lg:border-0 lg:p-0 lg:shadow-none"
+        data-type="doc-side">
+
+            <p>
+                    <strong><a href="97360.ditamap" class="text-ship-grey">AI Defense User Guide</a></strong>
+            </p>
+
+            <div class="overflow-y-auto">
+                <ul class="m-0 list-none border-t border-mercury text-xs" id="toc-scrollable">
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97384.dita">
+                                    AI Defense Overview
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="717435224"
+               
+               href="97382.dita">
+                Key Capabilities
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97383.dita">
+                                    Getting Started with AI Defense
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="758099507"
+               
+               href="97381.dita">
+                Activate AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1978677740"
+               
+               href="158878.dita">
+                Connect to AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2137502537"
+               
+               href="158880.dita">
+                Understand the AI Defense dashboard
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="749592591"
+               
+               href="158907.dita">
+                Discover Assets
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="749583320"
+               
+               href="158908.dita">
+                Set up AI Validation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="749582361"
+               
+               href="158909.dita">
+                View AI Validation results
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1848584139"
+               
+               href="158910.dita">
+                Set up AI Runtime protection
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1848585098"
+               
+               href="158911.dita">
+                Monitor AI prompts and responses with AI Runtime
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1848577737"
+               
+               href="158912.dita">
+                Learn more
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97362.dita">
+                                    Administration
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="758118721"
+               
+               href="97361.dita">
+                Users
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="612391393"
+               
+               href="122511.dita">
+                API Keys and URLs
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="612392224"
+               
+               href="122512.dita">
+                Licenses
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="667034184"
+               
+               href="160640.dita">
+                Regional Points of Presence
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            data-selection-within='true'
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97378.dita">
+                                    Integrations
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1756532312"
+               
+               href="169320.dita">
+                AWS Integration
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1756531353"
+               
+               href="169321.dita">
+                Enable CloudTrail Integration
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1961792463"
+               
+               href="97374.dita">
+                AI Defense-Multicloud Defense Integration
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2083268650"
+               
+               href="97375.dita">
+                AI Defense Secure Access Integration
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        data-selection-within='true'
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="595977228"
+               
+               href="97373.dita">
+                LLM API Provider Integrations
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="879575694"
+               
+               href="97380.dita">
+                Integrate with AWS Bedrock
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 border-r-4 border-r-primary text-primary">
+            <a class="block pr-2 ml-1 font-semibold text-primary"
+               data-anchor-id="1903336152"
+               data-selected='true'
+               href="169298.dita">
+                Integrate with AWS Bedrock using legacy IDs
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2123932933"
+               
+               href="97376.dita">
+                AI Defense Splunk Integration
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="698907502"
+               
+               href="160404.dita">
+                AI Defense GitHub Integration
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="105468.dita">
+                                    Applications
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1814554397"
+               
+               href="105466.dita">
+                Manage AI Applications
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="105474.dita">
+                                    Policies
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1895636477"
+               
+               href="105473.dita">
+                Guardrails and Rules
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97368.dita">
+                                    Assets
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1756525910"
+               
+               href="169322.dita">
+                AI Inventory
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1895631034"
+               
+               href="105470.dita">
+                Multicloud Defense Visibility
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97395.dita">
+                                    Validation
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1895638259"
+               
+               href="105479.dita">
+                Configure Validation
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1157016599"
+               
+               href="105480.dita">
+                Validate AI Models and Applications
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1157017558"
+               
+               href="105481.dita">
+                View Validation Results
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="105477.dita">
+                                    Runtime
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1157021914"
+               
+               href="105485.dita">
+                Set up Runtime Protection
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1157015512"
+               
+               href="105487.dita">
+                Set up Runtime for Gateway Interception
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1157008415"
+               
+               href="105488.dita">
+                Set up Runtime for Protection via Multicloud Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1157023001"
+               
+               href="105486.dita">
+                Set up Runtime for the Inspection API
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1075951679"
+               
+               href="105495.dita">
+                Policies for Runtime Protection
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1895624632"
+               
+               href="105476.dita">
+                Monitor AI Threats and Events
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1675423131"
+               
+               href="169233.dita">
+                View AI Runtime Events
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="140210.dita">
+                                    Supply Chain Security
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="701056757"
+               
+               href="140209.dita">
+                Model Scanning
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1817646004"
+               
+               href="168859.dita">
+                MCP Scanning
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1898715544"
+               
+               href="168860.dita">
+                MCP Runtime Guardrails
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97365.dita">
+                                    Application Discovery
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1961791440"
+               
+               href="97364.dita">
+                Track AI Application Use
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="130141.dita">
+                                    Hybrid Deployment Guide
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834530401"
+               
+               href="130134.dita">
+                Hybrid Deployment Overview
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834523040"
+               
+               href="130137.dita">
+                Beta Limitations for Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="946499305"
+               
+               href="140162.dita">
+                Hybrid Deployment Setup
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="95342182"
+               
+               href="137552.dita">
+                Cluster Availability Settings
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="946496995"
+               
+               href="140164.dita">
+                AWS Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="668175718"
+               
+               href="130140.dita">
+                Create the VPC
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="915603505"
+               
+               href="130129.dita">
+                Create Your Cluster on AWS EKS
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1002811885"
+               
+               href="139913.dita">
+                Prepare Your AWS EKS Cluster for AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="833554657"
+               
+               href="140331.dita">
+                Validation Setup for AWS Bedrock
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1123423497"
+               
+               href="161064.dita">
+                Deploy the Connector on AWS
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="492402467"
+               
+               href="161345.dita">
+                Set up the Runtime Gateway in AWS Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="915594234"
+               
+               href="130126.dita">
+                Sample CloudFormation Template
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="946500520"
+               
+               href="140163.dita">
+                AI PODs Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="921753367"
+               
+               href="139904.dita">
+                Create Your OCP Cluster on AI PODs
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1980276652"
+               
+               href="168675.dita">
+                Create Your OCP Cluster with vSphere
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1002818287"
+               
+               href="139911.dita">
+                Prepare Your Cluster on AI PODs for AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1123443526"
+               
+               href="161069.dita">
+                Deploy the Connector on AI PODs
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1912153890"
+               
+               href="161380.dita">
+                Monitor AI Defense Connector Health on AI PODs
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="946498210"
+               
+               href="140165.dita">
+                Azure Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1204498088"
+               
+               href="161070.dita">
+                Set up Resource Group and VNet on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1123425543"
+               
+               href="161066.dita">
+                Create the Cluster on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1123424584"
+               
+               href="161067.dita">
+                Prepare Your AKS Cluster for the AI Defense Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1123430986"
+               
+               href="161065.dita">
+                Deploy the Connector on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1123436037"
+               
+               href="161068.dita">
+                Monitor AI Defense Connector Health on Azure
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="2135857454"
+               
+               href="168783.dita">
+                GCP Platform Setup for Hybrid
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2135855408"
+               
+               href="168785.dita">
+                Create Your Cluster on GCP
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2135860851"
+               
+               href="168786.dita">
+                Prepare Your GCP EKS Cluster for AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2135858277"
+               
+               href="168788.dita">
+                Deploy the Connector on GCP
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="833553698"
+               
+               href="140330.dita">
+                Hybrid Connector Lifecycle
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834525086"
+               
+               href="130131.dita">
+                Deploy the Hybrid Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834519643"
+               
+               href="130132.dita">
+                Manage the Hybrid Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834518684"
+               
+               href="130133.dita">
+                Update the Connector
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834526045"
+               
+               href="130130.dita">
+                Delete the Connector
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834523999"
+               
+               href="130136.dita">
+                Using Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="834529442"
+               
+               href="130135.dita">
+                Troubleshoot Hybrid-Deployed AI Defense
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="946502566"
+               
+               href="140161.dita">
+                FAQ for Hybrid Deployment
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                        <li class="m-0 border-b border-mercury">
+                            <div
+                                class="flex items-start py-2 ">
+                                    <button class="-mt-px mr-1"
+                                            type="button"
+                                            title="Toggle"
+                                            data-open="false"
+                                            
+                                            onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                                    </button>
+                                <a class="block pr-2 font-semibold text-ship-grey"
+                                   
+                                   href="97370.dita">
+                                    Resources
+                                </a>
+                            </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="748185044"
+               
+               href="168305.dita">
+                Release Notes
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1724547087"
+               
+               href="169266.dita">
+                2026.4.1 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="1818136182"
+               
+               href="168655.dita">
+                2026.3.2 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2012158426"
+               
+               href="168431.dita">
+                2026.3.1 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="2012163869"
+               
+               href="168432.dita">
+                2026.2.2 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="748190487"
+               
+               href="168306.dita">
+                2026.2.1 Release Notes
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+                <button class="-mt-px mr-1"
+                        type="button"
+                        title="Toggle"
+                        
+                        onclick="toggleList(this)">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>
+                </button>
+            <a class="block pr-2  font-semibold text-ship-grey"
+               data-anchor-id="1818137013"
+               
+               href="168656.dita">
+                Developer Tools
+            </a>
+        </div>
+
+
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="492389927"
+               
+               href="161349.dita">
+                CLI Reference
+            </a>
+        </div>
+
+    </li>
+</ul>    </li>
+</ul>
+
+<ul class="my-1 list-none hidden">
+    <li class="m-0">
+        <div class="flex items-start py-1 ">
+            <a class="block pr-2 ml-1 font-normal text-ship-grey"
+               data-anchor-id="717453415"
+               
+               href="97372.dita">
+                AI Defense FAQ
+            </a>
+        </div>
+
+    </li>
+</ul>                        </li>
+                </ul>
+            </div>
+    </div>
+</div>
+
+                    </div>
+
+                    <div class="flex flex-col h-full" id="content-column">
+
+
+
+<form class="relative mb-4 flex ml-10 lg:ml-0"
+      onsubmit='event.preventDefault()'
+      action='../../../doc-portal-search-page'
+      hx-get="/api/hypermedia/in-book/suggestions"
+      hx-swap="outerHTML"
+      hx-target="#search-suggestions"
+      hx-trigger="keyup delay:300ms from:#in-book-search"
+      id="complex-article-search">
+
+    <input type="hidden" name="bookMapPath" value="/docs/ai-def/user/97360.ditamap">
+
+    <select title="search-type"
+            name="search-type"
+            hx-get="/api/hypermedia/complex-article/search-select"
+            hx-trigger="change"
+            hx-swap="outerHTML"
+            hx-target="#complex-article-search"
+            hx-on:htmx:config-request="configureSearchSuggestRequest(event, '/docs/ai-def/user/97360.ditamap')"
+            class="border-primary font-semibold px-0.5 rounded-r-none text-primary w-auto min-w-24 cursor-pointer hover:bg-primary hover:text-white transition-all p-1.5">
+
+            <option class="font-semibold text-black bg-white"
+                    selected='Book'
+                    value="Book">
+                Book
+            </option>
+            <option class="font-semibold text-black bg-white"
+                    
+                    value="Site">
+                Site
+            </option>
+
+    </select>
+    <label class="flex-1">
+        <span class="sr-only">Search</span>
+        <input id="in-book-search" name="term" class="rounded-l-none border-l-0" type="text" placeholder="Search this book">
+    </label>
+    <div class="hidden" id="search-suggestions"></div>
+</form>
+
+
+<div class="bg-white-smoke mb-4 pt-4">
+    <div class="flex flex-wrap gap-x-6 gap-y-2 pb-4 px-6 sm:gap-x-10 xl:gap-x-12">
+
+        
+        
+        
+        
+        
+        
+        
+
+    </div>
+</div>
+
+                        <div class="md:h-6 lg:h-12"></div>
+
+                        <div class="px-6 flex md:gap-24 md:flex-row flex-col justify-between">
+<p class="mb-6 text-sm">
+            <a class="font-normal text-ship-grey" href="97378.dita">Integrations</a>
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>            <a class="font-normal text-ship-grey" href="97373.dita">LLM API Provider Integrations</a>
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-angle-right"></use>
+    </svg>
+</i>            <a class="font-normal text-ship-grey" href="169298.dita">Integrate with AWS Bedrock using legacy IDs</a>
+</p>
+                            <p class="text-xs m-0 min-w-max md:mb-0 mb-5">Last
+                                updated:  Apr 06, 2026</p>
+                        </div>
+
+                        <div class="px-6 grow" id="igx-dita-content">
+                            
+                        </div>
+
+
+<div class="grid grid-cols-2 bg-white-smoke">
+    <a class="py-4 pl-16 pr-4 "
+       href="97380.dita">
+        <span class="relative mb-1 block text-sm">
+            <span class="absolute -left-8 -top-1">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-left"></use>
+    </svg>
+</i>
+            </span>
+            Previous topic
+        </span>
+        <span class="text-xs font-semibold text-baltic-sea">
+            Integrate with AWS Bedrock
+        </span>
+    </a>
+
+    <a class="py-4 pl-4 pr-16 text-right "
+       href="97376.dita">
+        <span class="relative mb-1 block text-sm">
+            Next topic
+            <span class="absolute -right-8 -top-1">
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-long-right"></use>
+    </svg>
+</i>
+            </span>
+        </span>
+        <span class="text-xs font-semibold text-baltic-sea">
+            AI Defense Splunk Integration
+        </span>
+    </a>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    </main>
+
+
+
+
+<footer class="px-4 py-5 text-xs">
+    <div class="lg:container lg:mx-auto">
+        <div class="flex">
+            &copy; 2026 Cisco System, Inc.
+            <div class="ml-auto flex gap-4">
+
+<a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank" title="Privacy policy">Privacy policy</a><a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank" title="Terms of Service">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</div>
+
+
+
+    <script>
+        function expandToc() {
+                lockTocHeight();
+
+            const buttons = [...document.querySelectorAll("button[data-selection-within]")];
+            buttons.forEach(b => b.click());
+
+                scrollSelectedTocLinkToTop();
+        }
+
+        function lockTocHeight() {
+            const tocColumn = document.getElementById("toc-scrollable");
+            const contentColumn = document.getElementById("content-column");
+
+            const contentHeight = contentColumn.clientHeight;
+
+            tocColumn.style.height = `${contentHeight}px`;
+        }
+
+        function scrollSelectedTocLinkToTop() {
+            const tocColumn = document.getElementById("toc-scrollable");
+            const selected = tocColumn.querySelector("[data-selected='true']");
+            selected.scrollIntoView({behavior: "smooth", block: "start", container: "nearest"});
+        }
+
+        const ditaDiv = document.getElementById("igx-dita-content");
+        ditaDiv.attachShadow({mode: "open"});
+
+        const style = document.createElement("style");
+        style.innerHTML = `@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700;100..700&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+
+/*!
+ * This file is part of the DITA Open Toolkit project.
+ *
+ * Copyright 2004, 2005 IBM Corporation
+ *
+ * See the accompanying LICENSE file for applicable license.
+ */
+ 
+.codeblock {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    overflow-x: auto;
+    white-space: pre;
+    margin-top: .5em;
+    margin-bottom: .5em;    
+    padding-top: .25em;
+    padding-bottom: .25em;
+    background-color: rgb(246, 248, 250);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%; /* Default to prevent overflow if no other max-width applies */    
+}
+
+.codeph {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+code {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+.kwd {
+    font-weight: bold;
+}
+
+.parmname {
+    font-weight: bold;
+}
+
+.var {
+    font-style: italic;
+}
+
+.filepath {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+}
+
+div.tasklabel {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.wintitle {
+    font-weight: bold;
+}
+
+.numcharref {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.parameterentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.textentity {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlatt {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlelement {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlnsname {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.xmlpi {
+    color: #663399;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.frame-top {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+}
+
+.frame-bottom {
+    border-top: 0;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-topbot {
+    border-top: solid 1px;
+    border-right: 0;
+    border-bottom: solid 1px;
+    border-left: 0;
+}
+
+.frame-all {
+    border: solid 1px;
+}
+
+.frame-sides {
+    border-top: 0;
+    border-left: solid 1px;
+    border-right: solid 1px;
+    border-bottom: 0;
+}
+
+.frame-none {
+    border: 0;
+}
+
+.scale-50 {
+    font-size: 50%;
+}
+
+.scale-60 {
+    font-size: 60%;
+}
+
+.scale-70 {
+    font-size: 70%;
+}
+
+.scale-80 {
+    font-size: 80%;
+}
+
+.scale-90 {
+    font-size: 90%;
+}
+
+.scale-100 {
+    font-size: 100%;
+}
+
+.scale-110 {
+    font-size: 110%;
+}
+
+.scale-120 {
+    font-size: 120%;
+}
+
+.scale-140 {
+    font-size: 140%;
+}
+
+.scale-160 {
+    font-size: 160%;
+}
+
+.scale-180 {
+    font-size: 180%;
+}
+
+.scale-200 {
+    font-size: 200%;
+}
+
+.expanse-page,
+.expanse-spread {
+    width: 100%;
+}
+
+.fig {
+    /* Default of italics to set apart figure captions */
+    /* Use @frame to create frames on figures */
+}
+
+.figcap {
+    font-style: italic;
+}
+
+.figdesc {
+    font-style: normal;
+}
+
+.figborder {
+    border-color: Silver;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figsides {
+    border-color: Silver;
+    border-left: 2px solid;
+    border-right: 2px solid;
+    margin-top: 1em;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.figtop {
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+.figbottom {
+    border-bottom: 2px solid;
+    border-color: Silver;
+}
+
+.figtopbot {
+    border-bottom: 2px solid;
+    border-color: Silver;
+    border-top: 2px solid;
+    margin-top: 1em;
+}
+
+/* Align images based on @align on topic/image */
+div.imageleft {
+    text-align: left;
+}
+
+div.imagecenter {
+    text-align: center;
+}
+
+div.imageright {
+    text-align: right;
+}
+
+div.imagejustify {
+    text-align: justify;
+}
+
+/* Set heading sizes, getting smaller for deeper nesting */
+/*.topictitle1 {*/
+/*    font-size: 1.34em;*/
+/*    margin-bottom: 0.1em;*/
+/*    margin-top: 0;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.17em;
+    margin-bottom: 0.45em;
+    margin-top: 1pc;
+}
+
+.topictitle3 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-bottom: 0.17em;
+    margin-top: 1pc;
+}
+
+.topictitle4 {
+    font-size: 1.17em;
+    font-weight: bold;
+    margin-top: 0.83em;
+}
+
+.topictitle5 {
+    font-size: 1.17em;
+    font-weight: bold;
+}
+
+.topictitle6 {
+    font-size: 1.17em;
+    font-style: italic;
+}
+
+.sectiontitle {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 1em;
+}
+
+.section {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.example {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+/* Most link groups are created with <div>. Ensure they have space before and after. */
+.ullinks {
+    list-style-type: none;
+}
+
+.ulchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.olchildlink {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.sublinklist {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+
+.relconcepts strong {
+    line-height: 2em;
+}
+
+.relconcepts {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.reltasks strong {
+    line-height: 2em;
+}
+
+.reltasks {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relref strong {
+    line-height: 2em;
+}
+
+.relref {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.relinfo {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.breadcrumb {
+    font-size: smaller;
+    margin-bottom: 1em;
+}
+
+/* Simple lists do not get a bullet */
+ul.simple {
+    list-style-type: none;
+}
+
+/* Default of bold for definition list terms */
+.dlterm {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+/* Use CSS to expand lists with @compact="no" */
+.dltermexpand {
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+*[compact="yes"] > li {
+    margin-top: 0;
+}
+
+*[compact="no"] > li {
+    margin-top: 0.53em;
+}
+
+.liexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.sliexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.dlexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.ddexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.stepexpand {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.substepexpand {
+    margin-bottom: .25em;
+    margin-top: .25em;
+}
+
+dt.prereq {
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    margin-left: 20px;
+}
+
+/* All note formats have the same default presentation */
+.note {
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+.note .notetitle,
+.note .notelisttitle,
+.note .note__title {
+    font-weight: bold;
+}
+
+/* Various basic phrase styles */
+.bold {
+    font-weight: bold;
+}
+
+.bolditalic {
+    font-style: italic;
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.uicontrol {
+    font-weight: bold;
+}
+
+.defkwd {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.shortcut {
+    text-decoration: underline;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table .desc {
+    display: block;
+    font-style: italic;
+}
+
+.cellrowborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.row-nocellborder {
+    border-bottom: solid 1px;
+    border-left: 0;
+    border-top: 0;
+}
+
+.cell-norowborder {
+    border-left: 0;
+    border-right: solid 1px;
+    border-top: 0;
+}
+
+.nocellnorowborder {
+    border: 0;
+}
+
+.firstcol {
+    font-weight: bold;
+}
+
+.table--pgwide-1 {
+    width: 100%;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-justify {
+    text-align: justify;
+}
+
+.align-char {
+    text-align: char;
+}
+
+.valign-top {
+    vertical-align: top;
+}
+
+.valign-bottom {
+    vertical-align: bottom;
+}
+
+.valign-middle {
+    vertical-align: middle;
+}
+
+.colsep-0 {
+    border-right: 0;
+}
+
+.colsep-1 {
+    border-right: 1px solid;
+}
+
+.rowsep-0 {
+    border-bottom: 0;
+}
+
+.rowsep-1 {
+    border-bottom: 1px solid;
+}
+
+.stentry {
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.stentry:last-child {
+    border-right: 0;
+}
+
+.strow:last-child .stentry {
+    border-bottom: 0;
+}
+
+/* Add space for top level topics */
+.nested0 {
+    margin-top: 1em;
+}
+
+/* div with class=p is used for paragraphs that contain blocks, to keep the XHTML valid */
+.p {
+    margin-top: 1em;
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 0.5em;
+}
+
+main {
+    display: block;
+    padding-bottom: 0.5em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+main > article {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+}
+
+.book-heading {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #666666;
+    font-size: 1.6em;
+    line-height: 1.6em;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    margin-right: .25em;
+    margin-top: .55em;
+}
+
+/*h1.topictitle1 {*/
+/*    padding-bottom: 0em;*/
+/*    border-bottom: solid 1pt #c6c7ca;*/
+/*}*/
+
+p,
+.p,
+td,
+th {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+td,
+th {
+    padding: 5px;
+    border: 1px solid #c6c7ca;
+}
+
+td p:first-child,
+td .p:first-child,
+th p:first-child,
+th .p:first-child {
+    margin-top: 0px;
+}
+
+td p:last-child,
+td .p:last-child,
+th p:last-child,
+th .p:last-child {
+    margin-bottom: 0px;
+}
+
+td.nocellnorowborder,
+th.nocellnorowborder {
+    border: solid 1px #c6c7ca;
+}
+
+table {
+    margin-top: 0.5em;
+    margin-bottom: calc(0.5em * 2);
+    border-color: #808080;
+    width: 90%;
+}
+
+td {
+    vertical-align: top;
+}
+
+th {
+    font-weight: bold;
+    text-align: left;
+}
+
+.stentry {
+    border: solid 1px #c6c7ca !important;
+}
+
+.olh_note td{
+    border: 0px solid #c6c7ca;
+}
+
+table.stepTable {
+    margin-bottom: 0em;
+}
+
+table.stepTable td {
+    border: 0px solid #c6c7ca;
+}
+table.stepTable td:first-child {
+    width: 5%;
+}
+
+.footnote {
+    vertical-align: top;
+}
+
+.table__footnotes {
+    font-size: .8em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 1.2em;
+}
+
+.steps:not(.notable) > thead > tr > th,
+.steps:not(.notable) > thead > tr > td,
+.steps:not(.notable) > tbody > tr > th,
+.steps:not(.notable) > tbody > tr > td {
+    border: solid 1px #c6c7ca;
+}
+
+.steps.notable:not(.summary_steps) {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.steps td:first-of-type {
+    width: 4em;
+    white-space: nowrap;
+}
+
+.steps th,
+.steps td {
+    text-align: left;
+    vertical-align: top;
+    padding: 3px;
+}
+
+.steps.summary_steps {
+    padding-left: 40px;
+    list-style-type: none;
+    counter-reset: summary-steps-counter;
+}
+
+.steps.summary_steps .choices {
+    padding-left: calc(40px * 2);
+}
+
+.steps.summary_steps > li:before {
+    content: counter(summary-steps-counter) ".";
+    counter-increment: summary-steps-counter;
+    float: left;
+    clear: both;
+    margin-right: 5px;
+    width: 2em;
+    font-weight: bold;
+}
+
+.choption {
+    font-weight: normal;
+}
+
+sup {
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0.55em;
+}
+
+.tabletitle {
+    font-weight: bold;
+}
+
+.cmdname {
+    font-weight: bold;
+}
+
+caption {
+    text-align: left;
+    padding-bottom: 0.5em;
+    font-weight: bold;
+}
+
+pre {
+    font-family: "Roboto Mono", 'Courier New', Courier, monospace;
+    margin-bottom: 0em;
+    margin-top: 0em;
+    line-height: 1.2em;
+}
+
+pre.screen {
+    padding: 5px 5px 5px 5px;
+    border: outset;
+    background-color: #CCCCCC;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.codeblock .b {
+    background-color: yellow;
+}
+
+figure {
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+}
+
+figcaption,
+.figcap {
+    font-style: normal;
+    font-weight: bold;
+    padding-bottom: 0.5em;
+}
+
+.faq_minitoc {
+    border-bottom: solid 1px #c6c7ca;
+    padding-bottom: 0.5em;
+}
+
+.ullinks {
+    list-style-type: disc;
+    padding-left: 30px;
+    margin-left: 0px;
+}
+
+.ulchildlink,
+.olchildlink {
+    margin-top: 0.5em;
+    margin-bottom: 0em;
+}
+
+.linklist {
+    margin-bottom: 1em;
+}
+
+.linklistwithchild,
+.sublinklist {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+/*.topictitle1 {*/
+/*    font-size: 1.5em;*/
+/*    color: #336666;*/
+/*    font-weight: bold;*/
+/*    margin-top: 1em;*/
+/*    margin-bottom: 0.5em;*/
+/*}*/
+
+.topictitle2 {
+    font-size: 1.4em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle3 {
+    font-size: 1.2em;
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.topictitle4 {
+    color: #336666;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.sectiontitle {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    color: #373C42;
+    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.sectiontitle--inline {
+    padding-right: 0.5em;
+}
+
+.section_rel_title {
+    margin-top: 1em;
+    margin-bottom: -1em;
+    color: black;
+    font-weight: bold;
+}
+
+.section_synblk_title {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: black;
+    font-weight: bold;
+}
+
+.synblk *,
+.synph * {
+    font-family: inherit;
+}
+
+.synblk .importance--default,
+.synph .importance--default {
+    text-decoration: underline;
+}
+
+.table td,
+.table th {
+    border-left: solid 1px #c6c7ca;
+    border-right: solid 1px #c6c7ca;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+    text-align: left;
+}
+
+table.note {
+    width: auto;
+    max-width: 90%;
+}
+
+.note--table.note td {
+    vertical-align: middle;
+}
+
+.note--table.note td[role=heading] {
+    font-weight: bold;
+}
+
+.note--table.note--note td[role=heading] div {
+    background-image: url("../template_images/note.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--caution td[role=heading] div {
+    background-image: url("../template_images/caut.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--tip td[role=heading] div {
+    background-image: url("../template_images/tip.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--fastpath td[role=heading] div {
+    background-image: url("../template_images/timesave.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 31px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note--warning td[role=heading] div {
+    background-image: url("../template_images/warn.gif");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    padding-top: 25px;
+    padding-left: 0px;
+    min-width: 38px;
+    text-align: left;
+}
+
+.note--table.note .note__content {
+    padding: 0.5em 0px 0.5em 0px;
+    border-top: solid 1px #c6c7ca;
+    border-bottom: solid 1px #c6c7ca;
+}
+
+.note--compact {
+    margin: 0px;
+}
+
+.note--compact td {
+    padding: 0.5em 0px 0.5em 0px;
+    border-style: none;
+}
+
+.note--compact td[role=heading] {
+    font-weight: bold;
+    width: 1em;
+    padding: 0.5em 1em 0px 0px;
+}
+
+.note--compact td[role=heading] div {
+    background-image: none;
+}
+
+.heading {
+    font-size: 1.25em;
+    color: #373C42;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+}
+
+.userinput {
+    font-weight: bold;
+}
+
+.related_commands td,
+.related_commands th {
+    border: solid 1px #c6c7ca;
+}
+
+/*h1.topictitle1 {*/
+/*    color: #373C42;*/
+/*    font-weight: normal;*/
+/*    font-family: "SharpSansDispNo2-Bold", Helvetica, Arial, sans-serif;*/
+/*    border-bottom-style: none;*/
+/*}*/
+
+h2.topictitle2 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h3.topictitle3 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+h4.topictitle4 {
+    color: #373C42;
+    font-weight: normal;
+    border-bottom-style: none;
+}
+
+a {
+    color: #326CD1;
+}
+
+p.p {
+    margin-bottom: .5em;
+    color: #000000;
+}
+
+ul {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+ol {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
+}
+
+li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+li p.p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.steps td:first-child {
+    padding-right: 1em;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .summary_steps {
+        display: none;
+    }
+
+    .steps {
+        border-top: solid 1px #c6c7ca;
+        border-bottom: solid 1px #c6c7ca;
+    }
+
+    .steps thead {
+        display: none;
+    }
+
+    .steps > tbody > tr > td,
+    .steps > tbody > tr > th {
+        border-style: none !important;
+    }
+
+    .step--command,
+    .step--purpose {
+        display: table-row;
+    }
+}
+
+figure img.scale {
+    cursor: zoom-in;
+    max-width: 100%;
+}
+
+figure img.scale.expanded {
+    max-width: 98% !important;
+    max-height: 98% !important;
+    z-index: 1001;
+    position: absolute;
+    margin: auto auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: zoom-out;
+}
+
+#scale-background {
+    z-index: 1000;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0.5;
+    cursor: zoom-out;
+}
+
+#scale-background.hidden {
+    display: none;
+}
+
+nav[role=toc] {
+    font-size: inherit;
+}
+
+nav[role=toc] > div {
+    left: 0;
+    padding-right: 0;
+}
+
+nav[role=toc] ul {
+    margin-left: 0px;
+    padding-left: 0;
+    margin-top: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    overflow-y: auto;
+    height: calc(100% - 26px);
+}
+
+nav[role=toc] li {
+    display: block;
+    margin-left: 2px;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    display: block;
+    margin-top: 0;
+    margin-right: 0;
+    margin-left: -20px;
+    margin-bottom: 0;
+    padding-top: 3px;
+    padding-right: 0;
+    padding-left: 20px;
+    padding-bottom: 3px;
+}
+
+nav[role=toc] li > a:hover,
+nav[role=toc] li > a:focus,
+nav[role=toc] li > span.title:hover,
+nav[role=toc] li > span.title:focus {
+    text-decoration: none;
+}
+
+nav[role=toc] li.active > a {
+    background-color: #d3dfea;
+    color: black;
+    text-shadow: 0 -1px 0 transparent;
+}
+
+nav[role=toc] li.expanded > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-down.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > .controller {
+    opacity: 0.5;
+    cursor: pointer;
+    width: 0.7em;
+    margin-left: -1em;
+    float: left;
+    line-height: 0.7em;
+    background-image: url("../template_images/arrow-right.svg");
+    background-size: 0.7em 0.7em;
+    background-repeat: no-repeat;
+    display: inline;
+    height: 1.5em;
+    background-position: 100% 50%;
+    padding-top: 0px;
+}
+
+nav[role=toc] li.collapsed > ul {
+    display: none;
+}
+
+nav[role=toc] #toc-controls {
+    background-color: #373c42;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 24px;
+    padding: 5px;
+    display: flex;
+    justify-content: flex-end;
+    background-image: url("../template_images/Cisco Secure - linear - 1C White.png");
+    background: url("../template_images/Cisco Secure - linear - 1C White.png"), linear-gradient(90deg, #373c42, #0f1214);
+    /* it will use gradient if supported */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+nav[role=toc] .icon {
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    cursor: pointer;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+nav[role=toc] .icon svg .st0,
+nav[role=toc] .icon svg .st1 {
+    stroke: grey;
+}
+
+nav[role=toc] .icon:hover svg .st0,
+nav[role=toc] .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+nav[role=toc] {
+    background-color: white;
+    box-shadow: 1px 0px 4px 0px rgba(0, 0, 0, 0.1);
+    flex: 1 1 30%;
+    height: calc(100% - 24px - (2 * 7px) - 0px);
+    min-width: 230px;
+    font-size: 75%;
+}
+
+nav[role=toc] ul {
+    padding-left: 14px;
+}
+
+nav[role=toc] > ul {
+    margin-left: 0;
+    padding-left: 24px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+nav[role=toc] li > a,
+nav[role=toc] li > span.title {
+    text-decoration: none;
+    padding-top: 2px;
+    color: #000000;
+}
+
+nav[role=toc] li > a:hover {
+    color: #38669e;
+}
+
+nav[role=toc] li.active > a,
+nav[role=toc] li.active > a:hover {
+    background-color: #d3dfea;
+    color: black;
+}
+
+nav[role=toc] li.active > span.controller {
+    color: #e1eaf4;
+}
+
+#toggle-toc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+    height: 100%;
+    background-color: #FAFAFA;
+    width: 15px;
+    cursor: pointer;
+}
+
+#toggle-toc:hover {
+    background-color: #EEEEEE;
+}
+
+#toggle-toc svg {
+    width: 7px;
+    opacity: 0.3;
+    padding: 2px;
+}
+
+#toggle-toc svg:hover {
+    opacity: 0.5;
+}
+
+nav[role=toc].hidden {
+    display: none;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #toggle-toc {
+        display: none;
+    }
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#search {
+    display: flex;
+    flex-direction: column;
+    opacity: 0.75;
+    height: calc(100% - 24px);
+    flex: 0 0 300px;
+    max-width: 300px;
+    z-index: 1;
+    transition: ease 0.5s;
+}
+
+#search.hidden {
+    flex: 0 0 0px;
+    transition: ease 0.5s;
+}
+
+#search.hidden #close-icon {
+    opacity: 0;
+}
+
+#search-input {
+    background-color: white;
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    display: block;
+    transition: ease 0.5s;
+    height: 40px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #search-input.hidden {
+        left: 0;
+    }
+}
+
+#search-input input,
+#search-input input:focus,
+#search-input input:hover {
+    width: calc(300px - 45px);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    outline: 0;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 8px;
+    transition: ease 0.5s;
+}
+
+@media (max-width: 1660px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 200px;
+    }
+}
+
+@media (max-width: 1430px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 110px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results),
+    #search-input input:focus:not(:focus):not(.has-results),
+    #search-input input:hover:not(:focus):not(.has-results) {
+        width: 0px;
+        margin: 8px 0px;
+    }
+}
+
+@media (max-width: 1280px) {
+
+    #search-input input:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:focus:not(:focus):not(.has-results) + #close-icon,
+    #search-input input:hover:not(:focus):not(.has-results) + #close-icon {
+        display: none;
+    }
+}
+
+#search-input div.icon {
+    display: inline-block;
+    width: calc(1em + 3px);
+    position: relative;
+    top: 3px;
+}
+
+#search-input div.icon--left {
+    left: 8px;
+    margin-right: 4px;
+}
+
+#search-input div.icon--right {
+    right: 8px;
+    margin-left: 4px;
+}
+
+#search-input div.icon svg {
+    width: 1em;
+    height: 1em;
+}
+
+#search-results {
+    position: relative;
+    top: 40px;
+    height: calc(100% - 40px);
+    background-color: #fafafa;
+    box-shadow: -1px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.search-result {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    animation: fade-in-keyframes 0.5s;
+}
+
+span.highlight {
+    background-color: yellow;
+}
+
+@keyframes fade-in-keyframes {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hotspot--hidden {
+    display: none;
+}
+
+.hotspot__button {
+    width: auto;
+    border: none;
+    background-color: transparent;
+    padding: 0px;
+    color: #38669e;
+}
+
+.hotspot__button:hover {
+    color: #244266;
+    text-decoration: underline;
+}
+
+.hotspot__button--label {
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.hotspot__button--hide::after {
+    cursor: pointer;
+    content: " ▼";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.hotspot__button--show::after {
+    cursor: pointer;
+    content: " ▶";
+    font-size: 1em;
+    height: 1em;
+    width: 0.7em;
+    padding: 0px;
+    text-decoration: none;
+    color: inherit;
+}
+
+nav#breadcrumbs {
+    font-size: 75%;
+    margin-top: 6px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+nav#breadcrumbs .home svg {
+    height: 1em;
+    width: 1em;
+}
+
+#navigate-back,
+#navigate-forward {
+    width: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    -ms-flex: 1;
+    -ms-flex-preferred-size: 25px;
+}
+
+#navigate-back.disabled,
+#navigate-forward.disabled {
+    opacity: 0.3;
+}
+
+#navigate-back.disabled .icon:hover,
+#navigate-forward.disabled .icon:hover {
+    cursor: default;
+}
+
+#navigate-back .icon svg,
+#navigate-forward .icon svg {
+    transform: scale(1, 1);
+    width: 15px;
+}
+
+#navigate-back .icon svg .st0,
+#navigate-back .icon svg .st1,
+#navigate-forward .icon svg .st0,
+#navigate-forward .icon svg .st1 {
+    stroke: grey;
+}
+
+#navigate-back .icon:hover,
+#navigate-forward .icon:hover {
+    cursor: pointer;
+}
+
+#navigate-back .icon:hover svg .st0,
+#navigate-back .icon:hover svg .st1,
+#navigate-forward .icon:hover svg .st0,
+#navigate-forward .icon:hover svg .st1 {
+    stroke: #38669e;
+}
+
+#navigate-forward {
+    margin-right: 20px;
+}
+
+#navigate-back {
+    padding-left: 30px;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    #navigate-back {
+        padding-left: 10px;
+    }
+
+    #navigate-forward {
+        margin-right: 10px;
+    }
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+}
+
+main[role=main] {
+    flex: 1 1 100%;
+    height: calc(100% - 24px);
+    overflow-y: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-right: -51px;
+}
+
+main[role=main] > article {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fade-in-keyframes 0.5s;
+    border-bottom: none;
+}
+
+footer {
+    font-size: 75%;
+    border-top: solid 1px #ccc;
+    line-height: 24px;
+    height: 24px;
+    clear: both;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    padding-left: 8px;
+    background-color: #fafafa;
+}
+
+.mobile {
+    display: none;
+}
+
+img {
+    display: inline;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .mobile {
+        display: initial;
+    }
+}
+
+.desktop {
+    display: initial;
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+    .desktop {
+        display: none;
+    }
+}
+
+@media (max-width: 768px),
+(max-device-width: 768px) {
+
+    html,
+    body {
+        font-size: initial;
+    }
+
+    main[role=main] {
+        padding-right: 40px;
+    }
+
+    main[role=main] figure img {
+        max-width: 100%;
+    }
+
+    nav[role=toc] {
+        display: none;
+    }
+
+    body {
+        flex-wrap: wrap;
+    }
+
+    main[role=main] {
+        flex: 1 1 calc(100% - 40px - 45px);
+    }
+
+    #search {
+        flex: 0 0 100%;
+        order: -1;
+        max-width: 100%;
+        width: 100%;
+        opacity: 1;
+    }
+
+    #search.hidden {
+        display: block;
+        position: absolute;
+        right: 0px;
+        width: auto;
+        height: auto;
+    }
+
+    #search.hidden #search-input {
+        height: auto;
+    }
+
+    #search.hidden #search-input input {
+        width: 0px;
+        margin: 8px 0px;
+    }
+
+    #search.hidden #search-input input + #close-icon {
+        display: none;
+    }
+
+    #search.hidden #search-results {
+        height: auto;
+        display: none;
+    }
+
+    #search-input {
+        position: initial;
+        height: auto;
+    }
+
+    #search-input input,
+    #search-input input:focus,
+    #search-input input:hover {
+        width: calc(100% - 5em);
+    }
+
+    #search-results {
+        position: initial;
+        height: auto;
+    }
+}
+
+@media only screen and (orientation: portrait) and (max-device-width: 768px) {
+    body {
+        -webkit-text-size-adjust: 100%;
+        font-size: 3em;
+    }
+
+    footer {
+        font-size: x-large;
+        line-height: calc(24px * 2);
+        height: calc(24px * 2);
+    }
+}
+
+main[role=main] a,
+main[role=main] a:hover {
+    text-decoration: none;
+}
+
+nav[role=toc] li a:hover {
+    text-decoration: underline;
+}
+
+.substeps {
+    list-style-type: lower-alpha;
+}
+
+.type-a {
+    list-style-type: lower-alpha;
+}
+
+.type-i {
+    list-style-type: lower-roman;
+}
+
+@media screen and (min-width: 1024px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(45vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1108px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(50vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1192px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(53vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1276px){
+  .codeblock {
+    /*width: calc(80vw - 290px);*/
+    max-width: calc(55vw);
+    /*max-width: 624px;*/
+  }
+}
+
+@media screen and (min-width: 1360px) {
+  .codeblock {
+    /*width: calc(77vw - 290px);  */
+    max-width: calc(52vw);
+    /*max-width: 760px;*/
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .codeblock {
+    /*width: calc(75vw - 315px);  */
+    max-width: calc(50vw);
+    /*max-width: 770px;*/
+  }
+}
+
+@media screen and (min-width: 1536px) {
+  .codeblock {
+    /*width: 780px;  */
+    max-width: 760px;
+  }
+}`;
+        const ditaContentDiv = document.createElement("div");
+        ditaContentDiv.innerHTML = `<article id="Cisco_6c4673f7-bb67-4074-9fd9-7f7f46f82212" class="topic task">
+<h1 class="title topictitle1">Integrate with AWS Bedrock using legacy IDs</h1>
+<div class="body taskbody">
+<section id="context_yn5_4jj_53c" class="section context">
+<p class="p">If you do not wish to use the ExternalID provided by the AI Defense UI, you have the option to configure the AI Defense connection to AWS Bedrock as shown below, using our regional static roles.</p>
+</section>
+<div>
+<h3>
+<h3 font-weight="bold" class="sectiontitle tasklabel cB_Bold">Procedure</h3>
+</h3>
+</div>
+<table id="steps_zn5_4jj_53c" class="stepTable" border="0">
+<tbody>
+<tr class="li step">
+<td align="center" valign="middle" class="ordered-number">1</td>
+<td align="left" valign="top" border="0">
+<p class="ph cmd">Create an IAM Role for AI Defense:</p>
+<ol type="a" class="ol substeps">
+<li class="li substep substepexpand">
+<p class="ph cmd">Navigate to the <span class="ph uicontrol">IAM service</span> for your AWS account. Be sure to use the same AWS account that you used to set up your Multicloud Defense integration.</p>
+</li>
+<li class="li substep substepexpand">
+<p class="ph cmd">Create an IAM role in your AWS account with the following permissions.</p>
+<stepxmp>
+<pre id="codeblock_b45_4jj_53c" class="pre codeblock">
+<code>{
+    "Action": "bedrock:InvokeModel",
+    "Effect": "Allow",
+    "Resource": "*",(or list of models to give access to)
+    "Sid": ""
+}
+</code>
+</pre>
+</stepxmp>
+</li>
+<li class="li substep substepexpand">
+<p class="ph cmd">Add the following in the trust relationship for the IAM role. The <code class="ph codeph">AWS</code> values shown below are the <span class="ph uicontrol">AWS Role ARNs</span> for the AI Defense validation service in various regions. Use the example for your region:</p>
+<stepxmp>
+<p class="p">For deployments in the western North American (<code class="ph codeph">us-west-2</code>) region (note that this ARN contains no region code after <code class="ph codeph">prod-</code> in its name; this is by design):</p>
+<pre id="codeblock_c45_4jj_53c" class="pre codeblock">
+<code>{
+    "Sid": "",
+    "Effect": "Allow",
+    "Principal": {
+        "AWS": "arn:aws:iam::565498894455:role/ai-defense-prod-ai-validation- \\
+         generative-validation-irsa"
+        },
+    "Action": "sts:AssumeRole"
+}
+</code>
+</pre>
+</stepxmp>
+<stepxmp>
+<p class="p">For deployments in the eastern North American (<code class="ph codeph">us-east-1</code>) region, make sure the ARN contains the regional code <code class="ph codeph">prod-useast1</code>:</p>
+<pre id="codeblock_d45_4jj_53c" class="pre codeblock">
+<code>{
+    "Sid": "",
+    "Effect": "Allow",
+    "Principal": {
+        "AWS": "arn:aws:iam::565498894455:role/ai-defense-prod-useast1-ai-validation- \\
+         generative-validation-irsa"
+        },
+    "Action": "sts:AssumeRole"
+}
+</code>
+</pre>
+</stepxmp>
+<stepxmp>
+<p class="p"> For deployments in the Asia-Pacific (<code class="ph codeph">ap-northeast-1</code>) region, make sure the ARN contains the regional code <code class="ph codeph">prod-apne1</code>:</p>
+<pre id="codeblock_e45_4jj_53c" class="pre codeblock">
+<code>{
+    "Sid": "",
+    "Effect": "Allow",
+    "Principal": {
+        "AWS": "arn:aws:iam::565498894455:role/ai-defense-prod-apne1-ai-validation- \\
+         generative-validation-irsa"
+        },
+    "Action": "sts:AssumeRole"
+}
+</code>
+</pre>
+</stepxmp>
+<stepxmp>
+<p class="p">For deployments in the European (<code class="ph codeph">eu-central-1</code>) region, make sure the ARN contains the regional code <code class="ph codeph">prod-euctrl1</code>:</p>
+<pre id="codeblock_f45_4jj_53c" class="pre codeblock">
+<code>{
+    "Sid": "",
+    "Effect": "Allow",
+    "Principal": {
+        "AWS": "arn:aws:iam::565498894455:role/ai-defense-prod-euctrl1-ai-validation- \\
+         generative-validation-irsa"
+        },
+    "Action": "sts:AssumeRole"
+}
+</code>
+</pre>
+</stepxmp>
+<stepxmp>
+<p class="p">For deployments in the UAE/MEA (<code class="ph codeph">mece</code>) region, make sure the ARN contains the regional code <code class="ph codeph">prod-mece1</code>:</p>
+<pre id="codeblock_uld_1cj_xhc" class="pre codeblock">
+<code>{
+    "Sid": "",
+    "Effect": "Allow",
+    "Principal": {
+        "AWS": "arn:aws:iam::565498894455:role/ai-defense-prod-mece1-ai-validation- \\
+         generative-validation-irsa"
+        },
+    "Action": "sts:AssumeRole"
+}
+</code>
+</pre>
+</stepxmp>
+</li>
+</ol>
+<div class="itemgroup stepresult">The trust relationship allows the AI Defense Validation service to assume your IAM role and invoke the model.</div>
+</td>
+</tr>
+<tr class="li step">
+<td align="center" valign="middle" class="ordered-number">2</td>
+<td align="left" valign="top" border="0">
+<p class="ph cmd">Prepare the AWS Bedrock connection:</p>
+<div class="itemgroup info">
+<p class="p">After configuring your IAM role in AWS, return to AI Defense to configure the AWS Bedrock integration.</p>
+</div>
+<ol type="a" class="ol substeps">
+<li class="li substep substepexpand">
+<p class="ph cmd">In your cloud service, find the <span class="ph uicontrol">IAM role ARN</span> for an account with access to your models. If you’re setting this up for the first time, this is the role you created in the preceding section.</p>
+</li>
+<li class="li substep substepexpand">
+<p class="ph cmd">Open the AI Defense <span class="ph uicontrol">Administration</span> tab, go to the <span class="ph uicontrol">AWS Bedrock card</span>, provide the <span class="ph uicontrol">IAM role ARN</span>, and click <span class="ph uicontrol">Connect</span> to complete the connection.</p>
+</li>
+<li class="li substep substepexpand">
+<p class="ph cmd">Make sure Multicloud Defense is connected to AI Defense. If the <span class="ph uicontrol">Multicloud Defense card</span> in the <span class="ph uicontrol">Administration</span> tab shows a <span class="ph uicontrol">Disconnect</span> button, then Multicloud Defense is connected. If it’s not connected, then you need to set up AI Asset discovery by connecting AI Defense to Multicloud Defense. See  <a data-scope="local" target="" href="97374.dita" title="">AI Defense-Multicloud Defense Integration</a>.</p>
+</li>
+<li class="li substep substepexpand">
+<p class="ph cmd">Proceed to the  <a data-scope="local" target="" href="105470.dita" title="How to view AI assets that Multicloud Defense has discovered">Find Asset</a> section to add the AI models and applications you wish to scan.</p>
+</li>
+</ol>
+</td>
+</tr>
+</tbody>
+</table>
+<section id="postreq_h45_4jj_53c" class="section postreq">
+<div class="tasklabel">
+<h1 font-weight="bold" class="sectiontitle tasklabel cB_Bold">What to do next</h1>
+</div>
+<p class="p">See  <a data-scope="local" target="" href="97395.dita" title="">Validation</a> to test your models.</p>
+</section>
+</div>
+</article>
+`;
+
+        ditaDiv.shadowRoot.appendChild(style);
+        ditaDiv.shadowRoot.appendChild(ditaContentDiv);
+        
+        expandToc();
+    </script>
+
+<script src="../../../Content/vendor/print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
+        integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

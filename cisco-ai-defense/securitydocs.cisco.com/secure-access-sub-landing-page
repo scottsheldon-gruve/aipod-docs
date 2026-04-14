@@ -1,0 +1,740 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Secure Access Help Center</title>
+
+    <base href="">
+    <link rel="canonical" href="secure-access-sub-landing-page">
+
+    <link rel="shortcut icon" type="image/x-icon" href="Content/img/favicon.png"/>
+    <link rel="stylesheet" href="Content/css/output.css?v=1011713472">
+
+    <script src="Content/vendor/htmx.1.9.10.min.js"></script>
+    <script src="Content/js/scripts.js?v=1386221188"></script>
+
+    <script>
+        htmx.config.refreshOnHistoryMiss = true;
+    </script>
+
+    
+
+        <link rel="stylesheet" type="text/css" href="IGX%20Dev%20Test%20Assets/css/style-override.css"/>
+</head>
+<body>
+<div class="flex h-full flex-col">
+
+
+
+
+<header class=" bg-gradient-to-r from-ship-grey to-cinder p-4 text-sm">
+    <div class="container-fluid mx-auto">
+        <div class="flex items-center">
+
+            <div class="flex items-center gap-4">
+                <a href="https://www.cisco.com/" target="_blank" title="LogoLink">
+<img alt="Cisco" class="max-h-6" src="Site%20images%20for%20Docs%20portal/Initial%20site%20images/Temp_Cisco-logo.png" />
+</a>
+
+                <a href="index.html" title="Security Help Center">
+<img alt="" class="max-h-6" src="index.html" />
+</a>
+
+            </div>
+
+            <div class="ml-auto flex items-center gap-4">
+
+                    <a class="group relative text-white" href="index.html#" title="Do you need help?">
+
+            <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 18C12.8284 18 13.5 17.3284 13.5 16.5C13.5 15.6716 12.8284 15 12 15C11.1716 15 10.5 15.6716 10.5 16.5C10.5 17.3284 11.1716 18 12 18Z" fill="#F7F7F7"/>
+<path d="M12.7316 6.44706C12.0042 6.30236 11.2502 6.37662 10.5649 6.66045C9.87971 6.94428 9.29404 7.42493 8.88199 8.04161C8.46993 8.6583 8.25 9.38332 8.25 10.125C8.25 10.7463 8.75368 11.25 9.375 11.25C9.99632 11.25 10.5 10.7463 10.5 10.125C10.5 9.82833 10.588 9.53832 10.7528 9.29165C10.9176 9.04497 11.1519 8.85271 11.426 8.73918C11.7001 8.62565 12.0017 8.59595 12.2926 8.65382C12.5836 8.7117 12.8509 8.85456 13.0607 9.06434C13.2704 9.27412 13.4133 9.54139 13.4712 9.83237C13.5291 10.1233 13.4994 10.4249 13.3858 10.699C13.2723 10.9731 13.08 11.2074 12.8334 11.3722C12.5867 11.537 12.2967 11.625 12 11.625C11.3787 11.625 10.875 12.1287 10.875 12.75C10.875 13.3713 11.3787 13.875 12 13.875C12.7417 13.875 13.4667 13.6551 14.0834 13.243C14.7001 12.831 15.1807 12.2453 15.4645 11.5601C15.7484 10.8748 15.8226 10.1208 15.6779 9.39341C15.5333 8.66598 15.1761 7.9978 14.6517 7.47335C14.1272 6.9489 13.459 6.59175 12.7316 6.44706Z" fill="#F7F7F7"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M1.875 12C1.875 6.40812 6.40812 1.875 12 1.875C17.5919 1.875 22.125 6.40812 22.125 12C22.125 17.5919 17.5919 22.125 12 22.125C6.40812 22.125 1.875 17.5919 1.875 12ZM12 4.125C7.65076 4.125 4.125 7.65076 4.125 12C4.125 16.3492 7.65076 19.875 12 19.875C16.3492 19.875 19.875 16.3492 19.875 12C19.875 7.65076 16.3492 4.125 12 4.125Z" fill="#F7F7F7"/>
+</svg>
+
+            </i>
+
+
+                        <div class="absolute right-0 top-full hidden w-60 pt-1 group-hover:block">
+                            <div class="rounded border border-mercury bg-white p-3 text-xs font-normal text-black">
+                                <p class="zDocsSearchBoxTipTitle css-cinqea">How search works in the Security Help Center:</p>
+<ul>
+<li class="css-cinqea">The most relevant topics (based on weighting and matching to search terms) are listed first in the search results by default</li>
+<li class="css-cinqea">Common Boolean operations are supported</li>
+<li class="css-cinqea">Use double quotes to find a phrase (&ldquo;specific phrase&rdquo;)</li>
+<li class="css-cinqea">Apply facets on the Search Results page to further scope search results by category</li>
+</ul>
+                            </div>
+                        </div>
+
+                    </a>
+                    <span class="inline-block h-5 w-px bg-white"></span>
+
+                <div class="flex items-center ml-auto gap-4">
+                        <a class="text-white" href="index.html#" data-collapse="user-dropdown">Login</a>
+                        <div
+                            class="hidden absolute border-1 top-10 mt-4 mb-5 ml-5 mr-0 right-0 min-w-72 pt-4 pl-4 pr-3 group z-30"
+                            data-parent="user-dropdown">
+                            <div class="top-[-1px] right-5 absolute text-apple text-xl">
+
+
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-arrow-solid"></use>
+    </svg>
+</i>
+
+                            </div>
+                            <div class="card pt-3 pr-4 pl-4 rounded-md border-apple border-4 shadow-2xl "
+                                 data-dropdown="user-dropdown">
+                                <p class="mb-5 [overflow-wrap:anywhere]"><strong>Log In to the Cisco Security
+                                        Documentation Portal</strong></p>
+                                <form action="https://securitydocs.cisco.com/saml/SingleSignOn" id="login-form" name="Login"
+                                      method="post">
+                                    <div class="flex flex-row mb-6 justify-between align-middle items-center">
+                                        <label for="account" class="text-jet-grey w-1/3">I am a Cisco...</label>
+                                        <select name="account" id="account"
+                                                class="bg-white focus:ring-cornflower ring-2 w-2/3 text-ship-grey text-lg">
+                                            <option value="customer">Customer</option>
+                                            <option value="employee">Employee</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-row justify-end gap-2 mb-2">
+
+                                        <button type="button"
+                                                class="button w-full sm:w-auto border-0 hover:bg-white hover:text-ship-grey transition-all"
+                                                data-cancel=user-dropdown-cancel>
+                                            Cancel
+
+                                        </button>
+
+
+                                        <button type="button" id="login-form-submit"
+                                                class="button w-full sm:w-auto bg-primary border-primary text-white hover:bg-white hover:text-primary transition-all">
+                                            Proceed to SSO Login
+
+                                        </button>
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</header>
+
+    <main class="flex flex-1 flex-col">
+
+
+
+
+<section
+    class="relative px-4 py-20 text-white lg:container lg:mx-auto lg:mt-6 transition-all">
+    <div class="absolute inset-0 bg-right-bottom bg-cover overflow-hidden lg:rounded-xl"
+         style="background-image: url('Content/img/blue_background.jpg')">
+    </div>
+    <div class="relative z-10 lg:container lg:mx-auto">
+
+
+        <h1 class="text-center">Secure Access Help Center</h1>
+
+        <form class="relative mb-4 max-w-4xl mx-auto"
+              method="get"
+              action="doc-portal-search-page"
+              onsubmit="htmx.trigger('#search-input', 'htmx:abort')">
+            <label class="block">
+                <span class="sr-only">Search</span>
+                <input class="bg-white border-regent-grey px-14 py-4 rounded-lg text-regent-grey focus:text-black"
+                       type="text"
+                       name="term"
+                       value=""
+                       autocomplete="false"
+                       id="search-input"
+                       hx-trigger="keyup changed delay:300ms"
+                       hx-target="#search-suggestions"
+                       hx-swap="outerHTML"
+                       hx-get="/api/hypermedia/search/suggestions"
+                       onchange="searchSuggest()"
+                       onkeyup="searchSuggest()"
+                       placeholder="Search Cisco Security documentation..."/>
+            </label>
+            <button
+                class="absolute left-1 top-1.5 flex h-11 w-11 items-center justify-center rounded-full text-lg text-regent-grey"
+                type="submit"
+                aria-label="Submit search">
+
+            <i>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M10.8747 4.125C7.1468 4.125 4.12473 7.14708 4.12473 10.875C4.12473 14.6029 7.1468 17.625 10.8747 17.625C14.6026 17.625 17.6247 14.6029 17.6247 10.875C17.6247 7.14708 14.6026 4.125 10.8747 4.125ZM1.87473 10.875C1.87473 5.90444 5.90416 1.875 10.8747 1.875C15.8453 1.875 19.8747 5.90444 19.8747 10.875C19.8747 15.8456 15.8453 19.875 10.8747 19.875C5.90416 19.875 1.87473 15.8456 1.87473 10.875Z" fill="#7E868F"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.6474 15.6483C16.0867 15.209 16.799 15.209 17.2384 15.6483L21.7947 20.2046C22.234 20.6439 22.234 21.3562 21.7947 21.7956C21.3553 22.2349 20.643 22.2349 20.2037 21.7956L15.6474 17.2393C15.208 16.7999 15.208 16.0876 15.6474 15.6483Z" fill="#7E868F"/>
+</svg>
+
+            </i>
+
+            </button>
+            <button
+                class="invisible absolute right-1 top-1.5 flex h-11 w-11 items-center justify-center rounded-full text-xl leading-none"
+                type="button"
+                id="search-input-clear"
+                onclick="clearInputAndAbortSuggestions()"
+                aria-label="Close suggestions">
+
+<i>
+    <svg>
+        <use xlink:href="/Content/icons/icon-defs.svg#icon-xmark-circle"></use>
+    </svg>
+</i>
+
+            </button>
+
+        <div class="hidden absolute left-0 top-full w-full"
+             id="search-suggestions">
+            <ul class="ml-0 list-none rounded-lg border-2 border-regent-grey bg-white py-2">
+
+
+            </ul>
+        </div>
+
+
+        </form>
+    </div>
+</section>
+        
+
+
+
+
+    <section 
+             class="px-4 py-10 bg-white">
+        <div class="lg:container lg:mx-auto">
+            
+                <div
+                    class="mb-4 grid gap-4 md:grid-cols-4">
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+What&#39;s New with Secure Access            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://community.cisco.com/t5/secure-access-announcements/tkb-p/secure-access-announcements">What's New</a></li>
+<li><a href="https://community.cisco.com/t5/secure-access-software-release-notes/tkb-p/secure-access-releasenotes">Software Release Notes</a></li>
+<li><a href="https://www.cisco.com/c/en/us/products/security/secure-access/datasheet-listing.html">Data Sheets</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Get started with Cisco Secure Access            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/119038.dita">Overview</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118955.dita">Quickstarts</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118966.dita">Regions</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Manage Users, Groups, and Endpoint Devices            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118913.dita">Users, Groups, and Endpoint Devices</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118756.dita">Identity Providers</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118891.dita">End-User Connectivity</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Secure Access AI Assistant            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118808.dita">Get Started with AI Assistant</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/119150.dita">AI Assistant for Experience Insights</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+                </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section 
+             class="px-4 py-10 bg-white">
+        <div class="lg:container lg:mx-auto">
+            
+                <div
+                    class="mb-4 grid gap-4 md:grid-cols-4">
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Manage Access Policies and Rules            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118910.dita">Access Policy</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118803.dita">Internet Access Rules</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118806.dita">Private Access Rules</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Manage Zero Trust Access Traffic Steering and DNS            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/140154.dita">Client-Based Zero Trust Access</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/120831.dita">Traffic Steering &amp; DNS for ZTA</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118919.dita">Zero Trust Posture Profiles</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Configure Networks            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118928.dita">Network Requirements</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118898.dita">Network Connections</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118900.dita">Network Tunnel Groups</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Manage Virtual Private Networks            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118917.dita">Virtual Private Networks</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118918.dita">VPN Posture Profiles</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+                </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section 
+             class="px-4 py-10 bg-white">
+        <div class="lg:container lg:mx-auto">
+            
+                <div
+                    class="mb-4 grid gap-4 md:grid-cols-4">
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Manage and Understand Data Loss Prevention            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118847.dita">Data Loss Prevention Policy</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118846.dita">Data Classifications</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/118838.dita">AI Guardrails Classifications</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Monitor Your Users&#39; Digital Experiences            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/119148.dita">Experience Insights</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/119195.dita">SaaS Application Performance</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/olh/119198.dita">User Dashboard</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Best Practices for Resiliency            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/best-practice/161263.ditamap">Zero Trust Access</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/best-practice/dns-resiliency/160422.ditamap">DNS</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/csa/best-practice/rc-resiliency/161416.ditamap">Resource Connector Deployments</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Secure Access Help in Japanese            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/japan/olh/163620.ditamap">Overview</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+                </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section 
+             class="px-4 py-10 bg-white">
+        <div class="lg:container lg:mx-auto">
+            
+                <div
+                    class="mb-4 grid gap-4 md:grid-cols-4">
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Upgrade Guides            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/secure-access/dns-defense/umbrella-dns-upgrade/107696.dita">Umbrella DNS to Secure Access DNS Defense</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/secure-access/umbrella-sig-upgrade/130628.ditamap">Umbrella SIG to Secure Access</a></li>
+<li><a href="https://documentation.meraki.com/SASE_and_SD-WAN/MX/Integrations/SASE/Solution_Overview/Secure_Connect_to_Secure_Access_Manual_Migration_Guide">Secure Connect to Secure Access</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+Secure Access Multi-Organizations in Security Cloud Control (SCC)            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="docs/secure-access/multi-org/137414.dita">Secure Access Multi-Organization Guide</a></li>
+<li><a href="https://securitydocs.cisco.com/docs/scc/admin/106191.dita">SCC Multi-Organizations Administration</a></li>
+<li><a href="docs/scc/multiorg/gsg/154935.ditamap">Getting Started with SCC Multi-Organizations </a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+API Documentation on DevNet            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://developer.cisco.com/docs/cloud-security/">Cloud Security APIs</a></li>
+<li><a href="https://developer.cisco.com/cloud-security/">Dev Center for Cloud Security</a></li>
+<li><a href="https://developer.cisco.com/docs/secure-access-china/">Secure Access China APIs</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+            <h3  class="text-left text-2xl font-bold mb-3">
+From Cisco Technical Support            </h3>
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li><a href="https://www.cisco.com/c/en/us/support/security/secure-access/series.html">Support Articles and TechNotes on Cisco.com </a></li>
+<li><a href="https://mycase.cloudapps.cisco.com/start">Open a Support Case</a></li>
+</ul>
+                </div>
+            
+        </div>
+</div>
+
+                </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section 
+             class="px-4 py-10 bg-white">
+        <div class="lg:container lg:mx-auto">
+            
+                <div
+                    class="mb-4 grid gap-4 lg:grid-cols-3">
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li style="list-style-type: none;">
+<ul class="ml-0 list-none">
+<li style="list-style-type: none;">
+<ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/gov/olh/137897.ditamap">Secure Access for Government</a></li>
+<li>
+<p class="card_p">Welcome to Secure Access for Government.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p></p>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li style="list-style-type: none;">
+<ul class="ml-0 list-none">
+<li style="list-style-type: none;">
+<ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/china/olh/129121.ditamap">Secure Access China</a></li>
+<li>
+<p class="card_p">Operated by Digital Cloud China.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p></p>
+                </div>
+            
+        </div>
+</div>
+
+
+
+
+<div 
+     class="card  !p-0 overflow-hidden flex flex-col justify-center">
+
+
+        <div class="pl-10 pr-10 pb-6 mt-6 mb-auto h-full flex flex-col">
+                            <div class="text-left" >
+                    <ul class="ml-0 list-none">
+<li style="list-style-type: none;">
+<ul class="ml-0 list-none">
+<li style="list-style-type: none;">
+<ul class="ml-0 list-none">
+<li><a href="https://securitydocs.cisco.com/docs/csa/dns-defense/olh/140360.ditamap">Secure Access DNS Defense</a></li>
+<li>
+<p class="card_p">Welcome to Secure Access DNS Defense.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p></p>
+                </div>
+            
+        </div>
+</div>
+
+                </div>
+        </div>
+    </section>
+
+
+
+<section class="mt-auto bg-baltic-sea px-4 py-20 text-white">
+    <div class="lg:container lg:mx-auto">
+
+
+        <div class="flex flex-wrap gap-6">
+
+
+
+        </div>
+    </div>
+</section>
+
+
+    </main>
+
+
+
+
+<footer class="px-4 py-5 text-xs">
+    <div class="lg:container lg:mx-auto">
+        <div class="flex">
+            &copy; 2026 Cisco System, Inc.
+            <div class="ml-auto flex gap-4">
+
+<a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/privacy-full.html" target="_blank" title="Privacy policy">Privacy policy</a><a class="ml-[12px]" href="https://www.cisco.com/c/en/us/about/legal/terms-conditions.html" target="_blank" title="Terms of Service">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</div>
+
+<script src="Content/vendor/print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"
+        integrity="sha512-aNMyYYxdIxIaot0Y1/PLuEu3eipGCmsEUBrUq+7aVyPGMFH8z0eTP0tkqAvv34fzN6z+201d3T8HPb1svWSKHQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>
