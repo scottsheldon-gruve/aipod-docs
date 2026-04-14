@@ -292,7 +292,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);font-family:var(--mono)
 
 <!-- Section 2: Hardware -->
 <div class="section">
-  <div class="section-header"><span class="snum">02</span><h2>Hardware Validation — AI POD Sizing</h2><span class="scount">3 items</span></div>
+  <div class="section-header"><span class="snum">02</span><h2>Hardware Validation — AI POD Sizing</h2><span class="scount">4 items</span></div>
 
   <div class="check-item">
     <div class="check-row">
@@ -608,7 +608,31 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);font-family:var(--mono)
 
 <!-- Section 5: Operators -->
 <div class="section">
-  <div class="section-header"><span class="snum">05</span><h2>Required OCP Operators</h2><span class="scount">3 items</span></div>
+  <!-- GPU type selection item — end of section 02 -->
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">GPU type confirmed and matching AI Defense connector selection</div>
+        <div class="check-desc">When deploying the connector, you will be prompted to select your GPU type. Confirm which GPU type your worker nodes use before starting the deployment.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag hardware">hardware</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <table class="size-table">
+        <thead><tr><th>GPU Option</th><th>When to select</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>NVIDIA H100</strong></td><td>Worker nodes use NVIDIA H100 GPUs</td><td>Recommended. Supports optional single-GPU time-slicing (up to 4 replicas). Requires <span style="font-family:monospace">devicePlugin</span> config in GPU Operator Helm values if time-slicing is used.</td></tr>
+          <tr><td><strong>NVIDIA L40S</strong></td><td>Worker nodes use NVIDIA L40S GPUs</td><td>Recommended for standard Cisco AI POD deployments.</td></tr>
+          <tr><td><strong>Other GPU</strong></td><td>Non-listed GPU type</td><td>POC/evaluation only — not supported for production or non-Cisco hardware. Single GPU ≥50 GB, or 4× GPUs each ≥10 GB.</td></tr>
+        </tbody>
+      </table>
+      <div class="warn-box">If selecting H100 with single-GPU time-slicing, you MUST add the <strong>devicePlugin</strong> configuration to your NVIDIA GPU Operator Helm values before deploying the connector. See Phase 1.2 of the install guide.</div>
+    </div>
+  </div>
+
+  <div class="section-header"><span class="snum">05</span><h2>Required OCP Operators</h2><span class="scount">4 items</span></div>
 
   <div class="check-item">
     <div class="check-row">
@@ -671,6 +695,38 @@ EOF
 <span class="p">$</span> oc get pods -n nginx-ingress
 <span class="p">$</span> oc get ingressclass
 <span class="g"># Should show: nginx   nginx.org/ingress-controller</span></div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">If using H100 with time-slicing: devicePlugin config added to NVIDIA GPU Operator Helm values</div>
+        <div class="check-desc">H100 single-GPU time-slicing requires a devicePlugin configuration block in the NVIDIA GPU Operator Helm values before the connector is deployed. This must be done before the AI Defense install — it cannot be applied retroactively.</div>
+        <div class="check-tags"><span class="tag hardware">hardware</span><span class="tag openshift">openshift</span><span class="tag pending">h100 only</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">Time-slicing allows multiple AI Defense workloads to share a single H100 GPU (up to 4 replicas). If you plan to use this option, the devicePlugin block must be present in the GPU Operator Helm values at install time. If you are using L40S GPUs or not using time-slicing, skip this item.</div>
+      <div class="cmd-block"><span class="c"># Add to aid-nvidia-gpu-operator-values.yaml before helm install:</span>
+devicePlugin:
+  config:
+    name: time-slicing-config
+    create: true
+    default: default
+    data:
+      default: |-
+        version: v1
+        flags:
+          migStrategy: none
+        sharing:
+          timeSlicing:
+            renameByDefault: false
+            resources:
+            - name: nvidia.com/gpu
+              replicas: 4</div>
     </div>
   </div>
 
@@ -783,7 +839,37 @@ EOF
 
 <!-- Section 7: Final pre-install checks -->
 <div class="section">
-  <div class="section-header"><span class="snum">07</span><h2>Final Pre-Install Gate</h2><span class="scount">4 items</span></div>
+  <div class="section-header"><span class="snum">07</span><h2>Final Pre-Install Gate</h2><span class="scount">6 items</span></div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Beta limitation acknowledged: single hybrid connector per tenant</div>
+        <div class="check-desc">A hybrid tenant supports only one AI Defense hybrid connector. Plan your deployment accordingly — you cannot run multiple parallel connectors on the same tenant.</div>
+        <div class="check-tags"><span class="tag saas">saas</span><span class="tag scc">scc</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">AI Defense hybrid deployment is currently supported as a beta feature. A hybrid tenant is limited to hybrid operation only, and a SaaS tenant is limited to SaaS operation only — these cannot be mixed.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Beta limitation acknowledged: connector version must be n or n-1</div>
+        <div class="check-desc">AI Defense only supports the current connector version and the immediately preceding version (n and n-1). Ensure your connector will be kept up to date after deployment — outdated connectors are not supported.</div>
+        <div class="check-tags"><span class="tag saas">saas</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="warn-box">If you create a connector but do not complete the Helm install and leave it untouched, it may go out of date. In that case, delete the connector and begin a new deployment with the latest version.</div>
+    </div>
+  </div>
 
   <div class="check-item">
     <div class="check-row">

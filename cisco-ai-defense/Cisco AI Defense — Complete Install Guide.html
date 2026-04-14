@@ -237,6 +237,19 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
   </div>
 </div>
 
+<div class="callout warn" style="margin-top:1.25rem">
+  <span class="callout-icon">⚠</span>
+  <div class="callout-body">
+    <div class="callout-title">Beta Limitations — Hybrid Deployment</div>
+    AI Defense hybrid deployment is currently supported for <strong>beta testing only</strong>. Key limitations to be aware of:
+    <ul style="margin-top:.5rem;padding-left:1.2rem;font-size:.82rem;line-height:1.8">
+      <li><strong>Version support:</strong> AI Defense supports only the current connector version and the immediately preceding version (n and n-1). Keep your connector up to date.</li>
+      <li><strong>Single connector per tenant:</strong> A hybrid tenant supports only one AI Defense hybrid connector.</li>
+      <li><strong>Tenant type is fixed:</strong> A hybrid tenant is limited to hybrid operation only; a SaaS tenant is limited to SaaS operation only.</li>
+    </ul>
+  </div>
+</div>
+
 <div class="divider"></div>
 
 <!-- Phase 0 -->
@@ -773,10 +786,24 @@ EOF
         <ol class="ui-step-list">
           <li>From the AI Defense Dashboard, navigate to <strong>Administration → Hybrid Deployment</strong></li>
           <li>Click <strong>Deploy a Connector</strong></li>
-          <li>Select your deployment platform: <strong>AI PODs (OpenShift)</strong></li>
-          <li>The UI will display two sets of commands: <strong>SCC configuration commands</strong> and a <strong>Helm install command</strong></li>
-          <li><strong>Copy both sets of commands</strong> to a text editor — you will run the SCC commands first, then the Helm command</li>
-          <li>Insert your API key when prompted in the Helm command</li>
+          <li>Select <strong>AI PODs</strong> as your deployment environment. Confirm you have completed the prerequisite steps, check the checkbox, and click <strong>Next</strong></li>
+          <li>Enter a <strong>name</strong> for your connector and note the version that will be installed</li>
+          <li>Select the <strong>GPU type</strong> that matches your AI POD hardware:
+            <br><br>
+            <table class="data-table" style="margin:.5rem 0">
+              <thead><tr><th>Option</th><th>Use when</th><th>Notes</th></tr></thead>
+              <tbody>
+                <tr><td><strong>NVIDIA H100</strong></td><td>Node pool uses NVIDIA H100 GPUs</td><td>Recommended. Supports optional single-GPU time-slicing (up to 4 replicas)</td></tr>
+                <tr><td><strong>NVIDIA L40S</strong></td><td>Node pool uses NVIDIA L40S GPUs</td><td>Recommended for Cisco AI POD deployments</td></tr>
+                <tr><td><strong>Other GPU</strong></td><td>Non-listed GPU type</td><td>POC/evaluation only — not supported for production. Single GPU ≥50 GB, or 4× GPUs ≥10 GB each</td></tr>
+              </tbody>
+            </table>
+          </li>
+          <li><strong>H100 only:</strong> If you want to enable GPU time-slicing, set <strong>Install on Single GPU</strong> to <strong>Yes</strong>. Ensure you have added the <span class="ic">devicePlugin</span> configuration to your NVIDIA GPU Operator Helm values (see Phase 1.2) before selecting this option</li>
+          <li>Click <strong>Create</strong> to generate the connector and installation script</li>
+          <li>Create an API key so the data plane can communicate securely with the control plane</li>
+          <li>Preview and <strong>download the installation script</strong> — it is pre-populated with your selected configuration</li>
+          <li><strong>Copy the script</strong> to a text editor — you will run it from your jump server in Phase 3</li>
           <li>Keep this browser tab open — you will refresh it to confirm Active status after install</li>
         </ol>
       </div>
@@ -1494,6 +1521,109 @@ Warning  FailedMount        secret "ai-defense-tls"      (TLS secret missing)</s
       </div>
     </div>
   </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.6</span><span class="step-title">Monitor AI Defense Connector Health on AI PODs</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">Use OpenShift monitoring tools to report on the health of your AI Defense hybrid connector. The observability pipeline below uses Elastic Stack (ECK) and OpenTelemetry Collector to ingest and visualize connector telemetry.</p>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Prerequisites for monitoring</div>You need cluster-admin access, the <strong>Elastic Cloud on Kubernetes (ECK)</strong> operator and <strong>OpenTelemetry operator</strong> installed via OperatorHub/OLM, and the <span class="ic">lvms-nvme</span> StorageClass available (adjust if different). All components deploy into namespace <span class="ic">ai-defense-observability</span>.</div>
+      </div>
+      <div class="cmd-block"><span class="c"># Step 1 — Verify operators and CRDs are installed:</span>
+<span class="p">$</span> oc get csv -A | egrep -i 'elastic|eck|opentelemetry'
+<span class="p">$</span> oc get crd | egrep -i \
+  'elasticsearches.elasticsearch.k8s.elastic.co|\
+kibanas.kibana.k8s.elastic.co|\
+apmservers.apm.k8s.elastic.co|\
+opentelemetrycollectors.opentelemetry.io'
+<span class="c"># Any missing CRD = install the corresponding operator first</span>
+
+<span class="c"># Step 2 — Create observability namespace:</span>
+<span class="p">$</span> export NS=ai-defense-observability
+<span class="p">$</span> oc new-project ${NS}
+
+<span class="c"># Step 3 — Deploy Elasticsearch (ECK):</span>
+<span class="p">$</span> cat &lt;&lt;'YAML' | oc apply -n "${NS}" -f -
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: es
+spec:
+  version: 8.11.4
+  nodeSets:
+  - name: default
+    count: 1
+    config:
+      node.store.allow_mmap: false
+    podTemplate:
+      spec:
+        nodeSelector:
+          node-role.kubernetes.io/worker: ""
+        tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: lvms-nvme
+        resources:
+          requests:
+            storage: 200Gi
+YAML
+
+<span class="c"># Step 4 — Wait for Elasticsearch and retrieve password:</span>
+<span class="p">$</span> oc -n "${NS}" get elasticsearch
+<span class="p">$</span> oc -n "${NS}" get pods -l elasticsearch.k8s.elastic.co/cluster-name=es -w
+<span class="p">$</span> oc -n "${NS}" get secret es-es-elastic-user \
+  -o go-template='{{.data.elastic | base64decode}}{{"\n"}}'
+
+<span class="c"># Step 5 — Deploy Kibana and expose via Route:</span>
+<span class="p">$</span> cat &lt;&lt;'YAML' | oc apply -n "${NS}" -f -
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kb
+spec:
+  version: 8.11.4
+  count: 1
+  elasticsearchRef:
+    name: es
+YAML
+<span class="p">$</span> oc -n "${NS}" create route passthrough kb \
+  --service=kb-kb-http --port=5601 || true
+<span class="p">$</span> oc -n "${NS}" get route kb
+<span class="g"># Open the route URL in your browser to access Kibana</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">OpenTelemetry and APM</div>After Elasticsearch and Kibana are running, deploy an Elastic APM Server and OpenTelemetry Collector to ingest OTLP traces from the AI Defense connector. Refer to the full monitoring guide in <span class="ic">securitydocs.cisco.com/docs/ai-def/user/161380.dita</span> for the complete APM and OTel configuration.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.7</span><span class="step-title">Update the Connector</span><span class="step-badge sb-config">Maintenance</span></div>
+    <div class="step-body">
+      <p class="sd">AI Defense will notify you when a connector update is available via information banners and icons in the UI. During the beta phase, only the current version and the immediately preceding version (n-1) are supported — keep your connector up to date.</p>
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense → Administration → Hybrid Deployment</h4>
+        <ol class="ui-step-list">
+          <li>When an update is available, click the <strong>upgrade icon</strong> or select <strong>Upgrade</strong> from the Options (⋮) dropdown menu on your connector</li>
+          <li>An upgrade guide will open with the necessary commands pre-populated as a script</li>
+          <li>Preview and <strong>download the script</strong></li>
+          <li>Run the script in the terminal of your AI PODs environment from your jump server</li>
+          <li>Refresh the Hybrid Deployment page to confirm the connector version has updated and status remains <strong>Active</strong></li>
+        </ol>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">Incomplete deployments go stale</div>If you created a connector but did not complete the Helm install and left it untouched, it may go out of date. In that case, delete the connector and begin a new deployment with the latest version.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="divider"></div>
@@ -1663,6 +1793,57 @@ Warning  FailedMount        secret "ai-defense-tls"      (TLS secret missing)</s
 <span class="c"># Confirm image pulled successfully once Running:</span>
 <span class="p">$</span> oc get pods -n ai-defense | grep -v Running
 <span class="g"># No output = all pods Running</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T7</span><span class="step-title">Generate a support bundle for Cisco TAC</span><span class="step-badge sb-warn">Support</span></div>
+    <div class="step-body">
+      <p class="sd">If you need to escalate a hybrid connector issue to Cisco support, collect a support bundle from the AI Defense UI and share it with your Cisco representative.</p>
+      <div class="ui-steps">
+        <h4>In SCC → AI Defense → Administration → Hybrid Deployment</h4>
+        <ol class="ui-step-list">
+          <li>Click the Options (⋮) menu on your hybrid connector</li>
+          <li>Select <strong>Troubleshoot</strong></li>
+          <li>Follow the instructions to <strong>download the support bundle</strong></li>
+          <li>Share the support bundle with your Cisco representative along with a description of the issue</li>
+        </ol>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Before opening a TAC case</div>Ensure your API key is active and your connector version is current (n or n-1). Many support escalations are resolved by updating the connector or regenerating the API key.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T8</span><span class="step-title">FAQ — Hybrid Deployment</span><span class="step-badge sb-info">Reference</span></div>
+    <div class="step-body">
+      <table class="data-table">
+        <thead><tr><th>Question</th><th>Answer</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Validation runs are failing even though my connector status shows <strong>Active</strong></td>
+            <td>Run <span class="ic">oc get pods -n ai-defense</span> and check for pods in an error state. If a pod is in error, run <span class="ic">oc describe pod &lt;POD_NAME&gt; -n ai-defense</span> and share the output with your AI Defense support team.</td>
+          </tr>
+          <tr>
+            <td>I created a connector but didn't finish the Helm install. Now it's out of date.</td>
+            <td>Delete the connector and begin a new deployment with the latest version.</td>
+          </tr>
+          <tr>
+            <td>Does AI Defense hybrid on AI PODs support <strong>high availability</strong>?</td>
+            <td>There is no built-in HA option. You may elect to deploy AI Defense hybrid on a single Kubernetes cluster that spans two data centers (splitting worker nodes from control plane nodes) for highly available operation.</td>
+          </tr>
+          <tr>
+            <td>Does AI Defense hybrid on AI PODs support <strong>automated backup</strong>?</td>
+            <td>Backup is supported via Kubernetes-native tools (e.g. Velero) and storage-integrated snapshot/backup capabilities from platforms such as VAST, NetApp, or Pure Storage. Backups protect persistent data, model artifacts, and Kubernetes configuration, but do not include infrastructure.</td>
+          </tr>
+          <tr>
+            <td>Does AI Defense hybrid on AI PODs support <strong>disaster recovery</strong>?</td>
+            <td>There is no built-in DR or stretched-cluster support. Implement DR through storage-level replication combined with Kubernetes-aware recovery mechanisms (e.g. CSI-based volume replication and cluster restore). Your DR strategy must be designed at the application and volume orchestration level.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
