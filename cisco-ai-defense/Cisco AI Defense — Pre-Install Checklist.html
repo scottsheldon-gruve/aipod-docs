@@ -506,7 +506,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);font-family:var(--mono)
 
 <!-- Section 4: OpenShift -->
 <div class="section">
-  <div class="section-header"><span class="snum">04</span><h2>Red Hat OpenShift Prerequisites</h2><span class="scount">5 items</span></div>
+  <div class="section-header"><span class="snum">04</span><h2>Red Hat OpenShift Prerequisites</h2><span class="scount">6 items</span></div>
 
   <div class="check-item expanded">
     <div class="check-row">
@@ -602,6 +602,28 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);font-family:var(--mono)
 <span class="p">$</span> oc adm policy add-scc-to-user &lt;scc-name&gt; -z ai-defense -n ai-defense
 <span class="c"># Run whatever is provided in the AI Defense UI — do not skip</span>
 <span class="c"># Run BEFORE the helm install command</span></div>
+      <div class="warn-box"><strong>After install:</strong> also run <code style="font-family:var(--mono);font-size:.85em">oc adm policy add-scc-to-user anyuid -z default -n ai-defense-onprem</code> — the Triton GPU model pods use the <code style="font-family:var(--mono);font-size:.85em">default</code> service account and require anyuid to create model symlinks. Without this, modernbert and pi-mmbert Triton pods will CrashLoopBackOff. See T9 in the install guide.</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">Cilium CNI is healthy on all nodes including GPU worker nodes</div>
+        <div class="check-desc">AI Defense pods depend on Cilium for pod networking and policy enforcement. Confirm Cilium is Running on all nodes — especially any GPU workers recently added — before installing AI Defense.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span><span class="tag network">network</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why">If GPU worker nodes were recently added to the cluster, the Cilium DaemonSet may not yet have scheduled on them. AI Defense pods that land on a worker without a Running Cilium agent will have broken network policy enforcement. DESIRED must equal READY.</div>
+      <div class="cmd-block"><span class="c"># Check all Cilium pods are Running across all nodes:</span>
+<span class="p">$</span> oc get pods -n cilium -o wide
+
+<span class="c"># Verify DaemonSet shows all nodes scheduled and ready:</span>
+<span class="p">$</span> oc get ds cilium -n cilium
+<span class="g"># Expected: DESIRED == CURRENT == READY == UP-TO-DATE == AVAILABLE</span></div>
     </div>
   </div>
 </div>
@@ -632,7 +654,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);font-family:var(--mono)
     </div>
   </div>
 
-  <div class="section-header"><span class="snum">05</span><h2>Required OCP Operators</h2><span class="scount">4 items</span></div>
+  <div class="section-header"><span class="snum">05</span><h2>Required OCP Operators</h2><span class="scount">5 items</span></div>
 
   <div class="check-item">
     <div class="check-row">
@@ -654,11 +676,32 @@ footer{background:var(--ink);color:rgba(255,255,255,.35);font-family:var(--mono)
 <span class="p">$</span> oc get pods -n gpu-operator-resources
 <span class="c"># All pods should be Running</span>
 
+<span class="p">$</span> oc get nodes -L nvidia.com/gpu.present,nvidia.com/gpu.count
+<span class="c"># GPU presence and count visible on worker nodes</span>
+
 <span class="p">$</span> oc get nodes -o json | jq '.items[].status.allocatable | with_entries(select(.key | contains("nvidia")))'
 <span class="c"># Each worker node should show nvidia.com/gpu: "4" or "8"</span>
 
-<span class="p">$</span> oc describe node &lt;worker-node&gt; | grep -A5 "Allocatable"
-<span class="g"># nvidia.com/gpu: 4   ← expected for small/medium C845A</span></div>
+<span class="c"># GPU smoke test — confirm a container can request and access a GPU:</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-test
+spec:
+  restartPolicy: Never
+  containers:
+  - name: cuda-test
+    image: registry.access.redhat.com/ubi8/ubi:latest
+    command: ["nvidia-smi"]
+    resources:
+      limits:
+        nvidia.com/gpu: 1
+EOF
+<span class="p">$</span> oc get pod gpu-test -w
+<span class="p">$</span> oc logs gpu-test
+<span class="g"># Expected: nvidia-smi table showing GPU model, driver version, and HBM memory</span>
+<span class="p">$</span> oc delete pod gpu-test</div>
     </div>
   </div>
 
@@ -727,6 +770,29 @@ devicePlugin:
             resources:
             - name: nvidia.com/gpu
               replicas: 4</div>
+    </div>
+  </div>
+
+  <div class="check-item">
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div class="check-content">
+        <div class="check-title">GPU worker nodes labeled with node_group=dps before Helm install</div>
+        <div class="check-desc">AI Defense uses the node_group=dps label as a required node selector to schedule its GPU workloads on the correct worker nodes. Without this label, AI Defense pods may attempt to schedule on control plane nodes (no GPUs) and fail.</div>
+        <div class="check-tags"><span class="tag critical">critical</span><span class="tag openshift">openshift</span><span class="tag hardware">hardware</span></div>
+        <button class="expand-btn">Details <span class="expand-arrow">›</span></button>
+      </div>
+    </div>
+    <div class="check-detail">
+      <div class="detail-why"><strong>dps</strong> stands for <strong>Data Protection Service</strong> — the internal name for the AI Defense data plane. This label is a hard requirement in the AI Defense Helm chart. It must be applied before running the install script. It is not applied automatically and will not be re-applied if a worker node is rebuilt.</div>
+      <div class="cmd-block"><span class="c"># Apply to all GPU worker nodes:</span>
+<span class="p">$</span> oc label node &lt;gpu-worker-1&gt; node_group=dps --overwrite
+<span class="p">$</span> oc label node &lt;gpu-worker-2&gt; node_group=dps --overwrite
+
+<span class="c"># Verify:</span>
+<span class="p">$</span> oc get node &lt;gpu-worker-1&gt; -o jsonpath='{.metadata.labels.node_group}{"\n"}'
+<span class="g"># Expected: dps</span></div>
+      <div class="warn-box">This label is not persistent across node rebuilds. If a GPU worker is rebuilt or a new worker added, re-apply node_group=dps immediately. Consider adding it to a MachineConfig to make it permanent.</div>
     </div>
   </div>
 
