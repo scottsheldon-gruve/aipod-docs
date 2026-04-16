@@ -164,6 +164,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
   <div class="card">
     <div class="card-header"><span class="card-num">1.2</span><span class="card-title">Helper VM SSH &ndash; install workstation</span><span class="badge badge-cred">Credentials</span></div>
     <div class="card-body">
+      <p class="sd"><strong>Primary account (scott):</strong></p>
       <div class="cred-grid">
         <div class="cred-card">
           <div class="cred-label">Host</div>
@@ -182,7 +183,32 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
           <div class="cred-value" style="font-size:.65rem">~/ocp-cilium-install/auth/kubeconfig</div>
         </div>
       </div>
-      <div class="cmd-block"><span class="p">$</span> ssh scott@10.7.1.75
+      <p class="sd" style="margin-top:.75rem"><strong>Lab user account (ocpuser):</strong></p>
+      <div class="cred-grid">
+        <div class="cred-card">
+          <div class="cred-label">Host</div>
+          <div class="cred-value">10.7.1.75</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Username</div>
+          <div class="cred-value">ocpuser</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Password</div>
+          <div class="cred-value">cisco123</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Auth</div>
+          <div class="cred-value">Password (sudo available)</div>
+        </div>
+      </div>
+      <div class="cmd-block"><span class="c"># Login as scott</span>
+<span class="p">$</span> ssh scott@10.7.1.75
+
+<span class="c"># Login as ocpuser</span>
+<span class="p">$</span> ssh ocpuser@10.7.1.75
+
+<span class="c"># Set kubeconfig after login</span>
 <span class="p">$</span> export KUBECONFIG=~/ocp-cilium-install/auth/kubeconfig
 <span class="p">$</span> oc get nodes</div>
     </div>
