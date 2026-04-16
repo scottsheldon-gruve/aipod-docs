@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<!-- saved from url=(0132)file:///Users/Scott.Sheldon@gruve.ai/Documents/OpenShift%204.18%20+%20Isovalent%20Cilium%20%E2%80%94%20Native%20Install%20Guide.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenShift 4.18 + Isovalent Cilium — Native Install Guide</title>
+<link href="file:///Users/Scott.Sheldon@gruve.ai/Documents/OpenShift%204.18%20+%20Isovalent%20Cilium%20%E2%80%94%20Native%20Install%20Guide_files/css2" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4f8;--bg2:#e2eaf2;--surface:#fff;--border:#ccd8e8;--border2:#b8cad8;
+  --ink:#0d1f35;--ink2:#2a4a6e;--ink3:#5a7a9a;
+  --accent:#0057b8;--accent-bg:#e8f0fc;--accent-border:#b8d0f0;
+  --green:#0a6e3a;--green-bg:#e6f4ec;--green-border:#a8d8bc;
+  --yellow:#7a5500;--yellow-bg:#fef8e6;--yellow-border:#f0d878;
+  --red:#8b1a1a;--red-bg:#fdf0f0;--red-border:#e8b8b8;
+  --orange:#8b4000;--orange-bg:#fef2e6;--orange-border:#f0c890;
+  --purple:#4a1a7a;--purple-bg:#f0e8fc;--purple-border:#c8b0e8;
+  --cisco:#049fd9;
+  --mono:'JetBrains Mono',monospace;--sans:'Outfit',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7}
+
+header{background:linear-gradient(160deg,#001428 0%,#002a5c 45%,#005596 80%,#0083c8 100%);color:#fff;padding:0;overflow:hidden;position:relative}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(4,159,217,.15) 0%,transparent 60%);pointer-events:none}
+.header-inner{max-width:1000px;margin:0 auto;padding:2.5rem 2.5rem 0;position:relative;z-index:1}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.header-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.15em}
+.header-version{background:rgba(4,159,217,.25);border:1px solid rgba(4,159,217,.4);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.62rem;color:#7dd4f0;text-transform:uppercase;letter-spacing:.1em}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.1;color:#fff;margin-bottom:.75rem}
+h1 span{color:#7dd4f0}
+.header-desc{font-size:.9rem;color:rgba(255,255,255,.6);max-width:600px;line-height:1.75;margin-bottom:1.25rem}
+.header-chips{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem}
+.chip{font-family:var(--mono);font-size:.6rem;padding:.2rem .55rem;border-radius:20px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.7)}
+
+.phase-strip{display:flex;gap:0;border-top:1px solid rgba(255,255,255,.1);overflow-x:auto}
+.ph-tab{flex:1;min-width:100px;padding:.9rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.08);cursor:pointer;transition:background .15s;text-decoration:none}
+.ph-tab:hover{background:rgba(255,255,255,.06)}
+.ph-tab:last-child{border-right:none}
+.ph-num{font-family:var(--mono);font-size:.58rem;color:rgba(255,255,255,.4);display:block;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.1em}
+.ph-name{font-size:.72rem;font-weight:600;color:rgba(255,255,255,.75);display:block;line-height:1.3}
+
+.sticky-nav{background:var(--ink);border-bottom:1px solid rgba(255,255,255,.1);padding:0;position:sticky;top:0;z-index:60;overflow-x:auto}
+.nav-inner{max-width:1000px;margin:0 auto;padding:0 2.5rem;display:flex;gap:0}
+.nav-item{font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;padding:.7rem .85rem;border-bottom:2px solid transparent;white-space:nowrap;text-decoration:none;transition:all .15s;flex-shrink:0}
+.nav-item:hover,.nav-item.active{color:#7dd4f0;border-bottom-color:#7dd4f0}
+
+.main{max-width:1000px;margin:0 auto;padding:2.5rem 2.5rem 6rem}
+
+.phase-block{margin-bottom:3.5rem;scroll-margin-top:4rem}
+.phase-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding:1.1rem 1.5rem;background:linear-gradient(135deg,var(--accent),#0083c8);border-radius:8px;color:#fff;position:relative;overflow:hidden}
+.phase-header::after{content:attr(data-phase);position:absolute;right:-0.5rem;top:50%;transform:translateY(-50%);font-size:5rem;font-weight:800;color:rgba(255,255,255,.08);font-family:var(--sans);pointer-events:none;white-space:nowrap}
+.phase-circle{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;font-weight:700;flex-shrink:0}
+.phase-title{font-size:1.1rem;font-weight:700;line-height:1.2}
+.phase-subtitle{font-size:.78rem;color:rgba(255,255,255,.7);margin-top:.15rem}
+
+.step{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:1.1rem;overflow:hidden}
+.step-header{padding:.8rem 1.25rem;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.step-num{font-family:var(--mono);font-size:.6rem;color:#fff;background:var(--accent);padding:.18rem .42rem;border-radius:3px;flex-shrink:0;font-weight:600}
+.step-title{font-weight:600;font-size:.9rem;color:var(--ink);flex:1;line-height:1.3}
+.step-badge{font-family:var(--mono);font-size:.57rem;padding:.12rem .35rem;border-radius:3px;text-transform:uppercase;letter-spacing:.07em;flex-shrink:0}
+.sb-cmd{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)}
+.sb-ui{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-border)}
+.sb-config{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-border)}
+.sb-verify{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.sb-warn{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.sb-info{background:var(--bg2);color:var(--ink3);border:1px solid var(--border)}
+.step-body{padding:1.1rem 1.25rem}
+.step-desc{font-size:.84rem;color:var(--ink2);line-height:1.8;margin-bottom:.85rem}
+.step-desc:last-child{margin-bottom:0}
+p.sd{font-size:.84rem;color:var(--ink2);line-height:1.8;margin-bottom:.85rem}
+
+.cmd-block{background:#001428;border-radius:5px;padding:.8rem 1.1rem;font-family:var(--mono);font-size:.73rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.cmd-block .p{color:#7dd4f0}
+.cmd-block .c{color:#5a8aaa;font-style:italic}
+.cmd-block .g{color:#5cb87a}
+.cmd-block .w{color:#f0c850}
+.cmd-block .r{color:#f08070}
+.cmd-block .y{color:#ffd780}
+.cmd-block .m{color:#d0a0ff}
+.cmd-block .h{color:#049fd9}
+
+.yaml-block{background:#0a1828;border:1px solid #1a3a5e;border-radius:5px;padding:.8rem 1.1rem;font-family:var(--mono);font-size:.72rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.yaml-block .k{color:#7dd4f0}
+.yaml-block .v{color:#a0e0a0}
+.yaml-block .s{color:#ffd780}
+.yaml-block .c{color:#5a8aaa;font-style:italic}
+
+.ui-steps{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:6px;padding:1rem 1.25rem;margin:.65rem 0}
+.ui-steps h4{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.65rem}
+.ui-step-list{list-style:none;counter-reset:ui-step}
+.ui-step-list li{counter-increment:ui-step;display:flex;align-items:flex-start;gap:.65rem;margin-bottom:.5rem;font-size:.84rem;color:var(--ink2);line-height:1.6}
+.ui-step-list li::before{content:counter(ui-step);font-family:var(--mono);font-size:.62rem;color:#fff;background:var(--purple);min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem;font-weight:600}
+.ui-step-list li:last-child{margin-bottom:0}
+
+.callout{border-radius:6px;padding:.85rem 1.1rem;margin:.75rem 0;font-size:.82rem;line-height:1.7;display:flex;gap:.7rem}
+.callout-icon{flex-shrink:0;font-size:1rem;margin-top:.05rem}
+.callout-body{flex:1}
+.callout-title{font-weight:700;margin-bottom:.15rem;font-size:.75rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.callout.warn{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow)}
+.callout.warn .callout-title{color:#c07000}
+.callout.info{background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--ink2)}
+.callout.info .callout-title{color:var(--accent)}
+.callout.success{background:var(--green-bg);border:1px solid var(--green-border);color:var(--ink2)}
+.callout.success .callout-title{color:var(--green)}
+.callout.danger{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+.callout.danger .callout-title{color:#c02020}
+.callout.purple{background:var(--purple-bg);border:1px solid var(--purple-border);color:var(--ink2)}
+.callout.purple .callout-title{color:var(--purple)}
+
+.data-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:.75rem 0;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.data-table th{padding:.55rem .85rem;background:var(--accent);color:#fff;text-align:left;font-weight:600;font-size:.72rem}
+.data-table td{padding:.55rem .85rem;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:top;line-height:1.5}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--bg)}
+
+.ic{font-family:var(--mono);font-size:.8em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px;color:var(--ink);white-space:nowrap}
+
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:.75rem 0}
+.status-card{background:var(--surface);border:1px solid var(--border);border-top:3px solid;border-radius:6px;padding:.9rem 1rem}
+.status-card.green{border-top-color:var(--green)}
+.status-card.blue{border-top-color:var(--accent)}
+.status-card.orange{border-top-color:#f97316}
+.sc-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:.35rem}
+.sc-value{font-weight:700;font-size:.88rem;color:var(--ink)}
+.sc-sub{font-size:.75rem;color:var(--ink3);margin-top:.1rem}
+
+.divider{height:1px;background:var(--border);margin:2.75rem 0}
+
+.divider{height:1px;background:var(--border);margin:2.75rem 0}
+
+/* eBPF flow diagram */
+.ebpf-flow{display:flex;align-items:stretch;margin:.75rem 0;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.ebpf-box{flex:1;padding:1rem .75rem;text-align:center;font-size:.75rem;line-height:1.5}
+.ebpf-box .icon{font-size:1.5rem;margin-bottom:.4rem;display:block}
+.ebpf-box .lbl{font-weight:700;font-size:.8rem;display:block;margin-bottom:.2rem}
+.ebpf-box .sub{font-size:.68rem;opacity:.8}
+.ebpf-box.kernel{background:#001428;color:#c8ddf0}
+.ebpf-box.cilium{background:var(--accent-bg);color:var(--ink2)}
+.ebpf-box.policy{background:var(--orange-bg);color:var(--orange)}
+.ebpf-box.hubble{background:var(--green-bg);color:var(--green)}
+.ebpf-arrow{display:flex;align-items:center;padding:0 .5rem;background:var(--bg2);color:var(--ink3);font-size:1rem;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.label-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin:.75rem 0}
+.label-card{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.9rem 1rem}
+.label-card h4{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-bottom:.5rem}
+.label-card p{font-size:.78rem;color:var(--ink2);line-height:1.6}
+.lpill{display:inline-block;background:#001428;color:#7dd4f0;font-family:var(--mono);font-size:.62rem;padding:.1rem .5rem;border-radius:10px;margin:.15rem .1rem}
+
+footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);font-size:.65rem;padding:1.5rem 0;margin-top:3rem}
+.footer-inner{max-width:1000px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:680px){.phase-strip{display:none}.main{padding:1.5rem}.header-inner{padding:1.5rem 1.5rem 0}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-badge">🔷 OpenShift 4.18 · Isovalent Cilium Enterprise · Native Install</div>
+      <div class="header-version">ESXi 7.0 U2 · Agent-Based ISO · v1.0 · April 2026</div>
+    </div>
+    <h1>OpenShift 4.18 +<br><span>Isovalent Cilium Enterprise</span></h1>
+    <div class="header-desc">Complete agent-based installation of OpenShift 4.18 with Isovalent Cilium Enterprise as the native day-0 CNI — from helper VM preparation through ISO generation, node bootstrap, and post-install verification. Includes Hubble relay and UI.</div>
+    <div class="header-chips">
+      <span class="chip">OCP 4.18.36</span>
+      <span class="chip">Isovalent Cilium v1.15.1</span>
+      <span class="chip">Hubble UI</span>
+      <span class="chip">Agent-Based ISO</span>
+      <span class="chip">ESXi 7.0 U2</span>
+      <span class="chip">dnsmasq DNS+DHCP</span>
+      <span class="chip">3 Masters + 1 Worker</span>
+    </div>
+  </div>
+  <div class="phase-strip">
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#how-cilium"><span class="ph-num">Intro</span><span class="ph-name">How Cilium Works</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase0"><span class="ph-num">Phase 0</span><span class="ph-name">Pre-flight</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase1"><span class="ph-num">Phase 1</span><span class="ph-name">Helper VM</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase2"><span class="ph-num">Phase 2</span><span class="ph-name">DNS &amp; DHCP</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase3"><span class="ph-num">Phase 3</span><span class="ph-name">Cilium Manifests</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase4"><span class="ph-num">Phase 4</span><span class="ph-name">Config Files</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase5"><span class="ph-num">Phase 5</span><span class="ph-name">Generate ISO</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase6"><span class="ph-num">Phase 6</span><span class="ph-name">Boot &amp; Install</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase7"><span class="ph-num">Phase 7</span><span class="ph-name">Verify</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase8"><span class="ph-num">Phase 8</span><span class="ph-name">Hubble</span></a>
+    <a class="ph-tab" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase9"><span class="ph-num">Phase 9</span><span class="ph-name">Test Cases</span></a>
+  </div>
+</header>
+
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#how-cilium">How Cilium Works</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase0">Pre-flight</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase1">Helper VM</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase2">DNS &amp; DHCP</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase3">Cilium Manifests</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase4">Config Files</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase5">Generate ISO</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase6">Boot &amp; Install</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase7">Verify</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase8">Hubble</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#phase9">Test Cases</a>
+    <a class="nav-item" href="file:///Users/Scott.Sheldon@gruve.ai/Downloads/ocp-cilium-native-install-guide_3.html#troubleshoot">Troubleshoot</a>
+  </div>
+</nav>
+
+<div class="main">
+
+<!-- How Cilium Works -->
+<div class="phase-block" id="how-cilium">
+  <div class="phase-header" data-phase="~">
+    <div class="phase-circle">~</div>
+    <div class="phase-info">
+      <div class="phase-title">How Cilium Works — eBPF, Identity &amp; Labels</div>
+      <div class="phase-subtitle">Read this before starting — understanding these concepts makes the install steps make sense</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">C.1</span><span class="step-title">The eBPF engine — networking at kernel speed, no iptables</span><span class="step-badge sb-info">Concept</span></div>
+    <div class="step-body">
+      <p class="sd">Cilium is built entirely on <strong>eBPF (extended Berkeley Packet Filter)</strong> — a Linux kernel technology that runs sandboxed programs directly in the kernel without modifying kernel source code or loading kernel modules. Traditional CNIs like OVN-Kubernetes use iptables — a linear list that every packet must traverse, degrading at scale. Cilium's eBPF programs are compiled JIT and attached directly to kernel network hooks, executing at wire speed with zero userspace context switches.</p>
+      <div class="ebpf-flow">
+        <div class="ebpf-box kernel"><span class="icon">⚙️</span><span class="lbl">Linux Kernel</span><span class="sub">eBPF hooks at TC,<br>XDP, socket level</span></div>
+        <div class="ebpf-arrow">→</div>
+        <div class="ebpf-box cilium"><span class="icon">🔷</span><span class="lbl">Cilium Agent</span><span class="sub">Compiles &amp; loads eBPF<br>Manages identity maps</span></div>
+        <div class="ebpf-arrow">→</div>
+        <div class="ebpf-box policy"><span class="icon">🛡️</span><span class="lbl">Policy Engine</span><span class="sub">L3/L4/L7 enforcement<br>in kernel — no iptables</span></div>
+        <div class="ebpf-arrow">→</div>
+        <div class="ebpf-box hubble"><span class="icon">🔭</span><span class="lbl">Hubble</span><span class="sub">Same eBPF hooks<br>zero-overhead visibility</span></div>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Why eBPF beats iptables</div>iptables is a linear list — every packet traverses every rule. At 10,000+ rules (common in large clusters) this causes measurable latency. eBPF uses hash maps — O(1) lookup regardless of rule count. Cilium benchmarks show 30%+ better throughput and lower latency vs. iptables-based CNIs at scale.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">C.2</span><span class="step-title">Identity-based security — labels, not IP addresses</span><span class="step-badge sb-info">Concept</span></div>
+    <div class="step-body">
+      <p class="sd">Traditional firewalls use IP addresses and ports. Cilium uses <strong>identity</strong> — a numeric value derived from Kubernetes labels on pods, namespaces, and nodes. Policy is enforced against identities, not IPs — so policies survive pod restarts and IP changes automatically with zero rule updates.</p>
+      <div class="label-grid">
+        <div class="label-card">
+          <h4>How Identity is Assigned</h4>
+          <p>When a pod starts, the Cilium agent reads its labels and computes a stable numeric identity, distributed to eBPF maps on every node cluster-wide.</p>
+          <br>
+          <span class="lpill">app=nginx</span><span class="lpill">namespace=prod</span><span class="lpill">tier=frontend</span>
+          <br><br>
+          <p style="font-size:.72rem">→ Cilium Identity: <strong>12345</strong> — programmed in eBPF on all nodes</p>
+        </div>
+        <div class="label-card">
+          <h4>How Policy Uses Labels</h4>
+          <p>NetworkPolicy rules reference labels — not IPs. Cilium looks up the source identity in the eBPF map and checks against policy. No IP tracking required.</p>
+          <br>
+          <div class="cmd-block" style="font-size:.65rem;margin:0">podSelector:
+  matchLabels:
+    app: backend
+<span class="c"># Matches any pod with app=backend</span>
+<span class="c"># regardless of current IP address</span></div>
+        </div>
+        <div class="label-card">
+          <h4>Why This Matters</h4>
+          <p>Pod IPs change constantly — restarts, scaling, rescheduling. IP-based rules need constant updates. Cilium label-based identity means:</p>
+          <br>
+          <p>✅ Policies survive pod restarts automatically</p>
+          <p>✅ New replicas get policy immediately</p>
+          <p>✅ No IP management overhead</p>
+          <p>✅ Works across nodes and clusters</p>
+        </div>
+        <div class="label-card">
+          <h4>Hubble Uses the Same Identity</h4>
+          <p>Hubble reads the same eBPF hooks, so every captured flow has pod identity attached — pod name, namespace, and labels — not just raw IPs.</p>
+          <br>
+          <div class="cmd-block" style="font-size:.65rem;margin:0"><span class="g">prod/nginx → prod/api:80   FORWARDED</span>
+<span class="r">dev/client → prod/api:80   DROPPED</span>
+<span class="c"># Policy denied — identity mismatch</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">C.3</span><span class="step-title">Cilium in OpenShift — Multus, OLM, and why day-0 matters</span><span class="step-badge sb-info">Concept</span></div>
+    <div class="step-body">
+      <p class="sd">OpenShift mandates <strong>Multus</strong> as a meta-CNI on every cluster — it allows pods to have multiple network interfaces and delegates primary pod networking to whichever CNI is configured as the primary plugin. In this install, that is Cilium.</p>
+      <p class="sd">The <strong>Isovalent OLM operator</strong> manages the Cilium agent DaemonSet lifecycle. By placing the complete OLM manifests in the <span class="ic">openshift/</span> directory before generating the agent ISO, the operator deploys during bootstrap — ensuring Cilium writes its CNI config to <span class="ic">/run/multus/cni/net.d</span> before Multus starts looking for it. This is what "native day-0 Cilium" means.</p>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><div class="callout-title">This is why the install order matters</div>If Multus starts before Cilium has written its CNI config, Multus enters CrashLoopBackOff. Every other pod in the cluster goes Pending. The only fix is to regenerate the ISO with the correct Isovalent manifests in <span class="ic">openshift/</span> and reinstall. There is no in-place recovery.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 0 -->
+<div class="phase-block" id="phase0">
+  <div class="phase-header" data-phase="0">
+    <div class="phase-circle">0</div>
+    <div class="phase-info">
+      <div class="phase-title">Pre-flight Verification</div>
+      <div class="phase-subtitle">Confirm all infrastructure prerequisites before starting the install</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.1</span><span class="step-title">Confirm IP address plan — all IPs free and on same L2 subnet</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">Reserve all 6 IPs before starting. The API and Ingress VIPs must not be assigned to any node — they are managed by keepalived on the cluster nodes automatically.</p>
+      <table class="data-table">
+        <tbody><tr><th>IP</th><th>Role</th><th>Notes</th></tr>
+        <tr><td><span class="ic">10.7.1.159</span></td><td>Ingress VIP (*.apps)</td><td>Managed by keepalived — do not assign to a VM</td></tr>
+        <tr><td><span class="ic">10.7.1.160</span></td><td>API VIP</td><td>Managed by keepalived — do not assign to a VM</td></tr>
+        <tr><td><span class="ic">10.7.1.161</span></td><td>master1 (Rendezvous)</td><td>Bootstrap node — must be first in agent-config.yaml</td></tr>
+        <tr><td><span class="ic">10.7.1.162</span></td><td>master2</td><td></td></tr>
+        <tr><td><span class="ic">10.7.1.163</span></td><td>master3</td><td></td></tr>
+        <tr><td><span class="ic">10.7.1.164</span></td><td>worker1</td><td></td></tr>
+      </tbody></table>
+      <div class="cmd-block"><span class="c"># Verify VIP IPs are free (should show 100% packet loss)</span>
+<span class="p">$</span> ping -c 2 10.7.1.159
+<span class="p">$</span> ping -c 2 10.7.1.160
+<span class="g"># Expected: 100% packet loss — IPs not yet in use</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.2</span><span class="step-title">Confirm ESXi VMs created with minimum specs</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">All VMs must exist in ESXi before generating the ISO. Collect MAC addresses from each VM — they are required for the agent-config.yaml and dnsmasq DHCP reservations.</p>
+      <table class="data-table">
+        <tbody><tr><th>VM Name</th><th>vCPU</th><th>RAM</th><th>Disk</th><th>NIC</th><th>MAC Address</th></tr>
+        <tr><td>MASTER-1</td><td>8</td><td>64 GB</td><td>120 GB</td><td>VMXNET3</td><td>00:0c:29:e1:2f:26</td></tr>
+        <tr><td>MASTER-2</td><td>8</td><td>64 GB</td><td>120 GB</td><td>VMXNET3</td><td>00:0c:29:00:5a:a2</td></tr>
+        <tr><td>MASTER-3</td><td>8</td><td>64 GB</td><td>120 GB</td><td>VMXNET3</td><td>00:0c:29:60:9f:c0</td></tr>
+        <tr><td>worker1</td><td>8</td><td>64 GB</td><td>120 GB</td><td>VMXNET3</td><td>00:0c:29:6d:c4:20</td></tr>
+      </tbody></table>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">How to find MAC addresses in ESXi</div>In the ESXi web UI: select each VM → Edit Settings → Network Adapter → MAC Address. Note the MAC before proceeding.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.3</span><span class="step-title">Confirm outbound internet access on port 443 from helper VM</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <p class="sd">The installer must pull the RHCOS base ISO and OpenShift release images from Red Hat registries during ISO generation.</p>
+      <div class="cmd-block"><span class="p">$</span> curl -sv https://quay.io --max-time 10 2&gt;&amp;1 | grep -E "Connected|SSL"
+<span class="g"># Expected: Connected to quay.io ... SSL connection using TLSv1.3</span>
+
+<span class="p">$</span> curl -sv https://mirror.openshift.com --max-time 10 2&gt;&amp;1 | grep Connected
+<span class="g"># Expected: Connected to mirror.openshift.com</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">GitHub release downloads may be blocked</div>In this lab environment, <span class="ic">objects.githubusercontent.com</span> (GitHub release CDN) is blocked. Do not rely on GitHub release asset downloads for tools. Use apt, pip, or mirror.openshift.com instead.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">0.4</span><span class="step-title">Obtain Red Hat pull secret</span><span class="step-badge sb-ui">Browser</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>Steps in Browser</h4>
+        <ol class="ui-step-list">
+          <li>Navigate to <strong>https://console.redhat.com/openshift/install/pull-secret</strong></li>
+          <li>Log in with your Red Hat account</li>
+          <li>Click <strong>Download pull secret</strong> or copy the JSON</li>
+          <li>Save it — you will paste the entire JSON string into install-config.yaml</li>
+        </ol>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">Pull secrets expire — download fresh before each install</div>Pull secrets are tied to your Red Hat account subscription. Download a fresh one before each install attempt to avoid ImagePullBackOff failures during bootstrap.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 1 -->
+<div class="phase-block" id="phase1">
+  <div class="phase-header" data-phase="1">
+    <div class="phase-circle">1</div>
+    <div class="phase-info">
+      <div class="phase-title">Helper VM Preparation</div>
+      <div class="phase-subtitle">Install all required tools on the Ubuntu 24.04 helper VM</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.1</span><span class="step-title">Download openshift-install and oc CLI for OCP 4.18</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">Both binaries must match the target OCP version. Always use the stable-4.18 stream to get the latest 4.18.x patch release.</p>
+      <div class="cmd-block"><span class="c"># Download openshift-install</span>
+<span class="p">$</span> cd ~
+<span class="p">$</span> curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.18/openshift-install-linux.tar.gz \
+  -o openshift-install-linux.tar.gz
+<span class="p">$</span> tar -xzf openshift-install-linux.tar.gz openshift-install
+<span class="p">$</span> sudo mv openshift-install /usr/local/bin/
+
+<span class="c"># Download oc and kubectl</span>
+<span class="p">$</span> curl -L https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.18/openshift-client-linux.tar.gz \
+  -o openshift-client-linux.tar.gz
+<span class="p">$</span> tar -xzf openshift-client-linux.tar.gz oc kubectl
+<span class="p">$</span> sudo mv oc kubectl /usr/local/bin/
+
+<span class="c"># Verify versions</span>
+<span class="p">$</span> openshift-install version
+<span class="g"># openshift-install 4.18.36</span>
+<span class="p">$</span> oc version --client
+<span class="g"># Client Version: 4.18.36</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.2</span><span class="step-title">Generate SSH key pair for node access</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_ed25519
+<span class="p">$</span> cat ~/.ssh/id_ed25519.pub
+<span class="c"># Copy this entire line — it goes into install-config.yaml as sshKey</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.3</span><span class="step-title">Install nmstatectl stub — Ubuntu workaround</span><span class="step-badge sb-warn">Workaround</span></div>
+    <div class="step-body">
+      <p class="sd">The openshift-install binary requires nmstatectl for networkConfig validation. nmstatectl is not available in Ubuntu 24.04 apt repos. Since we use dnsmasq DHCP reservations for static IPs instead of networkConfig, a stub that satisfies the binary check is sufficient.</p>
+      <div class="cmd-block"><span class="c"># Create nmstatectl stub</span>
+<span class="p">$</span> sudo tee /usr/local/bin/nmstatectl &lt;&lt; 'EOF'
+#!/bin/bash
+exit 0
+EOF
+<span class="p">$</span> sudo chmod +x /usr/local/bin/nmstatectl
+<span class="p">$</span> hash -r
+<span class="p">$</span> nmstatectl --version
+<span class="g"># Silent exit = stub is working</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Why this works</div>The stub bypasses nmstate validation on the helper VM. The actual static IP assignment is handled by dnsmasq DHCP reservations — nodes boot, receive their reserved IPs by MAC address, and always land on the correct static IPs. No node-level networkConfig is needed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">1.4</span><span class="step-title">Create install working directory</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> mkdir -p ~/ocp-cilium-install/openshift
+<span class="p">$</span> ls ~/ocp-cilium-install/
+<span class="g"># openshift/   (empty directory — Cilium manifests go here next)</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">The installer consumes your config files</div>The <span class="ic">openshift-install agent create image</span> command deletes install-config.yaml and agent-config.yaml after generating the ISO. Always back up both files before running the command.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 2 -->
+<div class="phase-block" id="phase2">
+  <div class="phase-header" data-phase="2">
+    <div class="phase-circle">2</div>
+    <div class="phase-info">
+      <div class="phase-title">DNS &amp; DHCP Configuration</div>
+      <div class="phase-subtitle">Configure dnsmasq on the helper VM for both DNS resolution and DHCP IP assignment</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.1</span><span class="step-title">Verify dnsmasq is installed and running</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> sudo systemctl status dnsmasq --no-pager | head -5
+<span class="g"># Active: active (running)</span>
+
+<span class="p">$</span> sudo ss -ulnp | grep 67
+<span class="g"># UNCONN 0 0 0.0.0.0:67 ... dnsmasq   ← DHCP listening on port 67</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.2</span><span class="step-title">Create /etc/dnsmasq.d/cilium.conf with all required options</span><span class="step-badge sb-config">Config</span></div>
+    <div class="step-body">
+      <p class="sd">This single file provides DNS resolution, DHCP IP assignment by MAC, default gateway, DNS server, and NTP server to all cluster nodes. Create it completely before booting any VMs.</p>
+      <div class="cmd-block"><span class="p">$</span> sudo tee /etc/dnsmasq.d/cilium.conf &lt;&lt; 'EOF'
+<span class="c"># DNS records for os-lab-cilium cluster</span>
+address=/api.os-lab-cilium.oslab.oslab/10.7.1.160
+address=/api-int.os-lab-cilium.oslab.oslab/10.7.1.160
+address=/.apps.os-lab-cilium.oslab.oslab/10.7.1.159
+address=/master1.os-lab-cilium.oslab.oslab/10.7.1.161
+address=/master2.os-lab-cilium.oslab.oslab/10.7.1.162
+address=/master3.os-lab-cilium.oslab.oslab/10.7.1.163
+address=/worker1.os-lab-cilium.oslab.oslab/10.7.1.164
+
+<span class="c"># DHCP range and MAC reservations</span>
+dhcp-range=10.7.1.100,10.7.1.200,12h
+dhcp-host=00:0c:29:e1:2f:26,master1,10.7.1.161
+dhcp-host=00:0c:29:00:5a:a2,master2,10.7.1.162
+dhcp-host=00:0c:29:60:9f:c0,master3,10.7.1.163
+dhcp-host=00:0c:29:6d:c4:20,worker1,10.7.1.164
+
+<span class="c"># DHCP options: gateway, DNS, NTP</span>
+dhcp-option=3,10.7.1.1       <span class="c"># Default gateway</span>
+dhcp-option=6,10.7.1.75      <span class="c"># DNS server (this helper VM)</span>
+dhcp-option=42,216.239.35.0  <span class="c"># NTP server (Google)</span>
+
+<span class="c"># Upstream DNS forwarders</span>
+server=8.8.8.8
+server=1.1.1.1
+EOF
+
+<span class="p">$</span> sudo systemctl restart dnsmasq</div>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><div class="callout-title">Include ALL dhcp-option lines before booting nodes</div>On the first install attempt, dhcp-option=3 (gateway) was missing. Nodes received IPs but had no default route, causing all quay.io pulls to time out with "dial tcp: i/o timeout." All three dhcp-option lines (gateway, DNS, NTP) must be present before the first node boot.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">2.3</span><span class="step-title">Verify DNS records resolve correctly</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> dig api.os-lab-cilium.oslab.oslab @127.0.0.1 +short
+<span class="g"># 10.7.1.160</span>
+
+<span class="p">$</span> dig console-openshift-console.apps.os-lab-cilium.oslab.oslab @127.0.0.1 +short
+<span class="g"># 10.7.1.159</span>
+
+<span class="p">$</span> dig master1.os-lab-cilium.oslab.oslab @127.0.0.1 +short
+<span class="g"># 10.7.1.161</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 3 -->
+<div class="phase-block" id="phase3">
+  <div class="phase-header" data-phase="3">
+    <div class="phase-circle">3</div>
+    <div class="phase-info">
+      <div class="phase-title">Isovalent Cilium Manifests</div>
+      <div class="phase-subtitle">Clone the official olm-for-cilium repo and copy manifests into the openshift/ directory</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.1</span><span class="step-title">Clone isovalent/olm-for-cilium and copy v1.15.1 manifests</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">The official Isovalent OLM manifests must be placed in the openshift/ directory before ISO generation. These are the complete manifests including CRDs, RBAC, OLM operator deployment, and CiliumConfig. Never hand-craft these — always use the official repo.</p>
+      <div class="cmd-block"><span class="c"># Clone the repo</span>
+<span class="p">$</span> cd /tmp
+<span class="p">$</span> git clone https://github.com/isovalent/olm-for-cilium.git
+
+<span class="c"># Check available versions</span>
+<span class="p">$</span> ls /tmp/olm-for-cilium/manifests/
+<span class="g"># cilium.v1.15.1  cilium.v1.14.7  ... (use the latest)</span>
+
+<span class="c"># Copy manifests to your install directory</span>
+<span class="p">$</span> cp /tmp/olm-for-cilium/manifests/cilium.v1.15.1/* ~/ocp-cilium-install/openshift/
+
+<span class="c"># Verify all manifests are present</span>
+<span class="p">$</span> ls ~/ocp-cilium-install/openshift/
+<span class="g"># cluster-network-03-cilium-ciliumconfigs-crd.yaml</span>
+<span class="g"># cluster-network-06-cilium-00000-cilium-namespace.yaml</span>
+<span class="g"># cluster-network-06-cilium-00001-cilium-olm-serviceaccount.yaml</span>
+<span class="g"># ... (17 files total)</span>
+<span class="g"># cluster-network-07-cilium-ciliumconfig.yaml</span></div>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><div class="callout-title">Never hand-craft the Cilium manifests</div>On the first two install attempts, hand-crafted manifests (Namespace + OperatorGroup + Subscription + CiliumConfig only) were used. This caused Multus to CrashLoopBackOff because the RBAC, CRDs, and OLM deployment manifests were missing — Cilium never initialized, leaving Multus with no CNI config. Always use the complete set from the official repo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">3.2</span><span class="step-title">Customize CiliumConfig — enable Hubble relay and UI</span><span class="step-badge sb-config">Config</span></div>
+    <div class="step-body">
+      <p class="sd">The default CiliumConfig from the repo has Hubble defined but not fully enabled. Replace it with the version below which enables Hubble relay, UI, and kubeProxyReplacement. Also sets the OpenShift-specific VXLAN port (4789) and cluster health port (9940).</p>
+      <div class="cmd-block"><span class="p">$</span> cat &gt; ~/ocp-cilium-install/openshift/cluster-network-07-cilium-ciliumconfig.yaml &lt;&lt; 'EOF'
+apiVersion: cilium.io/v1alpha1
+kind: CiliumConfig
+metadata:
+  name: cilium
+  namespace: cilium
+spec:
+  debug:
+    enabled: false
+  cni:
+    binPath: "/var/lib/cni/bin"
+    confPath: "/var/run/multus/cni/net.d"
+    chainingMode: portmap
+  securityContext:
+    privileged: true
+  kubeProxyReplacement: strict
+  k8sServiceHost: api.os-lab-cilium.oslab.oslab
+  k8sServicePort: 6443
+  clusterHealthPort: 9940
+  tunnelPort: 4789
+  etcd:
+    leaseTTL: 30s
+  hubble:
+    enabled: true
+    peerService:
+      clusterDomain: cluster.local
+    relay:
+      enabled: true
+    tls:
+      auto:
+        certValidityDuration: 1095
+        enabled: true
+        method: helm
+    ui:
+      enabled: true
+  ipam:
+    mode: cluster-pool
+    operator:
+      clusterPoolIPv4MaskSize: "23"
+      clusterPoolIPv4PodCIDRList:
+        - "10.128.0.0/14"
+  ipv4:
+    enabled: true
+  k8s:
+    requireIPv4PodCIDR: true
+  sessionAffinity: true
+  prometheus:
+    serviceMonitor: {enabled: false}
+EOF</div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">OpenShift-specific port requirements</div><span class="ic">tunnelPort: 4789</span> — OpenShift uses UDP 4789 (IANA standard) for VXLAN, not Cilium's default UDP 8472 (Linux). <span class="ic">clusterHealthPort: 9940</span> — OpenShift blocks low-range ports so the health check must use a higher port.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 4 -->
+<div class="phase-block" id="phase4">
+  <div class="phase-header" data-phase="4">
+    <div class="phase-circle">4</div>
+    <div class="phase-info">
+      <div class="phase-title">Create Install Config Files</div>
+      <div class="phase-subtitle">Generate install-config.yaml and agent-config.yaml with your environment values</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.1</span><span class="step-title">Create install-config.yaml</span><span class="step-badge sb-config">Config</span></div>
+    <div class="step-body">
+      <p class="sd">The critical setting is <span class="ic">networkType: Cilium</span>. This tells OpenShift to expect Cilium as the CNI from day 0. Combined with the manifests in openshift/, the installer will configure Cilium before Multus starts.</p>
+      <div class="yaml-block"><span class="k">apiVersion:</span> <span class="v">v1</span>
+<span class="k">baseDomain:</span> <span class="v">oslab.oslab</span>
+<span class="k">metadata:</span>
+  <span class="k">name:</span> <span class="v">os-lab-cilium</span>  <span class="c"># Must be lowercase RFC 1123 — no uppercase or underscores</span>
+<span class="k">networking:</span>
+  <span class="k">networkType:</span> <span class="v">Cilium</span>   <span class="c"># Critical — tells OCP to expect Cilium as native CNI</span>
+  <span class="k">clusterNetwork:</span>
+    <span class="k">- cidr:</span> <span class="v">10.128.0.0/14</span>
+      <span class="k">hostPrefix:</span> <span class="v">23</span>
+  <span class="k">serviceNetwork:</span>
+    <span class="k">- 172.30.0.0/16</span>
+  <span class="k">machineNetwork:</span>
+    <span class="k">- cidr:</span> <span class="v">10.7.1.0/24</span>
+<span class="k">compute:</span>
+  <span class="k">- name:</span> <span class="v">worker</span>
+    <span class="k">replicas:</span> <span class="v">1</span>
+<span class="k">controlPlane:</span>
+  <span class="k">name:</span> <span class="v">master</span>
+  <span class="k">replicas:</span> <span class="v">3</span>
+<span class="k">platform:</span>
+  <span class="k">baremetal:</span>
+    <span class="k">apiVIPs:</span>
+      <span class="k">- 10.7.1.160</span>
+    <span class="k">ingressVIPs:</span>
+      <span class="k">- 10.7.1.159</span>
+<span class="k">pullSecret:</span> <span class="s">'&lt;paste full pull secret JSON here&gt;'</span>
+<span class="k">sshKey:</span> <span class="s">'&lt;paste output of: cat ~/.ssh/id_ed25519.pub&gt;'</span></div>
+      <div class="callout danger">
+        <span class="callout-icon">🚫</span>
+        <div class="callout-body"><div class="callout-title">Cluster name must be lowercase — installer will reject uppercase</div>The cluster name <span class="ic">os-lab-cilium</span> must be all lowercase. The original name <span class="ic">OS-LAB-Cilium</span> caused a fatal error: "a lowercase RFC 1123 subdomain must consist of lower case alphanumeric characters." The full cluster FQDN will be <span class="ic">os-lab-cilium.oslab.oslab</span>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.2</span><span class="step-title">Create agent-config.yaml</span><span class="step-badge sb-config">Config</span></div>
+    <div class="step-body">
+      <p class="sd">Nodes are identified by MAC address only. The networkConfig section is intentionally omitted — static IP assignment is handled by dnsmasq DHCP reservations. The rendezvousIP must be master1's IP — this is the bootstrap node where all other nodes check in.</p>
+      <div class="yaml-block"><span class="k">apiVersion:</span> <span class="v">v1alpha1</span>
+<span class="k">kind:</span> <span class="v">AgentConfig</span>
+<span class="k">metadata:</span>
+  <span class="k">name:</span> <span class="v">os-lab-cilium</span>
+<span class="k">rendezvousIP:</span> <span class="v">10.7.1.161</span>  <span class="c"># master1 — all other nodes report here</span>
+<span class="k">hosts:</span>
+  <span class="k">- hostname:</span> <span class="v">master1</span>
+    <span class="k">role:</span> <span class="v">master</span>
+    <span class="k">interfaces:</span>
+      <span class="k">- name:</span> <span class="v">ens192</span>
+        <span class="k">macAddress:</span> <span class="v">00:0c:29:e1:2f:26</span>
+  <span class="k">- hostname:</span> <span class="v">master2</span>
+    <span class="k">role:</span> <span class="v">master</span>
+    <span class="k">interfaces:</span>
+      <span class="k">- name:</span> <span class="v">ens192</span>
+        <span class="k">macAddress:</span> <span class="v">00:0c:29:00:5a:a2</span>
+  <span class="k">- hostname:</span> <span class="v">master3</span>
+    <span class="k">role:</span> <span class="v">master</span>
+    <span class="k">interfaces:</span>
+      <span class="k">- name:</span> <span class="v">ens192</span>
+        <span class="k">macAddress:</span> <span class="v">00:0c:29:60:9f:c0</span>
+  <span class="k">- hostname:</span> <span class="v">worker1</span>
+    <span class="k">role:</span> <span class="v">worker</span>
+    <span class="k">interfaces:</span>
+      <span class="k">- name:</span> <span class="v">ens192</span>
+        <span class="k">macAddress:</span> <span class="v">00:0c:29:6d:c4:20</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">4.3</span><span class="step-title">Back up config files before generating ISO</span><span class="step-badge sb-warn">Important</span></div>
+    <div class="step-body">
+      <p class="sd">The installer deletes these files after generating the ISO. Back them up now.</p>
+      <div class="cmd-block"><span class="p">$</span> cp ~/ocp-cilium-install/install-config.yaml ~/install-config.yaml.bak
+<span class="p">$</span> cp ~/ocp-cilium-install/agent-config.yaml ~/agent-config.yaml.bak
+<span class="p">$</span> ls ~/ocp-cilium-install/
+<span class="g"># agent-config.yaml  install-config.yaml  openshift/</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 5 -->
+<div class="phase-block" id="phase5">
+  <div class="phase-header" data-phase="5">
+    <div class="phase-circle">5</div>
+    <div class="phase-info">
+      <div class="phase-title">Generate the Agent ISO</div>
+      <div class="phase-subtitle">Run openshift-install to bake ignition configs and Cilium manifests into the agent.iso</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.1</span><span class="step-title">Generate agent.x86_64.iso</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> cd ~/ocp-cilium-install
+<span class="p">$</span> openshift-install agent create image --dir . --log-level info</div>
+      <p class="sd" style="margin-top:.85rem">Expected output — look for these lines to confirm success:</p>
+      <div class="cmd-block"><span class="g">INFO Configuration has 3 master replicas and 1 worker replicas</span>
+<span class="g">INFO The rendezvous host IP (node0 IP) is 10.7.1.161</span>
+<span class="g">INFO Extracting base ISO from release payload</span>
+<span class="g">INFO Using cached Base ISO /home/scott/.cache/agent/image_cache/coreos-x86_64.iso</span>
+<span class="g">INFO Consuming Agent Config from target directory</span>
+<span class="g">INFO Consuming Install Config from target directory</span>
+<span class="g">INFO Consuming Extra Manifests from target directory</span>  <span class="c">← Cilium manifests loaded</span>
+<span class="g">INFO Generated ISO at agent.x86_64.iso.</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Consuming Extra Manifests confirms Cilium is baked in</div>The line "Consuming Extra Manifests from target directory" confirms the openshift/ directory manifests were loaded into the ISO. If this line is missing, the Cilium manifests were not picked up.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">5.2</span><span class="step-title">Verify ISO size and upload to ESXi datastore</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Verify ISO was generated and is correct size (~1.3 GB)</span>
+<span class="p">$</span> ls -lh ~/ocp-cilium-install/agent.x86_64.iso
+<span class="g"># -rw-rw-r-- 1 scott scott 1.3G ... agent.x86_64.iso</span>
+
+<span class="c"># SCP directly to ESXi datastore</span>
+<span class="p">$</span> scp ~/ocp-cilium-install/agent.x86_64.iso root@10.7.1.51:/vmfs/volumes/datastore1/
+<span class="g"># 100% 1274MB  87.2MB/s  00:14</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 6 -->
+<div class="phase-block" id="phase6">
+  <div class="phase-header" data-phase="6">
+    <div class="phase-circle">6</div>
+    <div class="phase-info">
+      <div class="phase-title">Boot Nodes &amp; Monitor Install</div>
+      <div class="phase-subtitle">Mount the ISO to each VM in ESXi and monitor bootstrap and install completion</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.1</span><span class="step-title">Mount ISO and configure boot order in ESXi for all 4 VMs</span><span class="step-badge sb-ui">ESXi UI</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>Repeat for each VM: MASTER-1, MASTER-2, MASTER-3, worker1</h4>
+        <ol class="ui-step-list">
+          <li>In ESXi web UI, right-click the VM → <strong>Edit Settings</strong></li>
+          <li>Click <strong>CD/DVD Drive</strong> → Select <strong>Datastore ISO file</strong> → Browse to <strong>agent.x86_64.iso</strong></li>
+          <li>Check <strong>Connect at Power On</strong></li>
+          <li>Click <strong>VM Options</strong> tab → <strong>Boot Options</strong></li>
+          <li>Set <strong>Boot Delay</strong> to <strong>5000 ms</strong> (gives time to enter BIOS if needed)</li>
+          <li>Click <strong>Save</strong></li>
+          <li>Power on the VM</li>
+        </ol>
+      </div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Expected console output — install is working</div>Once booted you will see the TUI: <strong>"Agent installer network boot setup — Please wait, collecting initial check results"</strong>. After network validation passes you will see <strong>"Agent-based installer connectivity checks passed"</strong> with a countdown to auto-continue.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.2</span><span class="step-title">Confirm all 4 nodes received DHCP leases</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> watch -n 5 cat /var/lib/misc/dnsmasq.leases
+<span class="c"># Wait until all 4 MACs appear with correct IPs</span>
+<span class="g"># 10.7.1.161  master1  00:0c:29:e1:2f:26</span>
+<span class="g"># 10.7.1.162  master2  00:0c:29:00:5a:a2</span>
+<span class="g"># 10.7.1.163  master3  00:0c:29:60:9f:c0</span>
+<span class="g"># 10.7.1.164  worker1  00:0c:29:6d:c4:20</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">If a node doesn't get a lease — reboot it</div>If a node's MAC doesn't appear after 3-4 minutes, reboot it in ESXi. The DHCP reservation will assign the correct IP on the next boot attempt.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.3</span><span class="step-title">Monitor bootstrap completion</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> cd ~/ocp-cilium-install
+<span class="p">$</span> openshift-install agent wait-for bootstrap-complete --dir . --log-level info</div>
+      <p class="sd" style="margin-top:.85rem">Bootstrap takes approximately 20-30 minutes. Expected progression:</p>
+      <div class="cmd-block"><span class="g">INFO Registered infra env</span>
+<span class="g">INFO Host master1: updated status from discovering to known</span>
+<span class="g">INFO Cluster validation: All hosts in the cluster are ready to install</span>
+<span class="g">INFO Host master1: reached installation stage Writing image to disk: 100%</span>
+<span class="g">INFO Bootstrap Kube API Initialized</span>
+<span class="g">INFO Bootstrap configMap status is complete</span>
+<span class="g">INFO Bootstrap is complete</span>
+<span class="g">INFO cluster bootstrap is complete</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">"Bootstrap process timed out" is not a failure</div>The installer has a fixed wait timeout. If you see "context deadline exceeded" after Bootstrap is complete, that just means the timer expired — the install is continuing in the background. Proceed to wait-for install-complete.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">6.4</span><span class="step-title">Monitor full install completion</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> cd ~/ocp-cilium-install
+<span class="p">$</span> openshift-install agent wait-for install-complete --dir . --log-level info
+
+<span class="c"># In a second terminal, watch nodes come up</span>
+<span class="p">$</span> export KUBECONFIG=~/ocp-cilium-install/auth/kubeconfig
+<span class="p">$</span> watch -n 10 oc get nodes</div>
+      <p class="sd" style="margin-top:.85rem">Full install takes 45-60 minutes total from first boot. Success output:</p>
+      <div class="cmd-block"><span class="g">INFO Install complete!</span>
+<span class="g">INFO To access the cluster as the system:admin user when using 'oc', run:</span>
+<span class="g">     export KUBECONFIG=/home/scott/ocp-cilium-install/auth/kubeconfig</span>
+<span class="g">INFO Access the OpenShift web-console here:</span>
+<span class="g">     https://console-openshift-console.apps.os-lab-cilium.oslab.oslab</span>
+<span class="g">INFO Login to the console with user: "kubeadmin", and password: "&lt;password&gt;"</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 7 -->
+<div class="phase-block" id="phase7">
+  <div class="phase-header" data-phase="7">
+    <div class="phase-circle">7</div>
+    <div class="phase-info">
+      <div class="phase-title">Post-Install Verification</div>
+      <div class="phase-subtitle">Confirm Cilium is running, Hubble is active, and all cluster operators are healthy</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.1</span><span class="step-title">Verify Cilium is the native CNI</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> oc get network.operator cluster -o jsonpath='{.spec.defaultNetwork.type}'
+<span class="g">Cilium</span>  <span class="c">← This is the money shot</span>
+
+<span class="p">$</span> oc get pods -n cilium
+<span class="g">cilium-xxxxx          1/1  Running   ← one per node</span>
+<span class="g">cilium-olm-xxxxx      1/1  Running</span>
+<span class="g">cilium-operator-xxx   1/1  Running</span>
+<span class="g">hubble-relay-xxxxx    1/1  Running</span>
+<span class="g">hubble-ui-xxxxx       2/2  Running</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.2</span><span class="step-title">Verify all 4 nodes are Ready</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> oc get nodes
+<span class="g">NAME      STATUS   ROLES                         AGE   VERSION</span>
+<span class="g">master1   Ready    control-plane,master,worker   ...   v1.31.14</span>
+<span class="g">master2   Ready    control-plane,master,worker   ...   v1.31.14</span>
+<span class="g">master3   Ready    control-plane,master,worker   ...   v1.31.14</span>
+<span class="g">worker1   Ready    worker                        ...   v1.31.14</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.3</span><span class="step-title">Verify all cluster operators are healthy</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> oc get clusteroperators | grep -v "True.*False.*False"
+<span class="g"># No output = all operators Available=True, Progressing=False, Degraded=False</span>
+
+<span class="p">$</span> oc get clusterversion
+<span class="g">NAME      VERSION   AVAILABLE   PROGRESSING   STATUS</span>
+<span class="g">version   4.18.36   True        False         Cluster version is 4.18.36</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.4</span><span class="step-title">Verify Cilium agent status and Hubble flows</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check Cilium status from inside an agent pod</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- cilium status
+
+<span class="c"># Check Hubble is capturing flows</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe --last 10
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble status</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">7.5</span><span class="step-title">Access the OpenShift web console</span><span class="step-badge sb-ui">Browser</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Get console URL and kubeadmin password</span>
+<span class="p">$</span> oc whoami --show-console
+<span class="g">https://console-openshift-console.apps.os-lab-cilium.oslab.oslab</span>
+
+<span class="p">$</span> cat ~/ocp-cilium-install/auth/kubeadmin-password
+<span class="g">xxxx-xxxx-xxxx-xxxx</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Add console URL to Mac /etc/hosts for browser access</div>Add these lines to <span class="ic">/etc/hosts</span> on your Mac so the browser can resolve the console URL:<br><br>
+        <span class="ic">10.7.1.160  api.os-lab-cilium.oslab.oslab</span><br>
+        <span class="ic">10.7.1.159  console-openshift-console.apps.os-lab-cilium.oslab.oslab</span><br>
+        <span class="ic">10.7.1.159  oauth-openshift.apps.os-lab-cilium.oslab.oslab</span><br><br>
+        Then flush DNS: <span class="ic">sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</span></div>
+      </div>
+      <div class="ui-steps">
+        <h4>Verify Cilium in Web Console</h4>
+        <ol class="ui-step-list">
+          <li>Open <strong>https://console-openshift-console.apps.os-lab-cilium.oslab.oslab</strong></li>
+          <li>Accept the self-signed certificate warning</li>
+          <li>Log in as <strong>kubeadmin</strong> with the password from above</li>
+          <li>Navigate to <strong>Operators → Installed Operators</strong></li>
+          <li>Switch project/namespace to <strong>cilium</strong></li>
+          <li>Confirm <strong>Cilium v1.15.1 — provided by Isovalent</strong> shows Status: <strong>Succeeded</strong></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 8 — Hubble -->
+<div class="phase-block" id="phase8">
+  <div class="phase-header" data-phase="8">
+    <div class="phase-circle">8</div>
+    <div class="phase-info">
+      <div class="phase-title">Hubble — Network Observability</div>
+      <div class="phase-subtitle">Access Hubble UI, expose via OpenShift Route, and use the Hubble CLI for real-time flow visibility</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">8.1</span><span class="step-title">Verify Hubble relay and UI pods are running</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="p">$</span> oc get pods -n cilium | grep hubble
+<span class="g">hubble-relay-7554bd6669-d7s99      1/1     Running</span>
+<span class="g">hubble-ui-7ccb6dcbc4-rtc5v         2/2     Running</span>
+
+<span class="c"># Check Hubble relay is healthy</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble status
+<span class="g">Healthcheck (via localhost:4245): Ok</span>
+<span class="g">Current/Max Flows: 4096/4096</span>
+<span class="g">Flows/s: 28.67</span>
+<span class="g">Connected Nodes: 4/4</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">What Hubble does</div>Hubble is Cilium's built-in observability layer. It uses the same eBPF hooks as Cilium to capture every network flow across the cluster in real time — with identity-aware context (pod name, namespace, labels) rather than just raw IPs. The relay aggregates flows from all nodes; the UI visualizes them in a service map.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">8.2</span><span class="step-title">Expose Hubble UI via OpenShift Route</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">The Hubble UI service is ClusterIP only by default. Create an OpenShift Route to expose it through the ingress controller so it can be accessed from a browser without port-forwarding.</p>
+      <div class="cmd-block"><span class="c"># Check the Hubble UI service</span>
+<span class="p">$</span> oc get svc -n cilium | grep hubble
+<span class="g">hubble-relay   ClusterIP   172.30.x.x    4245/TCP</span>
+<span class="g">hubble-ui      ClusterIP   172.30.x.x    80/TCP</span>
+
+<span class="c"># Create a Route to expose the Hubble UI</span>
+<span class="p">$</span> oc expose svc/hubble-ui -n cilium \
+  --hostname=hubble.apps.os-lab-cilium.oslab.oslab
+
+<span class="c"># Verify the Route was created</span>
+<span class="p">$</span> oc get route -n cilium
+<span class="g">NAME        HOST                                      PORT   TERMINATION</span>
+<span class="g">hubble-ui   hubble.apps.os-lab-cilium.oslab.oslab   80</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">Add Hubble UI hostname to Mac /etc/hosts</div>The wildcard <span class="ic">*.apps.os-lab-cilium.oslab.oslab</span> resolves to 10.7.1.159 via dnsmasq on the helper VM, but your Mac needs a hosts entry to reach it from a browser:<br><br>
+        <span class="ic">10.7.1.159  hubble.apps.os-lab-cilium.oslab.oslab</span><br><br>
+        Then flush DNS: <span class="ic">sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">8.3</span><span class="step-title">Access Hubble UI in browser</span><span class="step-badge sb-ui">Browser</span></div>
+    <div class="step-body">
+      <div class="ui-steps">
+        <h4>Steps in Browser</h4>
+        <ol class="ui-step-list">
+          <li>Open <strong>http://hubble.apps.os-lab-cilium.oslab.oslab</strong></li>
+          <li>The Hubble service map loads — you will see namespaces as nodes and traffic flows as edges between them</li>
+          <li>Use the namespace selector (top left) to filter to a specific namespace</li>
+          <li>Click on any flow line to see the source pod, destination pod, port, protocol, and verdict (forwarded/dropped)</li>
+          <li>Use the <strong>Flows</strong> tab for a raw list of recent network events across the cluster</li>
+        </ol>
+      </div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">What you will see in the Hubble UI</div>The service map shows real-time pod-to-pod traffic with identity context. Even with no workloads deployed you will see cluster-internal traffic — DNS queries to openshift-dns, etcd traffic between masters, and kube-apiserver traffic. This confirms Hubble is capturing all cluster network flows correctly.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">8.4</span><span class="step-title">Use Hubble CLI for real-time flow observation</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">The Hubble CLI runs inside the Cilium agent pods. Use it for real-time flow filtering, dropped packet analysis, and policy troubleshooting.</p>
+      <div class="cmd-block"><span class="c"># Observe last 20 flows cluster-wide</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe --last 20
+
+<span class="c"># Follow flows in real time</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe --follow
+
+<span class="c"># Filter to a specific namespace</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe \
+  --namespace openshift-dns --follow
+
+<span class="c"># Show only dropped flows (policy violations)</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe \
+  --verdict DROPPED --follow
+
+<span class="c"># Filter by destination port (e.g., all DNS traffic)</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe \
+  --port 53 --follow
+
+<span class="c"># Filter between specific source and destination</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe \
+  --from-namespace my-app --to-namespace openshift-dns --follow</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">8.5</span><span class="step-title">Port-forward Hubble relay for local Hubble CLI (alternative)</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <p class="sd">If you have the Hubble CLI installed locally on your Mac, you can port-forward the relay service and observe flows directly from your terminal without exec-ing into a pod.</p>
+      <div class="cmd-block"><span class="c"># Install Hubble CLI on Mac</span>
+<span class="p">$</span> brew install cilium/tap/hubble
+
+<span class="c"># Port-forward hubble-relay in one terminal</span>
+<span class="p">$</span> oc port-forward -n cilium svc/hubble-relay 4245:4245
+
+<span class="c"># In a second terminal — observe flows locally</span>
+<span class="p">$</span> hubble observe --server localhost:4245 --follow
+<span class="p">$</span> hubble status --server localhost:4245
+<span class="g">Healthcheck (via localhost:4245): Ok</span>
+<span class="g">Connected Nodes: 4/4</span></div>
+      <div class="callout info">
+        <span class="callout-icon">ℹ</span>
+        <div class="callout-body"><div class="callout-title">Hubble CLI vs Hubble UI — when to use which</div>Use the <strong>CLI</strong> for targeted troubleshooting — filter by namespace, port, verdict, or pod label in real time. Use the <strong>UI</strong> for a visual overview of service-to-service traffic patterns and to spot unexpected connections in your topology.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">8.6</span><span class="step-title">Verify Hubble is collecting flows from all nodes</span><span class="step-badge sb-verify">Verify</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Check Hubble status — all 4 nodes should be connected</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble status
+<span class="g">Healthcheck (via localhost:4245): Ok</span>
+<span class="g">Current/Max Flows: 4096/4096 (100.00%)</span>
+<span class="g">Flows/s: 28.67</span>
+<span class="g">Connected Nodes: 4/4</span>
+<span class="g">Unavailable Nodes: 0</span>
+
+<span class="c"># Confirm all Cilium nodes are in the Hubble mesh</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- cilium status | grep Hubble
+<span class="g">Hubble:          Ok   Current/Max Flows: 4096/4096, Flows/s: 28.67</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">TCP/4244 must be open between nodes for Hubble Relay</div>Hubble Relay connects to each node's Hubble server on TCP port 4244. If you add network policies later, ensure this port is open between the cilium namespace and all cluster nodes. Otherwise "Connected Nodes" will drop below 4/4.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Phase 9 — Testing -->
+<div class="phase-block" id="phase9">
+  <div class="phase-header" data-phase="9">
+    <div class="phase-circle">9</div>
+    <div class="phase-info">
+      <div class="phase-title">Test Cases — Cilium, Hubble &amp; Network Policy</div>
+      <div class="phase-subtitle">Validate CNI functionality, network policy enforcement, Hubble observability, and kubeProxy replacement</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.1</span><span class="step-title">Test 1 — Basic pod-to-pod connectivity</span><span class="step-badge sb-verify">Test</span></div>
+    <div class="step-body">
+      <p class="sd">Deploy two test pods in different namespaces and verify they can communicate. This confirms Cilium is routing pod traffic correctly.</p>
+      <div class="cmd-block"><span class="c"># Create two test namespaces</span>
+<span class="p">$</span> oc new-project cilium-test-a
+<span class="p">$</span> oc new-project cilium-test-b
+
+<span class="c"># Deploy a simple nginx server in namespace A</span>
+<span class="p">$</span> oc run server --image=nginx -n cilium-test-a
+<span class="p">$</span> oc expose pod server --port=80 -n cilium-test-a
+<span class="p">$</span> oc get pod server -n cilium-test-a
+<span class="g"># server   1/1   Running</span>
+
+<span class="c"># Get server pod IP</span>
+<span class="p">$</span> SERVER_IP=$(oc get pod server -n cilium-test-a -o jsonpath='{.status.podIP}')
+<span class="p">$</span> echo $SERVER_IP
+
+<span class="c"># Deploy a client in namespace B and curl the server</span>
+<span class="p">$</span> oc run client --image=curlimages/curl -n cilium-test-b \
+  --restart=Never --rm -it -- curl -s http://$SERVER_IP
+<span class="g"># Expected: nginx welcome page HTML — connectivity confirmed</span></div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Pass criteria</div>Client pod in namespace B successfully curls the server pod in namespace A and receives the nginx welcome page. This confirms Cilium is routing cross-namespace pod traffic correctly.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.2</span><span class="step-title">Test 2 — DNS resolution via Cilium</span><span class="step-badge sb-verify">Test</span></div>
+    <div class="step-body">
+      <p class="sd">Verify that Cilium is correctly handling DNS traffic and that pods can resolve both cluster-internal and external DNS names.</p>
+      <div class="cmd-block"><span class="c"># Deploy a debug pod</span>
+<span class="p">$</span> oc run dnstest --image=busybox -n cilium-test-a \
+  --restart=Never --rm -it -- sh
+
+<span class="c"># Inside the pod — test internal DNS</span>
+<span class="p">$</span> nslookup kubernetes.default.svc.cluster.local
+<span class="g"># Server:    172.30.0.10</span>
+<span class="g"># Address 1: 172.30.0.10 dns-default.openshift-dns.svc.cluster.local</span>
+<span class="g"># Name:      kubernetes.default.svc.cluster.local</span>
+<span class="g"># Address 1: 172.30.0.1 kubernetes.default.svc.cluster.local</span>
+
+<span class="c"># Test external DNS</span>
+<span class="p">$</span> nslookup google.com
+<span class="g"># Server:    172.30.0.10</span>
+<span class="g"># Name:      google.com</span>
+<span class="g"># Address 1: 142.250.x.x</span>
+
+<span class="c"># Test service DNS</span>
+<span class="p">$</span> nslookup server.cilium-test-a.svc.cluster.local
+<span class="g"># Address 1: 172.30.x.x server.cilium-test-a.svc.cluster.local</span></div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Pass criteria</div>All three DNS lookups resolve successfully — internal cluster DNS, external DNS, and service DNS. Confirms Cilium is correctly intercepting and forwarding DNS traffic via the openshift-dns service.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.3</span><span class="step-title">Test 3 — Network policy enforcement (deny then allow)</span><span class="step-badge sb-verify">Test</span></div>
+    <div class="step-body">
+      <p class="sd">Apply a Kubernetes NetworkPolicy to deny all ingress to the server pod, verify traffic is blocked, then allow it and verify traffic flows again. This confirms Cilium's policy engine is working.</p>
+      <div class="cmd-block"><span class="c"># Step 1 — Apply a deny-all ingress policy to namespace A</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all-ingress
+  namespace: cilium-test-a
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+EOF
+
+<span class="c"># Step 2 — Verify traffic is now BLOCKED from namespace B</span>
+<span class="p">$</span> oc run client --image=curlimages/curl -n cilium-test-b \
+  --restart=Never --rm -it -- curl -s --max-time 5 http://$SERVER_IP
+<span class="r"># Expected: curl: (28) Connection timed out — BLOCKED by policy ✓</span>
+
+<span class="c"># Step 3 — Apply an allow policy for namespace B</span>
+<span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-test-b
+  namespace: cilium-test-a
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: cilium-test-b
+EOF
+
+<span class="c"># Step 4 — Verify traffic is now ALLOWED again</span>
+<span class="p">$</span> oc run client --image=curlimages/curl -n cilium-test-b \
+  --restart=Never --rm -it -- curl -s http://$SERVER_IP
+<span class="g"># Expected: nginx welcome page — ALLOWED by policy ✓</span>
+
+<span class="c"># Clean up policies</span>
+<span class="p">$</span> oc delete networkpolicy deny-all-ingress allow-from-test-b -n cilium-test-a</div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Pass criteria</div>Traffic is blocked after deny-all policy is applied, and restored after the allow policy is added. This confirms Cilium's eBPF-based network policy engine is enforcing Kubernetes NetworkPolicy correctly.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.4</span><span class="step-title">Test 4 — Hubble captures policy drop events</span><span class="step-badge sb-verify">Test</span></div>
+    <div class="step-body">
+      <p class="sd">While running the deny test above, use Hubble to confirm dropped flows are visible. This validates that Hubble observability is working correctly for policy enforcement events.</p>
+      <div class="cmd-block"><span class="c"># In one terminal — watch Hubble for dropped flows</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- hubble observe \
+  --verdict DROPPED --follow --namespace cilium-test-a
+
+<span class="c"># In another terminal — trigger denied traffic</span>
+<span class="p">$</span> oc run client --image=curlimages/curl -n cilium-test-b \
+  --restart=Never --rm -it -- curl -s --max-time 5 http://$SERVER_IP
+
+<span class="c"># Expected Hubble output while deny policy is active:</span>
+<span class="r">cilium-test-b/client → cilium-test-a/server:80   DROPPED   Policy denied</span>
+
+<span class="c"># After allowing traffic — Hubble should show FORWARDED</span>
+<span class="g">cilium-test-b/client → cilium-test-a/server:80   FORWARDED</span></div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Pass criteria</div>Hubble shows DROPPED flows with "Policy denied" reason while the deny policy is active, and FORWARDED flows after the allow policy is applied. This confirms Hubble is capturing policy enforcement events in real time with full identity context.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.5</span><span class="step-title">Test 5 — kubeProxy replacement validation</span><span class="step-badge sb-verify">Test</span></div>
+    <div class="step-body">
+      <p class="sd">Verify that Cilium is handling kube-proxy duties in strict mode — ClusterIP service routing, NodePort, and load balancing are all handled by Cilium's eBPF dataplane with no kube-proxy process running.</p>
+      <div class="cmd-block"><span class="c"># Confirm kube-proxy is NOT running (Cilium replaced it)</span>
+<span class="p">$</span> oc get pods -A | grep kube-proxy
+<span class="g"># No output — kube-proxy is not running ✓</span>
+
+<span class="c"># Confirm Cilium is in strict kubeProxyReplacement mode</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- cilium status | grep KubeProxyReplacement
+<span class="g"># KubeProxyReplacement: True</span>
+
+<span class="c"># Test ClusterIP service routing via Cilium</span>
+<span class="p">$</span> SVC_IP=$(oc get svc server -n cilium-test-a -o jsonpath='{.spec.clusterIP}')
+<span class="p">$</span> oc run client --image=curlimages/curl -n cilium-test-b \
+  --restart=Never --rm -it -- curl -s http://$SVC_IP
+<span class="g"># Expected: nginx welcome page via ClusterIP — Cilium routing confirmed ✓</span>
+
+<span class="c"># Check Cilium BPF service map (shows all services Cilium is handling)</span>
+<span class="p">$</span> oc exec -n cilium ds/cilium -- cilium service list | head -20
+<span class="g"># Shows all ClusterIP, NodePort, LoadBalancer services mapped in eBPF</span></div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Pass criteria</div>No kube-proxy pods exist, Cilium reports KubeProxyReplacement: True, and ClusterIP service traffic routes correctly via Cilium's eBPF service map. All service load balancing is handled in the kernel without iptables.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.6</span><span class="step-title">Test 6 — Hubble UI service map visualization</span><span class="step-badge sb-verify">Test</span></div>
+    <div class="step-body">
+      <p class="sd">With the test workloads running, verify the Hubble UI shows the correct service topology and live traffic flows.</p>
+      <div class="ui-steps">
+        <h4>Steps in Browser</h4>
+        <ol class="ui-step-list">
+          <li>Open <strong>http://hubble.apps.os-lab-cilium.oslab.oslab</strong></li>
+          <li>Select namespace <strong>cilium-test-a</strong> from the namespace dropdown</li>
+          <li>You should see the <strong>server</strong> pod as a node in the service map</li>
+          <li>Generate some traffic: run the curl client from the helper terminal</li>
+          <li>Watch the flow lines appear in real time connecting <strong>cilium-test-b/client → cilium-test-a/server</strong></li>
+          <li>Apply the deny-all policy and watch the flow lines turn <strong>red</strong> (dropped)</li>
+          <li>Apply the allow policy and watch them turn <strong>green</strong> (forwarded)</li>
+        </ol>
+      </div>
+      <div class="callout success">
+        <span class="callout-icon">✓</span>
+        <div class="callout-body"><div class="callout-title">Pass criteria</div>Hubble UI shows live traffic flows between test namespaces, correctly changes flow line color from green to red when a deny policy is applied, and back to green when the allow policy is added. Service map accurately reflects the deployed workload topology.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.7</span><span class="step-title">Test 7 — Cilium connectivity test suite (official)</span><span class="step-badge sb-cmd">Test</span></div>
+    <div class="step-body">
+      <p class="sd">Run the official Cilium connectivity test suite. This deploys test workloads and runs ~50 network connectivity checks covering pod-to-pod, pod-to-service, ingress, egress, and policy scenarios. Expected to have 3 known failures on OpenShift.</p>
+      <div class="cmd-block"><span class="c"># Install the Cilium CLI (on your Mac)</span>
+<span class="p">$</span> brew install cilium-cli
+
+<span class="c"># Set kubeconfig</span>
+<span class="p">$</span> export KUBECONFIG=~/ocp-cilium-install/auth/kubeconfig
+
+<span class="c"># Run the connectivity test suite</span>
+<span class="p">$</span> cilium connectivity test
+
+<span class="c"># Expected output at completion:</span>
+<span class="g">✅  All 47 tests passed, 3 tests skipped, 0 tests failed.</span>
+
+<span class="c"># The 3 known failures on OpenShift are expected:</span>
+<span class="w"># - NetworkPolicy between server and client should not allow access by TCP when a policy specifies only SCTP</span>
+<span class="w"># - NetworkPolicy between server and client should allow egress access to server in CIDR block</span>
+<span class="w"># - NetworkPolicy between server and client should ensure an IP overlapping both IPBlock.CIDR and IPBlock.Except is allowed</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠</span>
+        <div class="callout-body"><div class="callout-title">SecurityContextConstraints required for connectivity test pods</div>Some connectivity test pods require hostPort/hostNetwork. Apply this SCC before running the test suite:
+        <div class="cmd-block" style="margin-top:.5rem"><span class="p">$</span> cat &lt;&lt;EOF | oc apply -f -
+apiVersion: security.openshift.io/v1
+kind: SecurityContextConstraints
+metadata:
+  name: cilium-test
+allowHostPorts: true
+allowHostNetwork: true
+allowPrivilegedContainer: false
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+volumes: ['*']
+users: []
+groups: []
+EOF</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">9.8</span><span class="step-title">Clean up test resources</span><span class="step-badge sb-cmd">Command</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="c"># Delete test namespaces and all resources within them</span>
+<span class="p">$</span> oc delete project cilium-test-a cilium-test-b
+
+<span class="c"># Delete the connectivity test namespace if used</span>
+<span class="p">$</span> oc delete project cilium-test 2&gt;/dev/null
+
+<span class="c"># Delete the SCC if created</span>
+<span class="p">$</span> oc delete scc cilium-test 2&gt;/dev/null
+
+<span class="c"># Confirm cleanup</span>
+<span class="p">$</span> oc get projects | grep cilium-test
+<span class="g"># No output — all test resources removed</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Troubleshoot -->
+<div class="phase-block" id="troubleshoot">
+  <div class="phase-header" data-phase="T" style="background:linear-gradient(135deg,#5a1a1a,#8b2020)">
+    <div class="phase-circle">T</div>
+    <div class="phase-info">
+      <div class="phase-title">Troubleshooting</div>
+      <div class="phase-subtitle">Known issues and resolutions from this install</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T1</span><span class="step-title">Multus CrashLoopBackOff — "could not find a plugin configuration"</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="r">failed to find the primary CNI plugin: could not find a plugin configuration
+in /host/run/multus/cni/net.d</span></div>
+      <p class="sd"><strong>Root Cause:</strong> Cilium manifests in openshift/ were incomplete. Cilium never fully initialized, so Multus had no CNI config file to read.</p>
+      <p class="sd"><strong>Fix:</strong> Always use the complete official manifests from <span class="ic">isovalent/olm-for-cilium</span>. Never hand-craft them. Re-run the install with the full manifest set.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T2</span><span class="step-title">quay.io pull timeout — "dial tcp: i/o timeout"</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="r">pinging container registry quay.io: Get "https://quay.io/v2/": dial tcp 54.87.208.72:443: i/o timeout</span></div>
+      <p class="sd"><strong>Root Cause:</strong> DHCP option 3 (default gateway) was missing from dnsmasq. Nodes received IPs but had no route to the internet.</p>
+      <div class="cmd-block"><span class="c"># Fix: add gateway option to dnsmasq and restart</span>
+echo "dhcp-option=3,10.7.1.1" &gt;&gt; /etc/dnsmasq.d/cilium.conf
+sudo systemctl restart dnsmasq
+<span class="c"># Then reboot all nodes so they pick up the new DHCP option</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T3</span><span class="step-title">NTP sync failures — "Host couldn't synchronize with any NTP server"</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <p class="sd">Nodes reported NTP sync failures during bootstrap validation. Install proceeded but may cause certificate issues in production environments.</p>
+      <div class="cmd-block"><span class="c"># Add NTP option to dnsmasq BEFORE booting nodes</span>
+echo "dhcp-option=42,216.239.35.0" &gt;&gt; /etc/dnsmasq.d/cilium.conf
+sudo systemctl restart dnsmasq
+
+<span class="c"># Alternative: add to install-config.yaml before generating ISO</span>
+additionalNTPSources:
+  - time.cloudflare.com
+  - 0.rhel.pool.ntp.org</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T4</span><span class="step-title">nmstatectl not available on Ubuntu 24.04</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <p class="sd">nmstatectl is not in Ubuntu apt repos and the pip install is broken on Ubuntu 24.04. GitHub release CDN downloads are also blocked in this lab network.</p>
+      <div class="cmd-block"><span class="c"># Workaround: create a stub that exits 0</span>
+sudo tee /usr/local/bin/nmstatectl &lt;&lt; 'EOF'
+#!/bin/bash
+exit 0
+EOF
+sudo chmod +x /usr/local/bin/nmstatectl
+hash -r
+
+<span class="c"># Better long-term fix: use a RHEL/Rocky helper VM where nmstate installs cleanly</span>
+sudo dnf install nmstate -y</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-header"><span class="step-num">T5</span><span class="step-title">install-config.yaml missing — "missing configuration or manifest file"</span><span class="step-badge sb-warn">Issue</span></div>
+    <div class="step-body">
+      <div class="cmd-block"><span class="r">FATAL failed to fetch Agent Installer ISO: failed to generate asset "Agent PullSecret": missing configuration or manifest file</span></div>
+      <p class="sd"><strong>Root Cause:</strong> The openshift-install binary consumed and deleted install-config.yaml and agent-config.yaml after the previous ISO generation run.</p>
+      <div class="cmd-block"><span class="c"># Fix: recreate both files from your backups</span>
+cp ~/install-config.yaml.bak ~/ocp-cilium-install/install-config.yaml
+cp ~/agent-config.yaml.bak ~/ocp-cilium-install/agent-config.yaml
+
+<span class="c"># Also clean up the previous install state</span>
+cd ~/ocp-cilium-install
+rm -f agent.x86_64.iso
+rm -rf auth/ .openshift_install* .openshift_install_state.json</div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- end main -->
+
+<footer>
+  <div class="footer-inner">
+    <span>OpenShift 4.18 + Isovalent Cilium Enterprise Native Install Guide · v1.0 · April 2026</span>
+    <span>OCP 4.18.36 · Cilium v1.15.1 · Hubble UI · ESXi 7.0 U2 · Agent-Based ISO</span>
+  </div>
+</footer>
+
+<script>
+const sections = document.querySelectorAll('.phase-block[id]');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navItems.forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute('href') === '#' + current) n.classList.add('active');
+  });
+});
+</script>
+
+
+</body></html>
