@@ -164,6 +164,10 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
   <div class="card">
     <div class="card-header"><span class="card-num">1.2</span><span class="card-title">Helper VM SSH &ndash; install workstation</span><span class="badge badge-cred">Credentials</span></div>
     <div class="card-body">
+      <div class="callout info">
+        <span class="callout-icon">&#8505;</span>
+        <div class="callout-body"><div class="callout-title">The helper node is your primary CLI workstation</div>The helper VM (10.7.1.75) has the <strong>oc CLI</strong> pre-installed and is the intended workstation for all OpenShift operations. It has direct network access to the cluster API and nodes, the cluster kubeconfig at <span style="font-family:monospace;font-size:.85em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px">~/ocp-cilium-install/auth/kubeconfig</span>, and Helm 3 available. All <span style="font-family:monospace;font-size:.85em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px">oc</span> and <span style="font-family:monospace;font-size:.85em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px">kubectl</span> commands should be run from here unless you have configured remote access from your laptop.</div>
+      </div>
       <p class="sd"><strong>Primary account (scott):</strong></p>
       <div class="cred-grid">
         <div class="cred-card">
