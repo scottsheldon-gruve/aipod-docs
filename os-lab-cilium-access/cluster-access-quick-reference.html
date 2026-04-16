@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>os-lab-cilium â Cluster Access Quick Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f0f4f8;--bg2:#e2eaf2;--surface:#fff;--border:#ccd8e8;--border2:#b8cad8;
+  --ink:#0d1f35;--ink2:#2a4a6e;--ink3:#5a7a9a;
+  --accent:#0057b8;--accent-bg:#e8f0fc;--accent-border:#b8d0f0;
+  --green:#0a6e3a;--green-bg:#e6f4ec;--green-border:#a8d8bc;
+  --yellow:#7a5500;--yellow-bg:#fef8e6;--yellow-border:#f0d878;
+  --red:#8b1a1a;--red-bg:#fdf0f0;--red-border:#e8b8b8;
+  --mono:'JetBrains Mono',monospace;--sans:'Outfit',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7}
+header{background:linear-gradient(160deg,#001428 0%,#002a5c 45%,#005596 80%,#0083c8 100%);color:#fff;padding:0;overflow:hidden;position:relative}
+header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(4,159,217,.15) 0%,transparent 60%);pointer-events:none}
+.header-inner{max-width:900px;margin:0 auto;padding:2rem 2rem 1.5rem;position:relative;z-index:1}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
+.header-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.62rem;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.15em}
+.header-version{background:rgba(4,159,217,.25);border:1px solid rgba(4,159,217,.4);border-radius:6px;padding:.35rem .85rem;font-family:var(--mono);font-size:.62rem;color:#7dd4f0;text-transform:uppercase;letter-spacing:.1em}
+h1{font-size:1.8rem;font-weight:800;line-height:1.1;color:#fff;margin-bottom:.5rem}
+h1 span{color:#7dd4f0}
+.header-desc{font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.6}
+.main{max-width:900px;margin:0 auto;padding:2rem}
+.section{margin-bottom:2rem}
+.section-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem;padding:.75rem 1rem;background:linear-gradient(135deg,var(--accent),#0083c8);border-radius:8px;color:#fff}
+.section-circle{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.2);border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.65rem;font-weight:700;flex-shrink:0}
+.section-title{font-size:.95rem;font-weight:700}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;overflow:hidden}
+.card-header{padding:.65rem 1rem;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.6rem}
+.card-num{font-family:var(--mono);font-size:.58rem;color:#fff;background:var(--accent);padding:.15rem .38rem;border-radius:3px;font-weight:600}
+.card-title{font-weight:600;font-size:.88rem;color:var(--ink);flex:1}
+.badge{font-family:var(--mono);font-size:.55rem;padding:.1rem .32rem;border-radius:3px;text-transform:uppercase;letter-spacing:.07em}
+.badge-mac{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.badge-win{background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent-border)}
+.badge-cred{background:#f0e8fc;color:#4a1a7a;border:1px solid #c8b0e8}
+.badge-url{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-border)}
+.card-body{padding:1rem}
+p.sd{font-size:.82rem;color:var(--ink2);line-height:1.7;margin-bottom:.75rem}
+p.sd:last-child{margin-bottom:0}
+.cmd-block{background:#001428;border-radius:5px;padding:.75rem 1rem;font-family:var(--mono);font-size:.72rem;color:#c8ddf0;line-height:1.7;margin:.5rem 0;overflow-x:auto;white-space:pre}
+.cmd-block .c{color:#5a8aaa;font-style:italic}
+.cmd-block .p{color:#7dd4f0}
+.cmd-block .g{color:#5cb87a}
+.cmd-block .h{color:#049fd9}
+.callout{border-radius:6px;padding:.8rem 1rem;margin:.65rem 0;font-size:.8rem;line-height:1.7;display:flex;gap:.65rem}
+.callout-icon{flex-shrink:0;font-size:.95rem;margin-top:.05rem}
+.callout-body{flex:1}
+.callout-title{font-weight:700;margin-bottom:.1rem;font-size:.72rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.callout.warn{background:var(--yellow-bg);border:1px solid var(--yellow-border);color:var(--yellow)}
+.callout.warn .callout-title{color:#c07000}
+.callout.info{background:var(--accent-bg);border:1px solid var(--accent-border);color:var(--ink2)}
+.callout.info .callout-title{color:var(--accent)}
+.callout.success{background:var(--green-bg);border:1px solid var(--green-border);color:var(--ink2)}
+.callout.success .callout-title{color:var(--green)}
+.cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin:.5rem 0}
+.cred-card{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:.85rem 1rem}
+.cred-label{font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:.3rem}
+.cred-value{font-family:var(--mono);font-size:.82rem;font-weight:600;color:var(--ink);word-break:break-all}
+.url-grid{display:grid;grid-template-columns:1fr;gap:.6rem;margin:.5rem 0}
+.url-card{background:var(--bg);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:4px;padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.url-label{font-size:.75rem;color:var(--ink3);font-weight:600;flex-shrink:0}
+.url-value{font-family:var(--mono);font-size:.72rem;color:var(--accent);word-break:break-all}
+.data-table{width:100%;border-collapse:collapse;font-size:.78rem;margin:.5rem 0;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.data-table th{padding:.5rem .85rem;background:var(--accent);color:#fff;text-align:left;font-weight:600;font-size:.7rem}
+.data-table td{padding:.5rem .85rem;border-bottom:1px solid var(--border);color:var(--ink2);vertical-align:top;line-height:1.5;font-family:var(--mono);font-size:.72rem}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--bg)}
+.ic{font-family:var(--mono);font-size:.8em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px;color:var(--ink);white-space:nowrap}
+footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);font-size:.62rem;padding:1.25rem 0;margin-top:2rem}
+.footer-inner{max-width:900px;margin:0 auto;padding:0 2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+@media(max-width:600px){.cred-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-badge">&#x1F516; Cluster Access Quick Reference</div>
+      <div class="header-version">os-lab-cilium &middot; OCP 4.18.36 &middot; April 2026</div>
+    </div>
+    <h1>os-lab-cilium <span>Access Guide</span></h1>
+    <div class="header-desc">Hosts file entries, login credentials, and service URLs for the OpenShift 4.18 + Isovalent Cilium cluster</div>
+  </div>
+</header>
+
+<div class="main">
+
+<!-- SECTION 1: CREDENTIALS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-circle">1</div>
+    <div class="section-title">Login Credentials</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">1.1</span><span class="card-title">OpenShift Console &ndash; kubeadmin</span><span class="badge badge-cred">Credentials</span></div>
+    <div class="card-body">
+      <div class="cred-grid">
+        <div class="cred-card">
+          <div class="cred-label">Username</div>
+          <div class="cred-value">kubeadmin</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Password</div>
+          <div class="cred-value">8RMxX-Fc8Gp-SptjR-Au8PF</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Console URL</div>
+          <div class="cred-value" style="font-size:.65rem">https://console-openshift-console.apps.os-lab-cilium.oslab.oslab</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">API URL</div>
+          <div class="cred-value" style="font-size:.65rem">https://api.os-lab-cilium.oslab.oslab:6443</div>
+        </div>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <div class="callout-body"><div class="callout-title">kubeadmin is a temporary account</div>This is the bootstrap admin account. You will get a browser certificate warning &mdash; click Advanced &rarr; Proceed to accept the self-signed cert.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">1.2</span><span class="card-title">Helper VM SSH &ndash; install workstation</span><span class="badge badge-cred">Credentials</span></div>
+    <div class="card-body">
+      <div class="cred-grid">
+        <div class="cred-card">
+          <div class="cred-label">Host</div>
+          <div class="cred-value">10.7.1.75</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Username</div>
+          <div class="cred-value">scott</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Auth</div>
+          <div class="cred-value">Password (sudo available)</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">kubeconfig</div>
+          <div class="cred-value" style="font-size:.65rem">~/ocp-cilium-install/auth/kubeconfig</div>
+        </div>
+      </div>
+      <div class="cmd-block"><span class="p">$</span> ssh scott@10.7.1.75
+<span class="p">$</span> export KUBECONFIG=~/ocp-cilium-install/auth/kubeconfig
+<span class="p">$</span> oc get nodes</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">1.3</span><span class="card-title">Hubble UI &ndash; network observability</span><span class="badge badge-url">URL</span></div>
+    <div class="card-body">
+      <div class="cred-grid">
+        <div class="cred-card">
+          <div class="cred-label">Hubble UI URL</div>
+          <div class="cred-value" style="font-size:.65rem">http://hubble.apps.os-lab-cilium.oslab.oslab</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Auth</div>
+          <div class="cred-value">No login required</div>
+        </div>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">&#8505;</span>
+        <div class="callout-body"><div class="callout-title">Select a namespace to see flows</div>After opening, select a namespace from the dropdown (e.g. openshift-dns) to see live network flows in the service map.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 2: MAC HOSTS FILE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-circle">2</div>
+    <div class="section-title">Mac &ndash; /etc/hosts</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">2.1</span><span class="card-title">Add entries to /etc/hosts on Mac</span><span class="badge badge-mac">macOS</span></div>
+    <div class="card-body">
+      <p class="sd">Open Terminal and run:</p>
+      <div class="cmd-block"><span class="p">$</span> sudo nano /etc/hosts</div>
+      <p class="sd">Add these lines at the bottom of the file:</p>
+      <div class="cmd-block"><span class="c"># os-lab-cilium OpenShift cluster</span>
+10.7.1.160  api.os-lab-cilium.oslab.oslab
+10.7.1.159  console-openshift-console.apps.os-lab-cilium.oslab.oslab
+10.7.1.159  oauth-openshift.apps.os-lab-cilium.oslab.oslab
+10.7.1.159  hubble.apps.os-lab-cilium.oslab.oslab</div>
+      <p class="sd">Save with <span class="ic">Ctrl+X</span> &rarr; <span class="ic">Y</span> &rarr; <span class="ic">Enter</span>, then flush DNS cache:</p>
+      <div class="cmd-block"><span class="p">$</span> sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+<span class="g"># No output = success</span></div>
+      <p class="sd">Verify it worked:</p>
+      <div class="cmd-block"><span class="p">$</span> ping -c 1 api.os-lab-cilium.oslab.oslab
+<span class="g">PING api.os-lab-cilium.oslab.oslab (10.7.1.160): 56 bytes</span></div>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <div class="callout-body"><div class="callout-title">Your Mac must be on the same network as the cluster</div>You must be connected to the lab network (10.7.1.0/24) for these entries to work. The hosts file only maps names to IPs &mdash; your Mac still needs a route to reach those IPs.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">2.2</span><span class="card-title">Verify console loads in browser</span><span class="badge badge-mac">macOS</span></div>
+    <div class="card-body">
+      <p class="sd">Open Safari or Chrome and go to:</p>
+      <div class="cmd-block">https://console-openshift-console.apps.os-lab-cilium.oslab.oslab</div>
+      <p class="sd">You will see a certificate warning &mdash; this is expected (self-signed cert). Click <strong>Advanced &rarr; Proceed to site</strong> (Chrome) or <strong>Visit Website</strong> (Safari).</p>
+      <div class="callout success">
+        <span class="callout-icon">&#10003;</span>
+        <div class="callout-body"><div class="callout-title">Login with kubeadmin</div>Username: <strong>kubeadmin</strong> &mdash; Password: <strong>8RMxX-Fc8Gp-SptjR-Au8PF</strong></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 3: WINDOWS HOSTS FILE -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-circle">3</div>
+    <div class="section-title">Windows &ndash; hosts file</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">3.1</span><span class="card-title">Add entries to hosts file on Windows</span><span class="badge badge-win">Windows</span></div>
+    <div class="card-body">
+      <p class="sd">The Windows hosts file is at <span class="ic">C:\Windows\System32\drivers\etc\hosts</span> and requires admin rights to edit.</p>
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <div class="callout-body"><div class="callout-title">Must run Notepad as Administrator</div>If you open Notepad normally you will not be able to save the hosts file. You must right-click Notepad and select "Run as administrator" first.</div>
+      </div>
+      <p class="sd"><strong>Option A &ndash; Notepad (GUI):</strong></p>
+      <div class="cmd-block"><span class="c"># 1. Click Start &rarr; search "Notepad"</span>
+<span class="c"># 2. Right-click Notepad &rarr; "Run as administrator"</span>
+<span class="c"># 3. File &rarr; Open &rarr; navigate to:</span>
+C:\Windows\System32\drivers\etc\hosts
+<span class="c"># 4. Change file filter dropdown from "Text Documents" to "All Files"</span>
+<span class="c"># 5. Add the lines below at the bottom</span>
+<span class="c"># 6. File &rarr; Save</span></div>
+      <p class="sd"><strong>Option B &ndash; PowerShell (faster):</strong></p>
+      <div class="cmd-block"><span class="c"># Open PowerShell as Administrator, then run:</span>
+<span class="p">&gt;</span> Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "`n# os-lab-cilium OpenShift cluster"
+<span class="p">&gt;</span> Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "10.7.1.160`tapi.os-lab-cilium.oslab.oslab"
+<span class="p">&gt;</span> Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "10.7.1.159`tconsole-openshift-console.apps.os-lab-cilium.oslab.oslab"
+<span class="p">&gt;</span> Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "10.7.1.159`toauth-openshift.apps.os-lab-cilium.oslab.oslab"
+<span class="p">&gt;</span> Add-Content -Path "C:\Windows\System32\drivers\etc\hosts" -Value "10.7.1.159`thubble.apps.os-lab-cilium.oslab.oslab"</div>
+      <p class="sd">The entries to add (manually if using Notepad):</p>
+      <div class="cmd-block"><span class="c"># os-lab-cilium OpenShift cluster</span>
+10.7.1.160  api.os-lab-cilium.oslab.oslab
+10.7.1.159  console-openshift-console.apps.os-lab-cilium.oslab.oslab
+10.7.1.159  oauth-openshift.apps.os-lab-cilium.oslab.oslab
+10.7.1.159  hubble.apps.os-lab-cilium.oslab.oslab</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">3.2</span><span class="card-title">Flush DNS cache on Windows</span><span class="badge badge-win">Windows</span></div>
+    <div class="card-body">
+      <p class="sd">After saving the hosts file, flush the DNS cache so Windows picks up the new entries immediately:</p>
+      <div class="cmd-block"><span class="c"># Open Command Prompt or PowerShell as Administrator</span>
+<span class="p">&gt;</span> ipconfig /flushdns
+<span class="g">Windows IP Configuration</span>
+<span class="g">Successfully flushed the DNS Resolver Cache.</span>
+
+<span class="c"># Verify it resolves correctly</span>
+<span class="p">&gt;</span> ping api.os-lab-cilium.oslab.oslab
+<span class="g">Pinging api.os-lab-cilium.oslab.oslab [10.7.1.160]</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SECTION 4: ALL URLS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-circle">4</div>
+    <div class="section-title">All Cluster URLs &amp; IPs</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">4.1</span><span class="card-title">Service URLs</span><span class="badge badge-url">Reference</span></div>
+    <div class="card-body">
+      <table class="data-table">
+        <tr><th>Service</th><th>URL</th><th>Notes</th></tr>
+        <tr><td>OCP Console</td><td>https://console-openshift-console.apps.os-lab-cilium.oslab.oslab</td><td>Accept cert warning</td></tr>
+        <tr><td>OCP API</td><td>https://api.os-lab-cilium.oslab.oslab:6443</td><td>oc login target</td></tr>
+        <tr><td>Hubble UI</td><td>http://hubble.apps.os-lab-cilium.oslab.oslab</td><td>No login required</td></tr>
+        <tr><td>OAuth</td><td>https://oauth-openshift.apps.os-lab-cilium.oslab.oslab</td><td>Auto-used by console</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">4.2</span><span class="card-title">Node and VIP IPs</span><span class="badge badge-url">Reference</span></div>
+    <div class="card-body">
+      <table class="data-table">
+        <tr><th>Host</th><th>IP</th><th>Role</th></tr>
+        <tr><td>Helper VM</td><td>10.7.1.75</td><td>SSH workstation, DNS, DHCP</td></tr>
+        <tr><td>API VIP</td><td>10.7.1.160</td><td>OpenShift API endpoint</td></tr>
+        <tr><td>Ingress VIP</td><td>10.7.1.159</td><td>All *.apps routes</td></tr>
+        <tr><td>master1</td><td>10.7.1.161</td><td>Control plane</td></tr>
+        <tr><td>master2</td><td>10.7.1.162</td><td>Control plane</td></tr>
+        <tr><td>master3</td><td>10.7.1.163</td><td>Control plane</td></tr>
+        <tr><td>worker1</td><td>10.7.1.164</td><td>Worker node</td></tr>
+        <tr><td>ESXi host</td><td>10.7.1.51</td><td>Hypervisor</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num">4.3</span><span class="card-title">oc CLI login from helper VM</span><span class="badge badge-url">Reference</span></div>
+    <div class="card-body">
+      <div class="cmd-block"><span class="c"># SSH to helper first</span>
+<span class="p">$</span> ssh scott@10.7.1.75
+
+<span class="c"># Option 1 &ndash; use kubeconfig directly (no login needed)</span>
+<span class="p">$</span> export KUBECONFIG=~/ocp-cilium-install/auth/kubeconfig
+<span class="p">$</span> oc get nodes
+
+<span class="c"># Option 2 &ndash; login with kubeadmin</span>
+<span class="p">$</span> oc login https://api.os-lab-cilium.oslab.oslab:6443 \
+  -u kubeadmin -p 8RMxX-Fc8Gp-SptjR-Au8PF \
+  --insecure-skip-tls-verify</div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>os-lab-cilium &middot; OCP 4.18.36 &middot; Isovalent Cilium v1.15.1 &middot; Cluster Access Quick Reference</span>
+    <span>Prepared by Scott Sheldon &mdash; Gruve &middot; April 2026</span>
+  </div>
+</footer>
+</body>
+</html>
