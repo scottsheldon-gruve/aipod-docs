@@ -92,6 +92,40 @@ footer{background:var(--ink);color:rgba(255,255,255,.3);font-family:var(--mono);
 
 <div class="main">
 
+<!-- SECTION 0: VPN PREREQUISITE -->
+<div class="section">
+  <div class="section-header" style="background:linear-gradient(135deg,#6a0dad,#9b30d0)">
+    <div class="section-circle">0</div>
+    <div class="section-title">Prerequisites &ndash; VPN Access Required</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-num" style="background:#6a0dad">0.1</span><span class="card-title">Connect to Gruve VPN before accessing the cluster</span><span class="badge" style="background:#f0e8fc;color:#4a1a7a;border:1px solid #c8b0e8">VPN</span></div>
+    <div class="card-body">
+      <div class="callout warn">
+        <span class="callout-icon">&#9888;</span>
+        <div class="callout-body"><div class="callout-title">VPN required &mdash; nothing will work without it</div>The os-lab-cilium cluster is on the internal lab network (10.7.1.0/24). You must be connected to the Gruve VPN before the hosts file entries, console, API, or SSH will be reachable.</div>
+      </div>
+      <p class="sd">Connect to the Gruve VPN using <strong>Cisco Secure Client (AnyConnect)</strong> pointing at <strong>Edison</strong>:</p>
+      <div class="cred-grid">
+        <div class="cred-card">
+          <div class="cred-label">VPN Host</div>
+          <div class="cred-value">Edison</div>
+        </div>
+        <div class="cred-card">
+          <div class="cred-label">Client</div>
+          <div class="cred-value">Cisco Secure Client / AnyConnect</div>
+        </div>
+      </div>
+      <div class="callout info">
+        <span class="callout-icon">&#8505;</span>
+        <div class="callout-body"><div class="callout-title">Confirm VPN is up before proceeding</div>Once connected, verify you can ping the helper VM at <strong>10.7.1.75</strong> before attempting to open the console or run <span style="font-family:monospace;font-size:.85em;background:var(--bg2);border:1px solid var(--border2);padding:.1em .3em;border-radius:3px">oc</span> commands.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 <!-- SECTION 1: CREDENTIALS -->
 <div class="section">
   <div class="section-header">
